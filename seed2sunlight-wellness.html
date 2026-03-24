@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seed2Sunlight Wellness</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #fff9f0 0%, #fff0e6 40%, #f0f7ee 100%);
+  color: #2d2d2d;
+  overflow-x: hidden;
+}
+
+/* ── SCREENS ── */
+.screen { display:none; min-height:100vh; flex-direction:column; align-items:center; padding:0 0 100px; }
+.screen.active { display:flex; }
+
+/* ── HEADER ── */
+.top-bar {
+  width:100%; max-width:480px;
+  padding: 1.2rem 1.4rem .8rem;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.app-logo { font-size:1.1rem; font-weight:900; color:#f07c3a; letter-spacing:-.01em; }
+.app-logo span { color:#5db87a; }
+.top-right { display:flex; align-items:center; gap:.6rem; }
+.streak-chip {
+  background:#fff3e0; color:#f07c3a;
+  padding:.22rem .65rem; border-radius:20px;
+  font-size:.78rem; font-weight:800;
+  border:1.5px solid #ffd4a8;
+}
+.xp-chip {
+  background:#e8f5e9; color:#5db87a;
+  padding:.22rem .65rem; border-radius:20px;
+  font-size:.78rem; font-weight:800;
+  border:1.5px solid #b8e0c4;
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position:fixed; bottom:0; left:0; right:0;
+  background:white;
+  border-top:1.5px solid #f0ede8;
+  display:flex; justify-content:space-around;
+  padding:.6rem 0 .9rem;
+  z-index:100;
+  box-shadow:0 -4px 20px rgba(0,0,0,.06);
+}
+.nav-item {
+  display:flex; flex-direction:column; align-items:center; gap:.18rem;
+  cursor:pointer; padding:.2rem .8rem; border-radius:12px;
+  transition:all .2s; user-select:none;
+}
+.nav-item.active .nav-icon { filter:none; opacity:1; }
+.nav-item .nav-icon { font-size:1.4rem; opacity:.4; transition:all .2s; }
+.nav-item.active .nav-icon { opacity:1; }
+.nav-item .nav-label { font-size:.65rem; font-weight:700; color:#bbb; transition:color .2s; }
+.nav-item.active .nav-label { color:#f07c3a; }
+
+/* ── CONTENT WRAPPER ── */
+.content { width:100%; max-width:480px; padding:0 1.2rem; display:flex; flex-direction:column; gap:1rem; }
+
+/* ── GREETING CARD ── */
+.greeting-card {
+  background:linear-gradient(135deg,#f07c3a,#f5a55a);
+  border-radius:24px; padding:1.4rem 1.5rem;
+  color:white; position:relative; overflow:hidden;
+}
+.greeting-card::after {
+  content:'☀️';
+  position:absolute; right:1rem; top:50%; transform:translateY(-50%);
+  font-size:3.5rem; opacity:.25;
+}
+.greeting-card h2 { font-size:1.15rem; font-weight:900; margin-bottom:.25rem; }
+.greeting-card p { font-size:.85rem; opacity:.92; line-height:1.5; max-width:80%; }
+
+/* ── TODAY CARD (Duolingo-style lesson) ── */
+.today-card {
+  background:white; border-radius:22px;
+  padding:1.3rem 1.4rem;
+  box-shadow:0 4px 20px rgba(0,0,0,.07);
+}
+.today-label {
+  font-size:.7rem; font-weight:800; text-transform:uppercase;
+  letter-spacing:.12em; color:#f07c3a; margin-bottom:.65rem;
+}
+.step-list { display:flex; flex-direction:column; gap:.55rem; }
+.step-item {
+  display:flex; align-items:center; gap:.85rem;
+  padding:.75rem .9rem; border-radius:16px;
+  background:#fafaf8; border:1.5px solid #f0ede8;
+  cursor:pointer; transition:all .18s; user-select:none;
+}
+.step-item:hover { border-color:#f07c3a; background:#fff8f4; transform:translateY(-1px); }
+.step-item.done { background:#f0faf3; border-color:#b8e0c4; opacity:.75; }
+.step-icon {
+  width:40px; height:40px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; flex-shrink:0;
+}
+.step-icon.orange { background:#fff3e0; }
+.step-icon.green { background:#e8f5e9; }
+.step-icon.blue { background:#e3f2fd; }
+.step-icon.purple { background:#f3e5f5; }
+.step-icon.gold { background:#fffde7; }
+.step-text { flex:1; }
+.step-title { font-size:.88rem; font-weight:800; color:#2d2d2d; }
+.step-sub { font-size:.74rem; color:#999; margin-top:.08rem; }
+.step-check {
+  width:22px; height:22px; border-radius:50%;
+  border:2px solid #ddd; display:flex; align-items:center;
+  justify-content:center; font-size:.65rem; color:transparent;
+  transition:all .2s; flex-shrink:0;
+}
+.step-item.done .step-check { background:#5db87a; border-color:#5db87a; color:white; }
+.step-xp { font-size:.68rem; font-weight:800; color:#f07c3a; background:#fff3e0; padding:.1rem .4rem; border-radius:10px; margin-left:auto; flex-shrink:0; }
+
+/* ── PROGRESS RING ── */
+.progress-section {
+  background:white; border-radius:22px; padding:1.3rem 1.4rem;
+  box-shadow:0 4px 20px rgba(0,0,0,.07);
+  display:flex; align-items:center; gap:1.2rem;
+}
+.ring-wrap { flex-shrink:0; }
+svg.ring { transform:rotate(-90deg); }
+.ring-bg { fill:none; stroke:#f0ede8; stroke-width:6; }
+.ring-fill { fill:none; stroke:url(#ringGrad); stroke-width:6; stroke-linecap:round; transition:stroke-dashoffset .5s ease; }
+.progress-info { flex:1; }
+.progress-info h3 { font-size:.95rem; font-weight:900; color:#2d2d2d; margin-bottom:.2rem; }
+.progress-info p { font-size:.78rem; color:#999; line-height:1.5; }
+.progress-info .progress-pct { font-size:1.5rem; font-weight:900; color:#f07c3a; }
+
+/* ── GENERIC CARD ── */
+.section-card {
+  background:white; border-radius:22px; padding:1.3rem 1.4rem;
+  box-shadow:0 4px 20px rgba(0,0,0,.07);
+}
+.section-card h3 { font-size:.95rem; font-weight:900; color:#2d2d2d; margin-bottom:.75rem; }
+
+/* ── BIG BUTTONS ── */
+.big-btn {
+  width:100%; padding:1rem; border-radius:18px;
+  font-family:'Nunito',sans-serif; font-size:.95rem; font-weight:800;
+  border:none; cursor:pointer; transition:all .18s;
+  display:flex; align-items:center; justify-content:center; gap:.5rem;
+}
+.big-btn:hover { transform:translateY(-2px); filter:brightness(1.05); }
+.big-btn:active { transform:translateY(0); }
+.btn-orange { background:linear-gradient(135deg,#f07c3a,#f5a55a); color:white; box-shadow:0 4px 15px rgba(240,124,58,.3); }
+.btn-green { background:linear-gradient(135deg,#5db87a,#7dcc96); color:white; box-shadow:0 4px 15px rgba(93,184,122,.3); }
+.btn-soft { background:#f7f4f0; color:#888; }
+
+/* ── PILL TABS ── */
+.pill-tabs { display:flex; gap:.5rem; overflow-x:auto; padding-bottom:.2rem; scrollbar-width:none; margin-bottom:.5rem; }
+.pill-tabs::-webkit-scrollbar { display:none; }
+.pill { padding:.4rem .9rem; border-radius:20px; font-size:.78rem; font-weight:800; cursor:pointer; white-space:nowrap; border:1.5px solid #eee; color:#aaa; background:white; transition:all .18s; }
+.pill.active { background:#f07c3a; color:white; border-color:#f07c3a; }
+
+/* ── RESOURCE ITEMS ── */
+.resource-item {
+  display:flex; align-items:center; gap:.85rem;
+  padding:.8rem .9rem; border-radius:16px;
+  background:#fafaf8; border:1.5px solid #f0ede8;
+  margin-bottom:.5rem; cursor:pointer; text-decoration:none;
+  transition:all .18s;
+}
+.resource-item:last-child { margin-bottom:0; }
+.resource-item:hover { border-color:#5db87a; background:#f0faf3; }
+.res-icon { font-size:1.3rem; flex-shrink:0; }
+.res-text { flex:1; }
+.res-text strong { display:block; font-size:.85rem; font-weight:800; color:#2d2d2d; }
+.res-text span { font-size:.72rem; color:#aaa; }
+.res-arrow { font-size:.8rem; color:#ccc; }
+
+/* ── MINDSET CARDS ── */
+.mindset-item {
+  border-radius:16px; padding:.85rem 1rem;
+  margin-bottom:.5rem; border-left:4px solid;
+}
+.mindset-item:last-child { margin-bottom:0; }
+.mindset-item.orange { background:#fff8f4; border-color:#f07c3a; }
+.mindset-item.green { background:#f0faf3; border-color:#5db87a; }
+.mindset-item.blue { background:#f0f7ff; border-color:#64b5f6; }
+.mindset-label { font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; color:#aaa; margin-bottom:.25rem; }
+.mindset-text { font-size:.85rem; font-weight:600; line-height:1.6; color:#2d2d2d; }
+
+/* ── WINS ── */
+.wins-input {
+  background:#fafaf8; border:1.5px solid #f0ede8;
+  border-radius:16px; padding:.9rem 1rem;
+  display:flex; flex-direction:column; gap:.6rem;
+  margin-bottom:.75rem;
+}
+.wins-input textarea {
+  background:transparent; border:none; outline:none;
+  font-family:'Nunito',sans-serif; font-size:.9rem;
+  font-weight:600; color:#2d2d2d; resize:none; min-height:50px;
+  line-height:1.5;
+}
+.wins-input textarea::placeholder { color:#ccc; }
+.wins-add {
+  align-self:flex-end; background:#f07c3a; color:white;
+  border:none; padding:.35rem .9rem; border-radius:12px;
+  font-family:'Nunito',sans-serif; font-size:.78rem; font-weight:800;
+  cursor:pointer; transition:all .18s;
+}
+.wins-add:hover { background:#d9692a; }
+.win-chip {
+  display:flex; align-items:flex-start; gap:.6rem;
+  padding:.6rem .75rem; background:#fafaf8;
+  border-radius:14px; margin-bottom:.4rem;
+  border:1.5px solid #f0ede8;
+}
+.win-chip:last-child { margin-bottom:0; }
+.win-dot { width:8px; height:8px; border-radius:50%; background:#f07c3a; flex-shrink:0; margin-top:5px; }
+.win-body { flex:1; }
+.win-body p { font-size:.84rem; font-weight:700; color:#2d2d2d; line-height:1.4; }
+.win-body span { font-size:.68rem; color:#bbb; }
+.empty-wins { text-align:center; color:#ccc; font-size:.82rem; font-weight:600; padding:.5rem 0; }
+
+/* ── BUDGET ── */
+.budget-row { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-bottom:.65rem; }
+.budget-field { background:#fafaf8; border-radius:14px; padding:.7rem .85rem; border:1.5px solid #f0ede8; }
+.budget-field label { font-size:.65rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:#bbb; display:block; margin-bottom:.2rem; }
+.budget-field input { background:transparent; border:none; outline:none; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; color:#2d2d2d; width:100%; }
+.budget-result { background:linear-gradient(135deg,#2d2d2d,#4a3f35); border-radius:16px; padding:.9rem 1.1rem; }
+.b-row { display:flex; justify-content:space-between; align-items:center; padding:.22rem 0; }
+.b-row:last-child { border-top:1px solid rgba(255,255,255,.1); padding-top:.5rem; margin-top:.2rem; }
+.b-label { font-size:.75rem; color:rgba(255,255,255,.65); font-weight:600; }
+.b-value { font-size:.88rem; font-weight:800; color:white; }
+.b-value.pos { color:#7dcc96; }
+.b-value.neg { color:#ff8a7a; }
+
+/* ── AI CHAT ── */
+.chat-wrap { background:#fafaf8; border-radius:16px; overflow:hidden; border:1.5px solid #f0ede8; }
+.chat-msgs { padding:.85rem; max-height:240px; overflow-y:auto; display:flex; flex-direction:column; gap:.55rem; }
+.cmsg { max-width:86%; padding:.65rem .85rem; border-radius:14px; font-size:.84rem; font-weight:600; line-height:1.55; }
+.cmsg.ai { background:white; color:#2d2d2d; align-self:flex-start; border-bottom-left-radius:4px; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+.cmsg.user { background:linear-gradient(135deg,#f07c3a,#f5a55a); color:white; align-self:flex-end; border-bottom-right-radius:4px; }
+.cmsg.loading { background:white; color:#bbb; align-self:flex-start; font-style:italic; }
+.chat-row { display:flex; gap:.5rem; padding:.65rem .85rem; border-top:1.5px solid #f0ede8; background:white; }
+.chat-inp { flex:1; border:none; outline:none; font-family:'Nunito',sans-serif; font-size:.84rem; font-weight:600; color:#2d2d2d; background:transparent; }
+.chat-inp::placeholder { color:#ccc; }
+.chat-send { background:#f07c3a; border:none; color:white; width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:.85rem; display:flex; align-items:center; justify-content:center; transition:all .18s; flex-shrink:0; }
+.chat-send:hover { background:#d9692a; }
+.chat-send:disabled { opacity:.4; cursor:not-allowed; }
+.chat-limit { padding:.4rem .85rem .65rem; font-size:.72rem; color:#bbb; font-weight:600; background:white; }
+
+/* ── STRATEGY TOGGLE ── */
+.mode-btns { display:grid; grid-template-columns:1fr 1fr; gap:.5rem; margin-bottom:.75rem; }
+.mode-btn {
+  padding:.7rem; border-radius:16px; border:2px solid #eee;
+  background:white; font-family:'Nunito',sans-serif;
+  font-size:.8rem; font-weight:800; cursor:pointer; transition:all .18s; color:#aaa;
+}
+.mode-btn.active.surv { border-color:#f07c3a; background:#fff8f4; color:#f07c3a; }
+.mode-btn.active.strat { border-color:#5db87a; background:#f0faf3; color:#5db87a; }
+.mode-content { display:none; }
+.mode-content.active { display:block; }
+
+/* ── TIER BADGE ── */
+.tier-row { display:flex; gap:.5rem; justify-content:center; margin-bottom:.5rem; }
+.tier-btn { padding:.38rem .9rem; border-radius:20px; font-size:.75rem; font-weight:800; cursor:pointer; border:2px solid transparent; transition:all .18s; font-family:'Nunito',sans-serif; }
+.tier-btn.free { border-color:#ddd; color:#aaa; background:white; }
+.tier-btn.pro { border-color:#5db87a; color:#5db87a; background:white; }
+.tier-btn.premium { border-color:#f5c842; color:#c49800; background:white; }
+.tier-btn.active.free { background:#ddd; color:white; }
+.tier-btn.active.pro { background:#5db87a; color:white; }
+.tier-btn.active.premium { background:#f5c842; color:#5a4500; }
+
+/* ── LOCK ── */
+.locked-section { position:relative; border-radius:22px; overflow:hidden; }
+.lock-cover { position:absolute; inset:0; background:rgba(255,255,255,.9); backdrop-filter:blur(4px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.5rem; z-index:5; border-radius:22px; }
+.lock-cover .lock-emoji { font-size:2rem; }
+.lock-cover p { font-size:.85rem; font-weight:800; color:#2d2d2d; }
+.lock-cover span { font-size:.75rem; color:#aaa; font-weight:600; }
+.lock-cover button { background:#f07c3a; color:white; border:none; padding:.4rem 1.1rem; border-radius:20px; font-family:'Nunito',sans-serif; font-size:.78rem; font-weight:800; cursor:pointer; margin-top:.15rem; }
+
+/* ── PRICING ── */
+.price-cards { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.55rem; }
+.p-card { background:white; border-radius:18px; padding:.85rem .75rem; border:2px solid #f0ede8; position:relative; }
+.p-card.featured { border-color:#5db87a; }
+.popular { position:absolute; top:-.5rem; left:50%; transform:translateX(-50%); background:#5db87a; color:white; font-size:.6rem; font-weight:800; padding:.1rem .5rem; border-radius:10px; white-space:nowrap; }
+.p-name { font-size:.85rem; font-weight:900; color:#2d2d2d; }
+.p-price { font-size:1.3rem; font-weight:900; color:#f07c3a; margin:.2rem 0 .05rem; }
+.p-per { font-size:.65rem; color:#bbb; font-weight:600; }
+.p-features { margin-top:.55rem; }
+.pf { font-size:.7rem; font-weight:700; color:#555; padding:.14rem 0; display:flex; gap:.3rem; }
+.pf::before { content:'✓'; color:#5db87a; flex-shrink:0; }
+.pf.no { color:#ccc; }
+.pf.no::before { content:'·'; color:#ddd; }
+.p-cta { display:block; width:100%; margin-top:.65rem; padding:.42rem; border-radius:14px; font-size:.74rem; font-weight:800; text-align:center; cursor:pointer; border:none; font-family:'Nunito',sans-serif; transition:all .18s; }
+.cta-f { background:#f0ede8; color:#aaa; }
+.cta-p { background:#5db87a; color:white; }
+.cta-pr { background:#f5c842; color:#5a4500; }
+
+/* ── QUOTE ── */
+.quote-box { background:linear-gradient(135deg,#f0faf3,#e8f5e9); border-radius:20px; padding:1.2rem 1.3rem; border:1.5px solid #b8e0c4; text-align:center; }
+.quote-box p { font-size:.9rem; font-weight:700; color:#2d2d2d; line-height:1.65; font-style:italic; margin-bottom:.5rem; }
+.quote-box span { font-size:.75rem; color:#5db87a; font-weight:800; }
+.quote-next { background:none; border:1.5px solid #b8e0c4; color:#5db87a; padding:.28rem .75rem; border-radius:12px; font-family:'Nunito',sans-serif; font-size:.72rem; font-weight:800; cursor:pointer; margin-top:.6rem; transition:all .18s; }
+.quote-next:hover { background:#5db87a; color:white; }
+
+@keyframes pop { 0%{transform:scale(.95);opacity:0} 100%{transform:scale(1);opacity:1} }
+.screen.active .content > * { animation:pop .3s ease both; }
+.screen.active .content > *:nth-child(2){animation-delay:.05s}
+.screen.active .content > *:nth-child(3){animation-delay:.1s}
+.screen.active .content > *:nth-child(4){animation-delay:.15s}
+.screen.active .content > *:nth-child(5){animation-delay:.2s}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:#f0d4b8;border-radius:2px;}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HOME SCREEN ══════════════ -->
+<div class="screen active" id="screen-home">
+  <div class="top-bar">
+    <div class="app-logo">Seed2<span>Sunlight</span>™</div>
+    <div class="top-right">
+      <div class="streak-chip" id="streak-home">🔥 Day 1</div>
+      <div class="xp-chip" id="xp-home">⭐ 0 XP</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div class="greeting-card">
+      <h2 id="greeting-text">Good morning! 🌱</h2>
+      <p>You showed up today. That already puts you ahead of where you were yesterday.</p>
+    </div>
+
+    <div class="today-card">
+      <div class="today-label">⚡ Today's Steps</div>
+      <div class="step-list" id="step-list">
+
+        <div class="step-item" onclick="completeStep(this,10)">
+          <div class="step-icon orange">💰</div>
+          <div class="step-text">
+            <div class="step-title">Take one income action</div>
+            <div class="step-sub">Pin a product, share in a community</div>
+          </div>
+          <div class="step-xp">+10 XP</div>
+          <div class="step-check">✓</div>
+        </div>
+
+        <div class="step-item" onclick="completeStep(this,5)">
+          <div class="step-icon green">🌿</div>
+          <div class="step-text">
+            <div class="step-title">Read one confidence reframe</div>
+            <div class="step-sub">In the Mindset tab</div>
+          </div>
+          <div class="step-xp">+5 XP</div>
+          <div class="step-check">✓</div>
+        </div>
+
+        <div class="step-item" onclick="completeStep(this,10)">
+          <div class="step-icon blue">🤝</div>
+          <div class="step-text">
+            <div class="step-title">Connect with one person online</div>
+            <div class="step-sub">Comment, reply, or answer a question</div>
+          </div>
+          <div class="step-xp">+10 XP</div>
+          <div class="step-check">✓</div>
+        </div>
+
+        <div class="step-item" onclick="completeStep(this,5)">
+          <div class="step-icon gold">✨</div>
+          <div class="step-text">
+            <div class="step-title">Log a win, no matter how small</div>
+            <div class="step-sub">In the Progress tab</div>
+          </div>
+          <div class="step-xp">+5 XP</div>
+          <div class="step-check">✓</div>
+        </div>
+
+        <div class="step-item" onclick="completeStep(this,15)">
+          <div class="step-icon purple">🧠</div>
+          <div class="step-text">
+            <div class="step-title">Do one strategic action</div>
+            <div class="step-sub">Fix an Etsy title, write a blog outline</div>
+          </div>
+          <div class="step-xp">+15 XP</div>
+          <div class="step-check">✓</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="ring-wrap">
+        <svg class="ring" width="70" height="70" viewBox="0 0 70 70">
+          <defs>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#f07c3a"/>
+              <stop offset="100%" style="stop-color:#5db87a"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="35" cy="35" r="28"/>
+          <circle class="ring-fill" id="ring-fill" cx="35" cy="35" r="28"
+            stroke-dasharray="175.9" stroke-dashoffset="175.9"/>
+        </svg>
+      </div>
+      <div class="progress-info">
+        <div class="progress-pct" id="progress-pct">0%</div>
+        <h3>Daily Progress</h3>
+        <p id="progress-msg">Check off your steps above to earn XP and build your streak.</p>
+      </div>
+    </div>
+
+    <div class="quote-box">
+      <p id="quote-text">"And let us not be weary in well doing: for in due season we shall reap, if we faint not."</p>
+      <span id="quote-author">— Galatians 6:9 KJV</span><br>
+      <button class="quote-next" onclick="nextQuote()">Next quote →</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ FINANCE SCREEN ══════════════ -->
+<div class="screen" id="screen-finance">
+  <div class="top-bar">
+    <div class="app-logo">Seed2<span>Sunlight</span>™</div>
+    <div class="streak-chip" id="streak-fin">🔥 Day 1</div>
+  </div>
+
+  <div class="content">
+
+    <div class="section-card">
+      <h3>💵 Cash Flow Calculator</h3>
+      <div class="budget-row">
+        <div class="budget-field"><label>My Income ($)</label><input type="number" id="b-inc" placeholder="0" oninput="calcBudget()"/></div>
+        <div class="budget-field"><label>My Goal ($)</label><input type="number" id="b-goal" placeholder="2000" oninput="calcBudget()"/></div>
+        <div class="budget-field"><label>Rent ($)</label><input type="number" id="b-rent" placeholder="0" oninput="calcBudget()"/></div>
+        <div class="budget-field"><label>Food ($)</label><input type="number" id="b-food" placeholder="0" oninput="calcBudget()"/></div>
+        <div class="budget-field"><label>Utilities ($)</label><input type="number" id="b-util" placeholder="0" oninput="calcBudget()"/></div>
+        <div class="budget-field"><label>Other ($)</label><input type="number" id="b-other" placeholder="0" oninput="calcBudget()"/></div>
+      </div>
+      <div class="budget-result">
+        <div class="b-row"><span class="b-label">Total Expenses</span><span class="b-value" id="b-exp">$0</span></div>
+        <div class="b-row"><span class="b-label">Gap to Goal</span><span class="b-value" id="b-gap">$2,000</span></div>
+        <div class="b-row"><span class="b-label">Daily Target</span><span class="b-value" id="b-daily">$66.67/day</span></div>
+        <div class="b-row"><span class="b-label">Monthly Surplus/Deficit</span><span class="b-value" id="b-surplus">—</span></div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h3>🆘 Free Emergency Help</h3>
+      <a class="resource-item" href="https://www.211.org" target="_blank">
+        <div class="res-icon">📞</div>
+        <div class="res-text"><strong>Call or Text 211</strong><span>Food, rent, utilities, healthcare — free local help</span></div>
+        <div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" href="https://www.benefits.gov/benefit/361" target="_blank">
+        <div class="res-icon">🍎</div>
+        <div class="res-text"><strong>SNAP Food Benefits</strong><span>Apply if you earn under ~$1,700/month</span></div>
+        <div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" href="https://liheap.acf.hhs.gov/energy" target="_blank">
+        <div class="res-icon">⚡</div>
+        <div class="res-text"><strong>LIHEAP — Utility Help</strong><span>Federal heating and cooling assistance</span></div>
+        <div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" href="https://www.nfcc.org" target="_blank">
+        <div class="res-icon">🏦</div>
+        <div class="res-text"><strong>Free Credit Counseling</strong><span>NFCC — nonprofit debt and budget help</span></div>
+        <div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" href="https://findahealthcenter.hrsa.gov" target="_blank">
+        <div class="res-icon">🏥</div>
+        <div class="res-text"><strong>Free / Low-Cost Healthcare</strong><span>Sliding scale clinics near you</span></div>
+        <div class="res-arrow">↗</div>
+      </a>
+    </div>
+
+    <div class="section-card">
+      <h3>📈 Income Stacking Roadmap</h3>
+      <div class="mindset-item orange">
+        <div class="mindset-label">Week 1–2 · Prove It Works</div>
+        <div class="mindset-text">One Etsy sale. One community share. One affiliate click. These prove the model — and proving it to yourself is the first job.</div>
+      </div>
+      <div class="mindset-item green">
+        <div class="mindset-label">Month 1–3 · Build Consistency</div>
+        <div class="mindset-text">5–10 Etsy sales/month. 2 blog posts. Daily Pinterest. $50–$300/month becomes realistic. Income follows consistency, not hustle.</div>
+      </div>
+      <div class="mindset-item blue">
+        <div class="mindset-label">Month 3–6 · Start Compounding</div>
+        <div class="mindset-text">Blog posts rank. Pinterest repins. Etsy gets traction from reviews. $300–$600/month from digital products alone is realistic.</div>
+      </div>
+      <div class="mindset-item orange">
+        <div class="mindset-label">Month 6–12 · Scale</div>
+        <div class="mindset-text">Email list. Partnerships. Consulting add-on. $1,000–$2,000/month when streams compound. This is when the patience pays off.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ MINDSET SCREEN ══════════════ -->
+<div class="screen" id="screen-mindset">
+  <div class="top-bar">
+    <div class="app-logo">Seed2<span>Sunlight</span>™</div>
+    <div class="streak-chip" id="streak-mind">🔥 Day 1</div>
+  </div>
+
+  <div class="content">
+
+    <div class="section-card">
+      <h3>😰 vs 🧭 Which mode are you in?</h3>
+      <div class="mode-btns">
+        <button class="mode-btn surv active" onclick="showMode('surv',this)">😰 Survival Mode</button>
+        <button class="mode-btn strat" onclick="showMode('strat',this)">🧭 Strategic Mode</button>
+      </div>
+      <div class="mode-content active" id="mc-surv">
+        <div class="mindset-item orange"><div class="mindset-label">What it feels like</div><div class="mindset-text">Panic. Jumping between ideas. Everything urgent. Can't focus. You're optimizing for today at the cost of next month.</div></div>
+        <div class="mindset-item orange"><div class="mindset-label">The one thing to do right now</div><div class="mindset-text">Stop. Open your wins journal. Read what you've already built. Then do one tiny action — just one checkmark. Momentum beats panic every time.</div></div>
+        <div class="mindset-item orange"><div class="mindset-label">Immediate cash options</div><div class="mindset-text">Call 211. Check SNAP eligibility. Post on Nextdoor offering garden advice or plant planning help. These bridge the gap while your business grows.</div></div>
+      </div>
+      <div class="mode-content" id="mc-strat">
+        <div class="mindset-item green"><div class="mindset-label">What strategic mode looks like</div><div class="mindset-text">You know your 3 priorities this week. You're building assets — blog posts, products, relationships — not just doing tasks. You measure in months.</div></div>
+        <div class="mindset-item green"><div class="mindset-label">The 3-question reset</div><div class="mindset-text">1. What one action this week most likely leads to income in 30 days? 2. What am I doing that feels busy but isn't moving the needle? 3. What would I do if I knew I couldn't fail?</div></div>
+        <div class="mindset-item green"><div class="mindset-label">Your real advantage</div><div class="mindset-text">Deep horticultural expertise. A live website. Faith-based niche with real audience. Clear written communication. Most people starting from scratch have none of these.</div></div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h3>🌿 Confidence Reframes</h3>
+      <div class="mindset-item green"><div class="mindset-label">When you feel dismissed</div><div class="mindset-text">Your communication challenge disappears entirely in writing. Online, people only see what you create — and what you create is clear, thoughtful, and real.</div></div>
+      <div class="mindset-item orange"><div class="mindset-label">When nothing seems to work</div><div class="mindset-text">You built a website, Etsy products, Pinterest presence, and a real business structure after a layoff, largely alone. That's a foundation most people never build.</div></div>
+      <div class="mindset-item blue"><div class="mindset-label">When you feel behind</div><div class="mindset-text">Most successful online businesses looked like complete failures at month 3. The people who made it through weren't more talented — they just didn't quit before the compounding started.</div></div>
+      <div class="mindset-item green"><div class="mindset-label">When you doubt your expertise</div><div class="mindset-text">You have lifelong horticultural knowledge most people will never have. People pay real money for exactly what you already know.</div></div>
+      <div class="mindset-item orange"><div class="mindset-label">One question worth sitting with</div><div class="mindset-text">If you knew it would work in 18 months, would you keep going today? If yes — keep going today.</div></div>
+    </div>
+
+    <div class="section-card">
+      <h3>🗺️ Your 90-Day Roadmap</h3>
+      <div class="mindset-item orange"><div class="mindset-label">Days 1–30</div><div class="mindset-text">One sale. One blog post. Daily Pinterest pinning. One community. Goal: proof of concept and consistency habit — not income yet.</div></div>
+      <div class="mindset-item green"><div class="mindset-label">Days 31–60</div><div class="mindset-text">3+ blog posts live. Etsy listings fully optimized with eRank keywords. Email list started. First Etsy reviews coming in.</div></div>
+      <div class="mindset-item blue"><div class="mindset-label">Days 61–90</div><div class="mindset-text">SEO signals emerging. Pinterest repins happening. Etsy algorithmic traction building. This is when it starts feeling real. Don't quit at day 45.</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ PROGRESS SCREEN ══════════════ -->
+<div class="screen" id="screen-progress">
+  <div class="top-bar">
+    <div class="app-logo">Seed2<span>Sunlight</span>™</div>
+    <div class="xp-chip" id="xp-prog">⭐ 0 XP</div>
+  </div>
+
+  <div class="content">
+
+    <div class="section-card">
+      <h3>✨ Wins Journal</h3>
+      <div class="wins-input">
+        <textarea id="win-input" placeholder="Write a win, no matter how tiny..." rows="2"></textarea>
+        <button class="wins-add" onclick="addWin()">Add Win ✦</button>
+      </div>
+      <div id="wins-list"><div class="empty-wins">No wins yet — start small. Even "I showed up today" counts. 🌱</div></div>
+    </div>
+
+    <div class="section-card">
+      <h3>📊 Your Stats</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;">
+        <div style="background:#fff8f4;border-radius:16px;padding:.8rem;text-align:center;">
+          <div style="font-size:1.6rem;font-weight:900;color:#f07c3a;" id="stat-wins">0</div>
+          <div style="font-size:.68rem;font-weight:700;color:#bbb;margin-top:.1rem;">Wins Logged</div>
+        </div>
+        <div style="background:#f0faf3;border-radius:16px;padding:.8rem;text-align:center;">
+          <div style="font-size:1.6rem;font-weight:900;color:#5db87a;" id="stat-streak-prog">1</div>
+          <div style="font-size:.68rem;font-weight:700;color:#bbb;margin-top:.1rem;">Day Streak</div>
+        </div>
+        <div style="background:#fffde7;border-radius:16px;padding:.8rem;text-align:center;">
+          <div style="font-size:1.6rem;font-weight:900;color:#f5c842;" id="stat-xp-prog">0</div>
+          <div style="font-size:.68rem;font-weight:700;color:#bbb;margin-top:.1rem;">Total XP</div>
+        </div>
+      </div>
+      <div style="background:#f0f7ff;border-radius:14px;padding:.8rem 1rem;margin-top:.65rem;border-left:4px solid #64b5f6;">
+        <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:.22rem;">Insight</div>
+        <div style="font-size:.84rem;font-weight:600;color:#2d2d2d;line-height:1.55;">Founders who log wins daily are 3× more likely to stay consistent past the 90-day mark. Every entry counts.</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h3>🌾 Ask Your Companion</h3>
+      <div class="chat-wrap">
+        <div class="chat-msgs" id="chat-msgs">
+          <div class="cmsg ai">Hi. Ask me anything — income ideas, what to do next, or just what's weighing on you right now. I'll be honest with you. 🌱</div>
+        </div>
+        <div class="chat-row">
+          <input class="chat-inp" id="chat-inp" placeholder="Type your question..." onkeydown="if(event.key==='Enter')sendChat()"/>
+          <button class="chat-send" id="chat-send" onclick="sendChat()">➤</button>
+        </div>
+        <div class="chat-limit" id="chat-limit" style="display:none;"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ RESOURCES SCREEN ══════════════ -->
+<div class="screen" id="screen-resources">
+  <div class="top-bar">
+    <div class="app-logo">Seed2<span>Sunlight</span>™</div>
+    <div class="streak-chip" id="streak-res">🔥 Day 1</div>
+  </div>
+
+  <div class="content">
+
+    <div class="section-card">
+      <div class="pill-tabs" id="res-pills">
+        <div class="pill active" onclick="filterRes('all',this)">All</div>
+        <div class="pill" onclick="filterRes('business',this)">Business</div>
+        <div class="pill" onclick="filterRes('tools',this)">Free Tools</div>
+        <div class="pill" onclick="filterRes('income',this)">Income</div>
+        <div class="pill" onclick="filterRes('legal',this)">Legal</div>
+      </div>
+
+      <a class="resource-item" data-cat="business" href="https://leaveaseed.com" target="_blank">
+        <div class="res-icon">🌐</div><div class="res-text"><strong>Leave a Seed — Your Website</strong><span>Check traffic, update content, add affiliate links</span></div><div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" data-cat="business" href="https://www.etsy.com" target="_blank">
+        <div class="res-icon">🛍️</div><div class="res-text"><strong>Your Etsy Shop</strong><span>Check stats, update listings, respond to messages</span></div><div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" data-cat="business" href="https://analytics.google.com" target="_blank">
+        <div class="res-icon">📊</div><div class="res-text"><strong>Google Analytics</strong><span>See who visits leaveaseed.com and from where</span></div><div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" data-cat="business" href="https://search.google.com/search-console" target="_blank">
+        <div class="res-icon">🔍</div><div class="res-text"><strong>Google Search Console</strong><span>See what search terms find your site</span></div><div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" data-cat="tools" href="https://www.erank.com" target="_blank">
+        <div class="res-icon">🔎</div><div class="res-text"><strong>eRank — Free Etsy SEO Tool</strong><span>Find keywords buyers actually search on Etsy</span></div><div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" data-cat="tools" href="https://answerthepublic.com" target="_blank">
+        <div class="res-icon">💬</div><div class="res-text"><strong>Answer the Public</strong><span>Free blog post ideas from real search questions</span></div><div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" data-cat="tools" href="https://www.canva.com" target="_blank">
+        <div class="res-icon">🎨</div><div class="res-text"><strong>Canva — Free Design Tool</strong><span>Create Pinterest pins, Etsy mockups, and more</span></div><div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" data-cat="income" href="https://www.upwork.com" target="_blank">
+        <div class="res-icon">💼</div><div class="res-text"><strong>Upwork — Freelance Writing</strong><span>Get paid for gardening content while building your business</span></div><div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" data-cat="income" href="https://problogger.com/jobs" target="_blank">
+        <div class="res-icon">✍️</div><div class="res-text"><strong>ProBlogger Jobs</strong><span>Paid writing — gardening/faith content $50–$200/post</span></div><div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" data-cat="income" href="https://www.nextdoor.com" target="_blank">
+        <div class="res-icon">🏘️</div><div class="res-text"><strong>Nextdoor — Local Services</strong><span>Offer garden planning or plant advice locally</span></div><div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" data-cat="legal" href="https://tmsearch.uspto.gov" target="_blank">
+        <div class="res-icon">™️</div><div class="res-text"><strong>USPTO Trademark Search</strong><span>Search "Seed2Sunlight Wellness" before filing — free</span></div><div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" data-cat="legal" href="https://www.score.org" target="_blank">
+        <div class="res-icon">👥</div><div class="res-text"><strong>SCORE — Free Business Mentoring</strong><span>One-on-one guidance from retired executives</span></div><div class="res-arrow">↗</div>
+      </a>
+      <a class="resource-item" data-cat="legal" href="https://www.sba.gov/local-assistance" target="_blank">
+        <div class="res-icon">🏛️</div><div class="res-text"><strong>SBA Free Counseling</strong><span>Small Business Administration local assistance</span></div><div class="res-arrow">↗</div>
+      </a>
+
+    </div>
+
+    <!-- PRICING -->
+    <div class="section-card">
+      <h3>⭐ Plans</h3>
+      <div class="tier-row">
+        <button class="tier-btn free active" onclick="setTier('free',this)">Free</button>
+        <button class="tier-btn pro" onclick="setTier('pro',this)">Pro $7</button>
+        <button class="tier-btn premium" onclick="setTier('premium',this)">Premium $19</button>
+      </div>
+      <div class="price-cards">
+        <div class="p-card">
+          <div class="p-name">Free</div>
+          <div class="p-price">$0</div>
+          <div class="p-per">forever</div>
+          <div class="p-features">
+            <div class="pf">Daily steps</div>
+            <div class="pf">Finance tools</div>
+            <div class="pf">Mindset guides</div>
+            <div class="pf">Wins journal</div>
+            <div class="pf">5 AI questions/day</div>
+            <div class="pf no">Weekly coach</div>
+            <div class="pf no">Analytics</div>
+          </div>
+          <button class="p-cta cta-f" onclick="setTier('free',this)">Current</button>
+        </div>
+        <div class="p-card featured">
+          <div class="popular">Popular</div>
+          <div class="p-name">Pro</div>
+          <div class="p-price">$7</div>
+          <div class="p-per">/month</div>
+          <div class="p-features">
+            <div class="pf">Everything free</div>
+            <div class="pf">Weekly coach</div>
+            <div class="pf">Unlimited AI</div>
+            <div class="pf">Custom plans</div>
+            <div class="pf">Streak shield</div>
+            <div class="pf no">Analytics</div>
+            <div class="pf no">1:1 session</div>
+          </div>
+          <button class="p-cta cta-p" onclick="window.open('https://www.paypal.com/paypalme/leaveaseed/7','_blank')">Try Pro</button>
+        </div>
+        <div class="p-card">
+          <div class="p-name">Premium</div>
+          <div class="p-price">$19</div>
+          <div class="p-per">/month</div>
+          <div class="p-features">
+            <div class="pf">Everything Pro</div>
+            <div class="pf">Analytics</div>
+            <div class="pf">Priority AI</div>
+            <div class="pf">1:1 session</div>
+            <div class="pf">Launch planner</div>
+            <div class="pf">Community</div>
+            <div class="pf">90-day tracker</div>
+          </div>
+          <button class="p-cta cta-pr" onclick="window.open('https://www.paypal.com/paypalme/leaveaseed/19','_blank')">Try Premium</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ BOTTOM NAV ══════════════ -->
+<nav class="bottom-nav">
+  <div class="nav-item active" onclick="goScreen('home',this)">
+    <div class="nav-icon">🏠</div>
+    <div class="nav-label">Home</div>
+  </div>
+  <div class="nav-item" onclick="goScreen('finance',this)">
+    <div class="nav-icon">💵</div>
+    <div class="nav-label">Finance</div>
+  </div>
+  <div class="nav-item" onclick="goScreen('mindset',this)">
+    <div class="nav-icon">🌿</div>
+    <div class="nav-label">Mindset</div>
+  </div>
+  <div class="nav-item" onclick="goScreen('progress',this)">
+    <div class="nav-icon">✨</div>
+    <div class="nav-label">Progress</div>
+  </div>
+  <div class="nav-item" onclick="goScreen('resources',this)">
+    <div class="nav-icon">🔗</div>
+    <div class="nav-label">Resources</div>
+  </div>
+</nav>
+
+<script>
+// ── STATE ─────────────────────────────────────
+let xp=0, chatCount=0, currentTier='free';
+const CHAT_LIMIT=5;
+
+// ── GREETING ──────────────────────────────────
+const hr=new Date().getHours();
+const greet=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
+document.getElementById('greeting-text').textContent=greet+' 🌱';
+
+// ── DATE/STREAK ───────────────────────────────
+const now=new Date();
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+
+async function loadStreak(){
+  try{
+    const r=await window.storage.get('s2s-v3-streak');
+    if(r){
+      const d=JSON.parse(r.value);
+      const last=new Date(d.lastDate),today=new Date();
+      const diff=Math.floor((today.setHours(0,0,0,0)-last.setHours(0,0,0,0))/86400000);
+      let c=d.count;
+      if(diff===1){c++;await window.storage.set('s2s-v3-streak',JSON.stringify({count:c,lastDate:new Date().toISOString()}));}
+      else if(diff>1){c=1;await window.storage.set('s2s-v3-streak',JSON.stringify({count:1,lastDate:new Date().toISOString()}));}
+      setStreakAll(c);
+    }else{await window.storage.set('s2s-v3-streak',JSON.stringify({count:1,lastDate:new Date().toISOString()}));}
+  }catch(e){}
+}
+function setStreakAll(c){
+  ['streak-home','streak-fin','streak-mind','streak-res'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.textContent='🔥 Day '+c;
+  });
+  document.getElementById('stat-streak-prog').textContent=c;
+}
+loadStreak();
+
+// ── SCREEN NAV ────────────────────────────────
+function goScreen(id,el){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  el.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── XP ────────────────────────────────────────
+function addXP(amount){
+  xp+=amount;
+  ['xp-home','xp-prog'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.textContent='⭐ '+xp+' XP';
+  });
+  document.getElementById('stat-xp-prog').textContent=xp;
+}
+
+// ── STEPS (persistent, resets daily) ──────────
+let stepsTotal=0,stepsDone=0;
+
+async function loadSteps(){
+  stepsTotal=document.querySelectorAll('.step-item').length;
+  try{
+    const r=await window.storage.get('s2s-v3-steps');
+    if(r){
+      const d=JSON.parse(r.value);
+      if(d.date===todayKey()){
+        stepsDone=0;
+        d.done.forEach(idx=>{
+          const items=document.querySelectorAll('.step-item');
+          if(items[idx]){
+            items[idx].classList.add('done');
+            stepsDone++;
+            const pts=parseInt(items[idx].querySelector('.step-xp').textContent)||0;
+            xp+=pts;
+          }
+        });
+        ['xp-home','xp-prog'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='⭐ '+xp+' XP';});
+        document.getElementById('stat-xp-prog').textContent=xp;
+      }else{
+        await window.storage.set('s2s-v3-steps',JSON.stringify({date:todayKey(),done:[]}));
+      }
+    }
+  }catch(e){}
+  updateRing();
+}
+
+async function saveSteps(){
+  const items=document.querySelectorAll('.step-item');
+  const done=[];
+  items.forEach((item,idx)=>{if(item.classList.contains('done'))done.push(idx);});
+  try{await window.storage.set('s2s-v3-steps',JSON.stringify({date:todayKey(),done}));}catch(e){}
+}
+
+function completeStep(el,pts){
+  if(el.classList.contains('done'))return;
+  el.classList.add('done');
+  stepsDone++;
+  addXP(pts);
+  updateRing();
+  saveSteps();
+}
+
+function updateRing(){
+  const pct=stepsTotal?stepsDone/stepsTotal:0;
+  const circ=175.9;
+  document.getElementById('ring-fill').style.strokeDashoffset=circ-(circ*pct);
+  const pctEl=document.getElementById('progress-pct');
+  pctEl.textContent=Math.round(pct*100)+'%';
+  const msgs=['Check off your steps above to earn XP and build your streak.','Great start — keep going!','Building momentum. You\'re doing it.','Halfway there. Real progress.','Almost done. One more push.','All done! You showed up fully today. 🌟'];
+  document.getElementById('progress-msg').textContent=msgs[Math.min(stepsDone,msgs.length-1)];
+}
+
+// ── QUOTES ────────────────────────────────────
+const quotes=[
+  {t:'I can do all things through Christ which strengtheneth me.',a:'Philippians 4:13 KJV'},
+  {t:'For I know the thoughts that I think toward you, saith the LORD, thoughts of peace, and not of evil, to give you an expected end.',a:'Jeremiah 29:11 KJV'},
+  {t:'And let us not be weary in well doing: for in due season we shall reap, if we faint not.',a:'Galatians 6:9 KJV'},
+  {t:'Trust in the LORD with all thine heart; and lean not unto thine own understanding.',a:'Proverbs 3:5 KJV'},
+  {t:'Commit thy works unto the LORD, and thy thoughts shall be established.',a:'Proverbs 16:3 KJV'},
+  {t:'The LORD is my shepherd; I shall not want.',a:'Psalm 23:1 KJV'},
+  {t:'But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles.',a:'Isaiah 40:31 KJV'},
+  {t:'Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee.',a:'Isaiah 41:10 KJV'},
+  {t:'Now unto him that is able to do exceeding abundantly above all that we ask or think.',a:'Ephesians 3:20 KJV'},
+  {t:'She is clothed with strength and honour; and she shall rejoice in time to come.',a:'Proverbs 31:25 KJV'},
+  {t:'Casting all your care upon him; for he careth for you.',a:'1 Peter 5:7 KJV'},
+  {t:'The LORD shall open unto thee his good treasure, and to bless all the work of thine hand.',a:'Deuteronomy 28:12 KJV'},
+  {t:'Delight thyself also in the LORD: and he shall give thee the desires of thine heart.',a:'Psalm 37:4 KJV'},
+  {t:'With God all things are possible.',a:'Matthew 19:26 KJV'}
+];
+let qi=0;
+function renderQuote(){document.getElementById('quote-text').textContent='"'+quotes[qi].t+'"';document.getElementById('quote-author').textContent='— '+quotes[qi].a;}
+function nextQuote(){qi=(qi+1)%quotes.length;renderQuote();}
+renderQuote();
+
+// ── MODE TOGGLE ───────────────────────────────
+function showMode(mode,btn){
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.mode-content').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('mc-'+mode).classList.add('active');
+}
+
+// ── BUDGET ────────────────────────────────────
+function calcBudget(){
+  const inc=parseFloat(document.getElementById('b-inc').value)||0;
+  const goal=parseFloat(document.getElementById('b-goal').value)||2000;
+  const rent=parseFloat(document.getElementById('b-rent').value)||0;
+  const food=parseFloat(document.getElementById('b-food').value)||0;
+  const util=parseFloat(document.getElementById('b-util').value)||0;
+  const other=parseFloat(document.getElementById('b-other').value)||0;
+  const exp=rent+food+util+other;
+  const gap=Math.max(0,goal-inc);
+  const daily=gap/30;
+  const surplus=inc-exp;
+  document.getElementById('b-exp').textContent='$'+exp.toLocaleString();
+  document.getElementById('b-gap').textContent='$'+gap.toLocaleString();
+  document.getElementById('b-daily').textContent='$'+daily.toFixed(2)+'/day';
+  const sel=document.getElementById('b-surplus');
+  if(inc>0){sel.textContent=(surplus>=0?'+':'')+' $'+surplus.toLocaleString();sel.className='b-value '+(surplus>=0?'pos':'neg');}
+  else{sel.textContent='—';sel.className='b-value';}
+}
+
+// ── RESOURCE FILTER ───────────────────────────
+function filterRes(cat,el){
+  document.querySelectorAll('#res-pills .pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.resource-item[data-cat]').forEach(r=>{
+    r.style.display=(cat==='all'||r.dataset.cat===cat)?'flex':'none';
+  });
+}
+
+// ── TIER ──────────────────────────────────────
+function setTier(tier,btn){
+  currentTier=tier;
+  document.querySelectorAll('.tier-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+}
+
+// ── WINS ──────────────────────────────────────
+async function loadWins(){
+  try{const r=await window.storage.get('s2s-v3-wins');if(r)renderWins(JSON.parse(r.value));else showEmpty();}
+  catch(e){showEmpty();}
+}
+function showEmpty(){document.getElementById('wins-list').innerHTML='<div class="empty-wins">No wins yet — start small. Even "I showed up today" counts. 🌱</div>';}
+function renderWins(wins){
+  if(!wins||wins.length===0){showEmpty();return;}
+  document.getElementById('wins-list').innerHTML=wins.slice().reverse().map(w=>`<div class="win-chip"><div class="win-dot"></div><div class="win-body"><p>${w.text}</p><span>${w.date}</span></div></div>`).join('');
+  document.getElementById('stat-wins').textContent=wins.length;
+}
+async function addWin(){
+  const inp=document.getElementById('win-input');const text=inp.value.trim();if(!text)return;
+  let wins=[];
+  try{const r=await window.storage.get('s2s-v3-wins');if(r)wins=JSON.parse(r.value);}catch(e){}
+  wins.push({text,date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})});
+  try{await window.storage.set('s2s-v3-wins',JSON.stringify(wins));}catch(e){}
+  renderWins(wins);inp.value='';
+  addXP(5);
+}
+loadWins();
+
+// ── CHAT ──────────────────────────────────────
+// ── CHAT LIMIT (date-based daily reset) ───────
+async function loadChatCount(){
+  try{
+    const r=await window.storage.get('s2s-v3-chat');
+    if(r){
+      const d=JSON.parse(r.value);
+      if(d.date===todayKey()){chatCount=d.count;}
+      else{chatCount=0;await window.storage.set('s2s-v3-chat',JSON.stringify({date:todayKey(),count:0}));}
+    }else{chatCount=0;}
+  }catch(e){chatCount=0;}
+  updateChatLimit();
+}
+loadChatCount();
+
+function updateChatLimit(){
+  const lm=document.getElementById('chat-limit');
+  const inp=document.getElementById('chat-inp');
+  const btn=document.getElementById('chat-send');
+  if(currentTier==='free'&&chatCount>=CHAT_LIMIT){
+    lm.style.display='block';lm.textContent='5 free questions used today. Upgrade to Pro for unlimited.';
+    inp.disabled=true;btn.disabled=true;
+  }else{lm.style.display='none';inp.disabled=false;btn.disabled=false;}
+}
+
+async function sendChat(){
+  if(currentTier==='free'&&chatCount>=CHAT_LIMIT)return;
+  const inp=document.getElementById('chat-inp');const msg=inp.value.trim();if(!msg)return;
+  const ca=document.getElementById('chat-msgs');const sb=document.getElementById('chat-send');
+  ca.innerHTML+=`<div class="cmsg user">${msg}</div>`;
+  inp.value='';sb.disabled=true;chatCount++;
+  await window.storage.set('s2s-v3-chat',JSON.stringify({date:todayKey(),count:chatCount}));
+  const lid='l'+Date.now();
+  ca.innerHTML+=`<div class="cmsg loading" id="${lid}">Thinking...</div>`;
+  ca.scrollTop=ca.scrollHeight;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:1000,
+        system:`You are a warm, practical companion inside Seed2Sunlight Wellness — an app for people who are financially stressed and trying to build income from scratch. Your user is Allison, solo founder of Leave a Seed (leaveaseed.com), a faith-based gardening platform. She started after a layoff in early 2026. Key facts: deep horticultural expertise; learning disability affecting only spoken communication (not writing); no local network; needs ~$2,000/month; has Etsy shop with Bible Study Journal, Christian Garden Planner, Easter Devotional, sticker sets; 2 Amazon books recently published; Pinterest presence with 7 boards; Christian faith is central. She struggles with confidence from lifelong dismissal in person, financial pressure, and isolation. Be honest, specific, warm. No generic advice. 3–5 sentences max. Give one concrete next action when she's stuck. Mention the Finance tab for emergency help (211, SNAP) when relevant.`,
+        messages:[{role:'user',content:msg}]
+      })
+    });
+    const data=await res.json();
+    const reply=data.content?.map(c=>c.text||'').join('')||'Still here. Try again in a moment.';
+    document.getElementById(lid).remove();
+    ca.innerHTML+=`<div class="cmsg ai">${reply}</div>`;
+  }catch(e){
+    document.getElementById(lid).remove();
+    ca.innerHTML+=`<div class="cmsg ai">Something went wrong. Try again — I'm still here.</div>`;
+  }
+  sb.disabled=false;ca.scrollTop=ca.scrollHeight;updateChatLimit();
+}
+
+// ── INIT ──────────────────────────────────────
+loadSteps();
+</script>
+</body>
+</html>
