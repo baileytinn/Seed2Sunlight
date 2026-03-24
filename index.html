@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Seed2Sunlight Wellness</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -307,6 +308,16 @@ svg.ring { transform:rotate(-90deg); }
 .quote-next { background:none; border:1.5px solid #b8e0c4; color:#5db87a; padding:.28rem .75rem; border-radius:12px; font-family:'Nunito',sans-serif; font-size:.72rem; font-weight:800; cursor:pointer; margin-top:.6rem; transition:all .18s; }
 .quote-next:hover { background:#5db87a; color:white; }
 
+/* ── BUILDING MODE BANNER ── */
+.building-banner {
+  width:100%; background:linear-gradient(135deg,#5db87a,#7dcc96);
+  padding:.55rem 1.2rem; display:flex; align-items:center; justify-content:center;
+  gap:.5rem; position:sticky; top:0; z-index:200;
+}
+.building-banner span { font-size:.78rem; font-weight:800; color:white; letter-spacing:.01em; }
+.building-banner .bb-dot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.6); animation:pulse 2s infinite; flex-shrink:0; }
+@keyframes pulse { 0%,100%{opacity:.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.3)} }
+
 @keyframes pop { 0%{transform:scale(.95);opacity:0} 100%{transform:scale(1);opacity:1} }
 .screen.active .content > * { animation:pop .3s ease both; }
 .screen.active .content > *:nth-child(2){animation-delay:.05s}
@@ -318,6 +329,12 @@ svg.ring { transform:rotate(-90deg); }
 </style>
 </head>
 <body>
+
+<!-- ══════════════ BUILDING MODE BANNER ══════════════ -->
+<div class="building-banner">
+  <div class="bb-dot"></div>
+  <span>✨ Building Mode — We're actively adding features. Your feedback shapes what comes next.</span>
+</div>
 
 <!-- ══════════════ HOME SCREEN ══════════════ -->
 <div class="screen active" id="screen-home">
@@ -665,61 +682,28 @@ svg.ring { transform:rotate(-90deg); }
 
     </div>
 
-    <!-- PRICING -->
+    <!-- WAITLIST -->
     <div class="section-card">
-      <h3>⭐ Plans</h3>
-      <div class="tier-row">
-        <button class="tier-btn free active" onclick="setTier('free',this)">Free</button>
-        <button class="tier-btn pro" onclick="setTier('pro',this)">Pro $7</button>
-        <button class="tier-btn premium" onclick="setTier('premium',this)">Premium $19</button>
+      <h3>🌱 What's Coming Next</h3>
+      <div style="background:linear-gradient(135deg,#fff8f4,#f0faf3);border-radius:18px;padding:1.2rem 1.3rem;margin-bottom:.75rem;border:1.5px solid #f0d4b8;">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#f07c3a;margin-bottom:.4rem;">✨ Building Mode — Coming Soon</div>
+        <div style="font-size:.85rem;font-weight:600;color:#2d2d2d;line-height:1.65;margin-bottom:.75rem;">We're actively adding features and your feedback shapes what comes next. Join the waitlist to be first in the door — and lock in a founder discount when Pro launches.</div>
+        <div style="display:flex;flex-direction:column;gap:.4rem;">
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Unlimited AI companion</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Weekly coaching check-in</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> 90-day goal tracker</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Private community</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> 1:1 launch strategy session</div>
+        </div>
       </div>
-      <div class="price-cards">
-        <div class="p-card">
-          <div class="p-name">Free</div>
-          <div class="p-price">$0</div>
-          <div class="p-per">forever</div>
-          <div class="p-features">
-            <div class="pf">Daily steps</div>
-            <div class="pf">Finance tools</div>
-            <div class="pf">Mindset guides</div>
-            <div class="pf">Wins journal</div>
-            <div class="pf">5 AI questions/day</div>
-            <div class="pf no">Weekly coach</div>
-            <div class="pf no">Analytics</div>
-          </div>
-          <button class="p-cta cta-f" onclick="setTier('free',this)">Current</button>
-        </div>
-        <div class="p-card featured">
-          <div class="popular">Popular</div>
-          <div class="p-name">Pro</div>
-          <div class="p-price">$7</div>
-          <div class="p-per">/month</div>
-          <div class="p-features">
-            <div class="pf">Everything free</div>
-            <div class="pf">Weekly coach</div>
-            <div class="pf">Unlimited AI</div>
-            <div class="pf">Custom plans</div>
-            <div class="pf">Streak shield</div>
-            <div class="pf no">Analytics</div>
-            <div class="pf no">1:1 session</div>
-          </div>
-          <button class="p-cta cta-p" onclick="window.open('https://www.paypal.com/paypalme/leaveaseed/7','_blank')">Try Pro</button>
-        </div>
-        <div class="p-card">
-          <div class="p-name">Premium</div>
-          <div class="p-price">$19</div>
-          <div class="p-per">/month</div>
-          <div class="p-features">
-            <div class="pf">Everything Pro</div>
-            <div class="pf">Analytics</div>
-            <div class="pf">Priority AI</div>
-            <div class="pf">1:1 session</div>
-            <div class="pf">Launch planner</div>
-            <div class="pf">Community</div>
-            <div class="pf">90-day tracker</div>
-          </div>
-          <button class="p-cta cta-pr" onclick="window.open('https://www.paypal.com/paypalme/leaveaseed/19','_blank')">Try Premium</button>
-        </div>
+      <div id="waitlist-form" style="display:flex;flex-direction:column;gap:.6rem;">
+        <input id="waitlist-email" type="email" placeholder="Your email address" style="background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.75rem 1rem;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:600;color:#2d2d2d;outline:none;width:100%;"/>
+        <button onclick="joinWaitlist()" style="background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border:none;border-radius:14px;padding:.75rem;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;width:100%;transition:all .18s;">Join the Waitlist 🌱</button>
+      </div>
+      <div id="waitlist-thanks" style="display:none;text-align:center;padding:.75rem;background:#f0faf3;border-radius:14px;border:1.5px solid #b8e0c4;">
+        <div style="font-size:1.3rem;margin-bottom:.25rem;">🙌</div>
+        <div style="font-size:.88rem;font-weight:800;color:#5db87a;">You're on the list!</div>
+        <div style="font-size:.78rem;color:#aaa;font-weight:600;margin-top:.2rem;">We'll email you with founder pricing when Pro launches.</div>
       </div>
     </div>
 
@@ -796,12 +780,16 @@ function goScreen(id,el){
 }
 
 // ── XP ────────────────────────────────────────
+async function loadXP(){
+  try{const r=await window.storage.get('s2s-v3-xp');if(r)xp=parseInt(r.value)||0;}catch(e){}
+}
 function addXP(amount){
   xp+=amount;
   ['xp-home','xp-prog'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.textContent='⭐ '+xp+' XP';
   });
   document.getElementById('stat-xp-prog').textContent=xp;
+  try{window.storage.set('s2s-v3-xp',String(xp));}catch(e){}
 }
 
 // ── STEPS (persistent, resets daily) ──────────
@@ -926,6 +914,22 @@ function setTier(tier,btn){
   if(btn)btn.classList.add('active');
 }
 
+// ── WAITLIST ──────────────────────────────────
+async function joinWaitlist(){
+  const emailEl=document.getElementById('waitlist-email');
+  const email=emailEl.value.trim();
+  if(!email||!email.includes('@')){
+    emailEl.style.borderColor='#f07c3a';
+    emailEl.placeholder='Please enter a valid email';
+    return;
+  }
+  try{
+    await window.storage.set('s2s-waitlist-'+Date.now(),JSON.stringify({email,date:new Date().toISOString()}),true);
+  }catch(e){}
+  document.getElementById('waitlist-form').style.display='none';
+  document.getElementById('waitlist-thanks').style.display='block';
+}
+
 // ── WINS ──────────────────────────────────────
 async function loadWins(){
   try{const r=await window.storage.get('s2s-v3-wins');if(r)renderWins(JSON.parse(r.value));else showEmpty();}
@@ -1004,7 +1008,7 @@ async function sendChat(){
 }
 
 // ── INIT ──────────────────────────────────────
-loadSteps();
+loadXP().then(()=>loadSteps());
 </script>
 </body>
 </html>
