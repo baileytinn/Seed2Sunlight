@@ -360,17 +360,17 @@ svg.ring { transform:rotate(-90deg); }
         <div class="step-item" onclick="completeStep(this,10)">
           <div class="step-icon orange">💰</div>
           <div class="step-text">
-            <div class="step-title">Take one income action</div>
-            <div class="step-sub">Pin a product, share in a community</div>
+            <div class="step-title">Take one money action</div>
+            <div class="step-sub">Apply for a job, check benefits, review budget</div>
           </div>
           <div class="step-xp">+10 XP</div>
           <div class="step-check">✓</div>
         </div>
 
         <div class="step-item" onclick="completeStep(this,5)">
-          <div class="step-icon green">🌿</div>
+          <div class="step-icon green">🧠</div>
           <div class="step-text">
-            <div class="step-title">Read one confidence reframe</div>
+            <div class="step-title">Read one mindset reframe</div>
             <div class="step-sub">In the Mindset tab</div>
           </div>
           <div class="step-xp">+5 XP</div>
@@ -380,8 +380,8 @@ svg.ring { transform:rotate(-90deg); }
         <div class="step-item" onclick="completeStep(this,10)">
           <div class="step-icon blue">🤝</div>
           <div class="step-text">
-            <div class="step-title">Connect with one person online</div>
-            <div class="step-sub">Comment, reply, or answer a question</div>
+            <div class="step-title">Reach out to one person</div>
+            <div class="step-sub">A friend, mentor, or support resource</div>
           </div>
           <div class="step-xp">+10 XP</div>
           <div class="step-check">✓</div>
@@ -398,10 +398,10 @@ svg.ring { transform:rotate(-90deg); }
         </div>
 
         <div class="step-item" onclick="completeStep(this,15)">
-          <div class="step-icon purple">🧠</div>
+          <div class="step-icon purple">🌅</div>
           <div class="step-text">
-            <div class="step-title">Do one strategic action</div>
-            <div class="step-sub">Fix an Etsy title, write a blog outline</div>
+            <div class="step-title">Do one thing for your future self</div>
+            <div class="step-sub">Learn a skill, update a resume, make a plan</div>
           </div>
           <div class="step-xp">+15 XP</div>
           <div class="step-check">✓</div>
@@ -497,29 +497,42 @@ svg.ring { transform:rotate(-90deg); }
     </div>
 
     <div class="section-card">
-      <h3>📈 Income Stacking Roadmap</h3>
+      <h3>📈 Financial Recovery Roadmap</h3>
       <div class="mindset-item orange">
-        <div class="mindset-label">Week 1–2 · Prove It Works</div>
-        <div class="mindset-text">One Etsy sale. One community share. One affiliate click. These prove the model — and proving it to yourself is the first job.</div>
+        <div class="mindset-label">Week 1–2 · Stabilize</div>
+        <div class="mindset-text">Check every emergency resource available — 211, SNAP, LIHEAP, local food banks. Getting stable is the first job. There is no shame in using what exists to help you.</div>
       </div>
       <div class="mindset-item green">
-        <div class="mindset-label">Month 1–3 · Build Consistency</div>
-        <div class="mindset-text">5–10 Etsy sales/month. 2 blog posts. Daily Pinterest. $50–$300/month becomes realistic. Income follows consistency, not hustle.</div>
+        <div class="mindset-label">Month 1–3 · Build Momentum</div>
+        <div class="mindset-text">Apply to 3 opportunities per week — jobs, gigs, benefits. Track every dollar in and out. Small consistent actions compound faster than big sporadic ones.</div>
       </div>
       <div class="mindset-item blue">
-        <div class="mindset-label">Month 3–6 · Start Compounding</div>
-        <div class="mindset-text">Blog posts rank. Pinterest repins. Etsy gets traction from reviews. $300–$600/month from digital products alone is realistic.</div>
+        <div class="mindset-label">Month 3–6 · Create Options</div>
+        <div class="mindset-text">Start building a second income stream — freelance work, selling skills online, part-time work. Options reduce desperation and increase confidence.</div>
       </div>
       <div class="mindset-item orange">
-        <div class="mindset-label">Month 6–12 · Scale</div>
-        <div class="mindset-text">Email list. Partnerships. Consulting add-on. $1,000–$2,000/month when streams compound. This is when the patience pays off.</div>
+        <div class="mindset-label">Month 6–12 · Grow Stability</div>
+        <div class="mindset-text">Build an emergency fund — even $10/week. Reduce debt one bill at a time. Financial stability is built slowly and held firmly. You are closer than you think.</div>
+      </div>
+    </div>
+
+    <!-- Tools entry cards -->
+    <div class="section-card">
+      <h3>🛠️ Pro Tools</h3>
+      <div onclick="goScreen('scripts',document.querySelectorAll('.nav-item')[1])" class="resource-item" style="cursor:pointer;">
+        <div class="res-icon">📞</div>
+        <div class="res-text"><strong>Bill Negotiation Scripts</strong><span>Word-for-word scripts to lower rent, utilities, medical & credit card bills</span></div>
+        <div class="res-arrow">→</div>
+      </div>
+      <div onclick="goScreen('jobs',document.querySelectorAll('.nav-item')[1])" class="resource-item" style="cursor:pointer;">
+        <div class="res-icon">📋</div>
+        <div class="res-text"><strong>Job Application Tracker</strong><span>Track every application and stay consistent — aim for 3 per week</span></div>
+        <div class="res-arrow">→</div>
       </div>
     </div>
 
   </div>
 </div>
-
-<!-- ══════════════ MINDSET SCREEN ══════════════ -->
 <div class="screen" id="screen-mindset">
   <div class="top-bar">
     <div class="app-logo">Seed2<span>Sunlight</span>™</div>
@@ -535,31 +548,31 @@ svg.ring { transform:rotate(-90deg); }
         <button class="mode-btn strat" onclick="showMode('strat',this)">🧭 Strategic Mode</button>
       </div>
       <div class="mode-content active" id="mc-surv">
-        <div class="mindset-item orange"><div class="mindset-label">What it feels like</div><div class="mindset-text">Panic. Jumping between ideas. Everything urgent. Can't focus. You're optimizing for today at the cost of next month.</div></div>
-        <div class="mindset-item orange"><div class="mindset-label">The one thing to do right now</div><div class="mindset-text">Stop. Open your wins journal. Read what you've already built. Then do one tiny action — just one checkmark. Momentum beats panic every time.</div></div>
-        <div class="mindset-item orange"><div class="mindset-label">Immediate cash options</div><div class="mindset-text">Call 211. Check SNAP eligibility. Post on Nextdoor offering garden advice or plant planning help. These bridge the gap while your business grows.</div></div>
+        <div class="mindset-item orange"><div class="mindset-label">What it feels like</div><div class="mindset-text">Panic. Jumping between problems. Everything feels urgent. You can't think straight. You're making decisions out of fear instead of clarity.</div></div>
+        <div class="mindset-item orange"><div class="mindset-label">The one thing to do right now</div><div class="mindset-text">Stop. Breathe. Open your wins journal and read what you've already survived. Then do one tiny action — just one. Momentum beats panic every time.</div></div>
+        <div class="mindset-item orange"><div class="mindset-label">Immediate help options</div><div class="mindset-text">Call 211. Check SNAP eligibility. Visit a local food bank. These resources exist for exactly this moment — use them without shame.</div></div>
       </div>
       <div class="mode-content" id="mc-strat">
-        <div class="mindset-item green"><div class="mindset-label">What strategic mode looks like</div><div class="mindset-text">You know your 3 priorities this week. You're building assets — blog posts, products, relationships — not just doing tasks. You measure in months.</div></div>
-        <div class="mindset-item green"><div class="mindset-label">The 3-question reset</div><div class="mindset-text">1. What one action this week most likely leads to income in 30 days? 2. What am I doing that feels busy but isn't moving the needle? 3. What would I do if I knew I couldn't fail?</div></div>
-        <div class="mindset-item green"><div class="mindset-label">Your real advantage</div><div class="mindset-text">Deep horticultural expertise. A live website. Faith-based niche with real audience. Clear written communication. Most people starting from scratch have none of these.</div></div>
+        <div class="mindset-item green"><div class="mindset-label">What strategic mode looks like</div><div class="mindset-text">You know your 3 priorities this week. You're building toward something — skills, savings, stability — not just surviving today. You measure progress in weeks, not hours.</div></div>
+        <div class="mindset-item green"><div class="mindset-label">The 3-question reset</div><div class="mindset-text">1. What one action this week most likely improves my situation in 30 days? 2. What am I doing that feels busy but isn't helping? 3. What would I do if I knew I couldn't fail?</div></div>
+        <div class="mindset-item green"><div class="mindset-label">Your real advantage</div><div class="mindset-text">You are still here. You are still trying. Most people in your situation give up. The fact that you're looking for a way forward means you already have what it takes.</div></div>
       </div>
     </div>
 
     <div class="section-card">
       <h3>🌿 Confidence Reframes</h3>
-      <div class="mindset-item green"><div class="mindset-label">When you feel dismissed</div><div class="mindset-text">Your communication challenge disappears entirely in writing. Online, people only see what you create — and what you create is clear, thoughtful, and real.</div></div>
-      <div class="mindset-item orange"><div class="mindset-label">When nothing seems to work</div><div class="mindset-text">You built a website, Etsy products, Pinterest presence, and a real business structure after a layoff, largely alone. That's a foundation most people never build.</div></div>
-      <div class="mindset-item blue"><div class="mindset-label">When you feel behind</div><div class="mindset-text">Most successful online businesses looked like complete failures at month 3. The people who made it through weren't more talented — they just didn't quit before the compounding started.</div></div>
-      <div class="mindset-item green"><div class="mindset-label">When you doubt your expertise</div><div class="mindset-text">You have lifelong horticultural knowledge most people will never have. People pay real money for exactly what you already know.</div></div>
-      <div class="mindset-item orange"><div class="mindset-label">One question worth sitting with</div><div class="mindset-text">If you knew it would work in 18 months, would you keep going today? If yes — keep going today.</div></div>
+      <div class="mindset-item green"><div class="mindset-label">When you feel ashamed</div><div class="mindset-text">Financial hardship is not a character flaw. It happens to people who work hard, who care deeply, who tried their best. You are not your circumstances.</div></div>
+      <div class="mindset-item orange"><div class="mindset-label">When nothing seems to work</div><div class="mindset-text">You are still here. You are still trying. That is not nothing — that is everything. Most breakthroughs happen right after the moment people feel like giving up.</div></div>
+      <div class="mindset-item blue"><div class="mindset-label">When you feel behind</div><div class="mindset-text">There is no timeline you are supposed to be on. Comparison is the enemy of recovery. Your only job is to be slightly better off next month than you are today.</div></div>
+      <div class="mindset-item green"><div class="mindset-label">When you doubt yourself</div><div class="mindset-text">You have survived 100% of your hardest days so far. That is a track record worth trusting. You are more resilient than you give yourself credit for.</div></div>
+      <div class="mindset-item orange"><div class="mindset-label">One question worth sitting with</div><div class="mindset-text">If you knew things would be okay in 12 months, what would you do differently today? Start there.</div></div>
     </div>
 
     <div class="section-card">
       <h3>🗺️ Your 90-Day Roadmap</h3>
-      <div class="mindset-item orange"><div class="mindset-label">Days 1–30</div><div class="mindset-text">One sale. One blog post. Daily Pinterest pinning. One community. Goal: proof of concept and consistency habit — not income yet.</div></div>
-      <div class="mindset-item green"><div class="mindset-label">Days 31–60</div><div class="mindset-text">3+ blog posts live. Etsy listings fully optimized with eRank keywords. Email list started. First Etsy reviews coming in.</div></div>
-      <div class="mindset-item blue"><div class="mindset-label">Days 61–90</div><div class="mindset-text">SEO signals emerging. Pinterest repins happening. Etsy algorithmic traction building. This is when it starts feeling real. Don't quit at day 45.</div></div>
+      <div class="mindset-item orange"><div class="mindset-label">Days 1–30</div><div class="mindset-text">Get stable. Use every available resource. Apply for benefits you qualify for. Cut one unnecessary expense. Log your wins daily — even tiny ones count.</div></div>
+      <div class="mindset-item green"><div class="mindset-label">Days 31–60</div><div class="mindset-text">Build momentum. Apply consistently. Add one new income stream — even small. Start tracking your money weekly. Connect with one supportive person.</div></div>
+      <div class="mindset-item blue"><div class="mindset-label">Days 61–90</div><div class="mindset-text">Feel the shift. Things that felt impossible at day 1 are normal now. Keep going — this is when consistency starts to show results. Don't quit at day 45.</div></div>
     </div>
 
   </div>
@@ -640,44 +653,44 @@ svg.ring { transform:rotate(-90deg); }
         <div class="pill" onclick="filterRes('legal',this)">Legal</div>
       </div>
 
-      <a class="resource-item" data-cat="business" href="https://leaveaseed.com" target="_blank">
-        <div class="res-icon">🌐</div><div class="res-text"><strong>Leave a Seed — Your Website</strong><span>Check traffic, update content, add affiliate links</span></div><div class="res-arrow">↗</div>
+      <a class="resource-item" data-cat="business" href="https://www.indeed.com" target="_blank">
+        <div class="res-icon">💼</div><div class="res-text"><strong>Indeed — Job Search</strong><span>Search millions of jobs by location and skill</span></div><div class="res-arrow">↗</div>
       </a>
-      <a class="resource-item" data-cat="business" href="https://www.etsy.com" target="_blank">
-        <div class="res-icon">🛍️</div><div class="res-text"><strong>Your Etsy Shop</strong><span>Check stats, update listings, respond to messages</span></div><div class="res-arrow">↗</div>
+      <a class="resource-item" data-cat="business" href="https://www.linkedin.com" target="_blank">
+        <div class="res-icon">🔗</div><div class="res-text"><strong>LinkedIn — Professional Network</strong><span>Build your profile and connect with employers</span></div><div class="res-arrow">↗</div>
       </a>
-      <a class="resource-item" data-cat="business" href="https://analytics.google.com" target="_blank">
-        <div class="res-icon">📊</div><div class="res-text"><strong>Google Analytics</strong><span>See who visits leaveaseed.com and from where</span></div><div class="res-arrow">↗</div>
+      <a class="resource-item" data-cat="business" href="https://www.upwork.com" target="_blank">
+        <div class="res-icon">💻</div><div class="res-text"><strong>Upwork — Freelance Work</strong><span>Get paid for skills you already have</span></div><div class="res-arrow">↗</div>
       </a>
-      <a class="resource-item" data-cat="business" href="https://search.google.com/search-console" target="_blank">
-        <div class="res-icon">🔍</div><div class="res-text"><strong>Google Search Console</strong><span>See what search terms find your site</span></div><div class="res-arrow">↗</div>
+      <a class="resource-item" data-cat="business" href="https://www.fiverr.com" target="_blank">
+        <div class="res-icon">⭐</div><div class="res-text"><strong>Fiverr — Sell Your Skills</strong><span>Offer services starting at any price point</span></div><div class="res-arrow">↗</div>
       </a>
-      <a class="resource-item" data-cat="tools" href="https://www.erank.com" target="_blank">
-        <div class="res-icon">🔎</div><div class="res-text"><strong>eRank — Free Etsy SEO Tool</strong><span>Find keywords buyers actually search on Etsy</span></div><div class="res-arrow">↗</div>
+      <a class="resource-item" data-cat="tools" href="https://www.mint.com" target="_blank">
+        <div class="res-icon">📊</div><div class="res-text"><strong>Mint — Free Budget Tracker</strong><span>Track spending and set financial goals</span></div><div class="res-arrow">↗</div>
       </a>
-      <a class="resource-item" data-cat="tools" href="https://answerthepublic.com" target="_blank">
-        <div class="res-icon">💬</div><div class="res-text"><strong>Answer the Public</strong><span>Free blog post ideas from real search questions</span></div><div class="res-arrow">↗</div>
+      <a class="resource-item" data-cat="tools" href="https://www.creditkarma.com" target="_blank">
+        <div class="res-icon">💳</div><div class="res-text"><strong>Credit Karma — Free Credit Score</strong><span>Monitor your credit with no hidden fees</span></div><div class="res-arrow">↗</div>
       </a>
       <a class="resource-item" data-cat="tools" href="https://www.canva.com" target="_blank">
-        <div class="res-icon">🎨</div><div class="res-text"><strong>Canva — Free Design Tool</strong><span>Create Pinterest pins, Etsy mockups, and more</span></div><div class="res-arrow">↗</div>
+        <div class="res-icon">🎨</div><div class="res-text"><strong>Canva — Free Design Tool</strong><span>Create a resume, portfolio, or business materials</span></div><div class="res-arrow">↗</div>
       </a>
-      <a class="resource-item" data-cat="income" href="https://www.upwork.com" target="_blank">
-        <div class="res-icon">💼</div><div class="res-text"><strong>Upwork — Freelance Writing</strong><span>Get paid for gardening content while building your business</span></div><div class="res-arrow">↗</div>
+      <a class="resource-item" data-cat="income" href="https://www.etsy.com/sell" target="_blank">
+        <div class="res-icon">🛍️</div><div class="res-text"><strong>Etsy — Sell Handmade or Digital</strong><span>Turn a skill or hobby into income</span></div><div class="res-arrow">↗</div>
       </a>
-      <a class="resource-item" data-cat="income" href="https://problogger.com/jobs" target="_blank">
-        <div class="res-icon">✍️</div><div class="res-text"><strong>ProBlogger Jobs</strong><span>Paid writing — gardening/faith content $50–$200/post</span></div><div class="res-arrow">↗</div>
+      <a class="resource-item" data-cat="income" href="https://www.taskrabbit.com" target="_blank">
+        <div class="res-icon">🔧</div><div class="res-text"><strong>TaskRabbit — Local Gig Work</strong><span>Get paid for errands, moving, cleaning & more</span></div><div class="res-arrow">↗</div>
       </a>
-      <a class="resource-item" data-cat="income" href="https://www.nextdoor.com" target="_blank">
-        <div class="res-icon">🏘️</div><div class="res-text"><strong>Nextdoor — Local Services</strong><span>Offer garden planning or plant advice locally</span></div><div class="res-arrow">↗</div>
+      <a class="resource-item" data-cat="income" href="https://www.rover.com" target="_blank">
+        <div class="res-icon">🐾</div><div class="res-text"><strong>Rover — Pet Sitting & Dog Walking</strong><span>Flexible income on your own schedule</span></div><div class="res-arrow">↗</div>
       </a>
-      <a class="resource-item" data-cat="legal" href="https://tmsearch.uspto.gov" target="_blank">
-        <div class="res-icon">™️</div><div class="res-text"><strong>USPTO Trademark Search</strong><span>Search "Seed2Sunlight Wellness" before filing — free</span></div><div class="res-arrow">↗</div>
+      <a class="resource-item" data-cat="legal" href="https://www.benefits.gov" target="_blank">
+        <div class="res-icon">🏛️</div><div class="res-text"><strong>Benefits.gov — Find Your Benefits</strong><span>Search all federal assistance programs you qualify for</span></div><div class="res-arrow">↗</div>
       </a>
       <a class="resource-item" data-cat="legal" href="https://www.score.org" target="_blank">
         <div class="res-icon">👥</div><div class="res-text"><strong>SCORE — Free Business Mentoring</strong><span>One-on-one guidance from retired executives</span></div><div class="res-arrow">↗</div>
       </a>
-      <a class="resource-item" data-cat="legal" href="https://www.sba.gov/local-assistance" target="_blank">
-        <div class="res-icon">🏛️</div><div class="res-text"><strong>SBA Free Counseling</strong><span>Small Business Administration local assistance</span></div><div class="res-arrow">↗</div>
+      <a class="resource-item" data-cat="legal" href="https://www.consumerfinance.gov" target="_blank">
+        <div class="res-icon">⚖️</div><div class="res-text"><strong>CFPB — Consumer Financial Protection</strong><span>Free tools and resources to manage debt and rights</span></div><div class="res-arrow">↗</div>
       </a>
 
     </div>
@@ -705,6 +718,140 @@ svg.ring { transform:rotate(-90deg); }
         <div style="font-size:.88rem;font-weight:800;color:#5db87a;">You're on the list!</div>
         <div style="font-size:.78rem;color:#aaa;font-weight:600;margin-top:.2rem;">We'll email you with founder pricing when Pro launches.</div>
       </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ SCRIPTS SCREEN ══════════════ -->
+<div class="screen" id="screen-scripts">
+  <div class="top-bar">
+    <div class="app-logo">Seed2<span>Sunlight</span>™</div>
+    <div class="streak-chip" id="streak-scripts">🔥 Day 1</div>
+  </div>
+  <div class="content">
+
+    <div class="greeting-card" style="background:linear-gradient(135deg,#5db87a,#7dcc96);">
+      <h2>📞 Bill Negotiation Scripts</h2>
+      <p>Word-for-word scripts to lower your bills. Most people never ask — but most companies will work with you.</p>
+    </div>
+
+    <div class="section-card">
+      <h3>🏠 Rent / Landlord</h3>
+      <div class="mindset-item green">
+        <div class="mindset-label">Script — Temporary Hardship</div>
+        <div class="mindset-text">"Hi, my name is [Name] and I'm a tenant at [address]. I'm reaching out because I'm experiencing a temporary financial hardship due to [job loss/medical/emergency]. I've always paid on time and I want to keep doing that. Would you be open to a payment plan or a temporary reduction for [1-2 months] while I get back on my feet? I'm committed to making this work."</div>
+      </div>
+      <div class="mindset-item blue">
+        <div class="mindset-label">Tips</div>
+        <div class="mindset-text">Call don't email — it's harder to say no to a person. Have a specific ask ready ($200 off, 2-week extension). Mention your payment history. Ask about rental assistance programs they may know about.</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h3>⚡ Utilities</h3>
+      <div class="mindset-item green">
+        <div class="mindset-label">Script — Payment Plan</div>
+        <div class="mindset-text">"Hi, I need to set up a payment arrangement on my account. I'm going through a financial hardship right now and I want to stay current but I need some flexibility. Can you tell me what payment plan options are available? I'd also like to know if I qualify for any low-income assistance programs."</div>
+      </div>
+      <div class="mindset-item blue">
+        <div class="mindset-label">Tips</div>
+        <div class="mindset-text">Always ask about LIHEAP and state assistance programs — reps often don't offer this unless you ask. Most utilities are required by law to offer payment plans. Ask them to waive the late fee as a one-time courtesy.</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h3>🏥 Medical Bills</h3>
+      <div class="mindset-item green">
+        <div class="mindset-label">Script — Financial Hardship</div>
+        <div class="mindset-text">"Hi, I received a bill for [amount] and I want to resolve this but I'm experiencing financial hardship. I'd like to apply for financial assistance or charity care. Can you connect me with someone in your financial counseling department? I'd also like to ask about a settlement — I can pay [50-60% of bill] as a lump sum today if you can write off the rest."</div>
+      </div>
+      <div class="mindset-item blue">
+        <div class="mindset-label">Tips</div>
+        <div class="mindset-text">Hospitals are required to have charity care programs — always ask. Medical bills are highly negotiable — 40-60% discounts for lump sum are common. Never pay the full bill without negotiating first. Ask for an itemized statement and dispute any errors.</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h3>💳 Credit Cards</h3>
+      <div class="mindset-item green">
+        <div class="mindset-label">Script — Hardship Program</div>
+        <div class="mindset-text">"Hi, I'm calling because I'm experiencing a financial hardship and I want to stay current on my account. I'd like to know what hardship programs you offer — specifically reduced interest rates, waived fees, or a temporary lower minimum payment. I'm committed to paying this debt but I need some short-term relief."</div>
+      </div>
+      <div class="mindset-item blue">
+        <div class="mindset-label">Tips</div>
+        <div class="mindset-text">Most major credit cards have hardship programs — 0% interest for 6-12 months is possible. Ask to speak to the retention department. If they say no, call back — different reps give different answers. Always get any agreement in writing before making a payment.</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h3>📱 Phone Bill</h3>
+      <div class="mindset-item green">
+        <div class="mindset-label">Script — Lower Your Plan</div>
+        <div class="mindset-text">"Hi, I need to reduce my monthly bill. I've been a customer for [X years] and I'd like to stay, but I need a lower rate. What promotions or lower-cost plans can you offer me? I've also been looking at [competitor] who's offering [price] — is there anything you can do to match that?"</div>
+      </div>
+      <div class="mindset-item blue">
+        <div class="mindset-label">Tips</div>
+        <div class="mindset-text">Ask about the Affordable Connectivity Program (ACP) — up to $30/month off for qualifying households. Threatening to cancel almost always unlocks better offers. Prepaid plans are often half the cost of contract plans.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ JOB TRACKER SCREEN ══════════════ -->
+<div class="screen" id="screen-jobs">
+  <div class="top-bar">
+    <div class="app-logo">Seed2<span>Sunlight</span>™</div>
+    <div class="streak-chip" id="streak-jobs">🔥 Day 1</div>
+  </div>
+  <div class="content">
+
+    <div class="greeting-card" style="background:linear-gradient(135deg,#64b5f6,#90caf9);">
+      <h2>📋 Job Application Tracker</h2>
+      <p>Track every application. Consistency wins. Aim for 3 applications per week.</p>
+    </div>
+
+    <div class="section-card">
+      <h3>➕ Add Application</h3>
+      <div style="display:flex;flex-direction:column;gap:.6rem;">
+        <input id="job-company" type="text" placeholder="Company name" style="background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.75rem 1rem;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:600;color:#2d2d2d;outline:none;width:100%;box-sizing:border-box;"/>
+        <input id="job-role" type="text" placeholder="Job title / role" style="background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.75rem 1rem;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:600;color:#2d2d2d;outline:none;width:100%;box-sizing:border-box;"/>
+        <select id="job-status" style="background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.75rem 1rem;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:600;color:#2d2d2d;outline:none;width:100%;box-sizing:border-box;">
+          <option value="applied">Applied</option>
+          <option value="interview">Interview Scheduled</option>
+          <option value="waiting">Waiting to Hear Back</option>
+          <option value="offer">Offer Received</option>
+          <option value="rejected">Not Selected</option>
+        </select>
+        <button onclick="addJob()" style="background:linear-gradient(135deg,#64b5f6,#90caf9);color:white;border:none;border-radius:14px;padding:.75rem;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;width:100%;">Add Application ✦</button>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h3>📊 Your Applications</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:.75rem;">
+        <div style="background:#e3f2fd;border-radius:14px;padding:.7rem;text-align:center;">
+          <div style="font-size:1.4rem;font-weight:900;color:#1976d2;" id="job-total">0</div>
+          <div style="font-size:.65rem;font-weight:700;color:#bbb;">Total</div>
+        </div>
+        <div style="background:#f0faf3;border-radius:14px;padding:.7rem;text-align:center;">
+          <div style="font-size:1.4rem;font-weight:900;color:#5db87a;" id="job-interviews">0</div>
+          <div style="font-size:.65rem;font-weight:700;color:#bbb;">Interviews</div>
+        </div>
+        <div style="background:#fff8f4;border-radius:14px;padding:.7rem;text-align:center;">
+          <div style="font-size:1.4rem;font-weight:900;color:#f07c3a;" id="job-offers">0</div>
+          <div style="font-size:.65rem;font-weight:700;color:#bbb;">Offers</div>
+        </div>
+      </div>
+      <div id="job-list"><div class="empty-wins">No applications yet — add your first one above. 💪</div></div>
+    </div>
+
+    <div class="section-card">
+      <h3>💡 Application Tips</h3>
+      <div class="mindset-item green"><div class="mindset-label">Customize every application</div><div class="mindset-text">Copy 2-3 keywords from the job description into your resume and cover letter. Applicant tracking systems filter by keywords before a human ever sees your application.</div></div>
+      <div class="mindset-item orange"><div class="mindset-label">Follow up after 5-7 days</div><div class="mindset-text">"Hi, I applied for [role] on [date] and wanted to confirm receipt and express my continued interest." Simple, professional, and most candidates never do it.</div></div>
+      <div class="mindset-item blue"><div class="mindset-label">Volume matters</div><div class="mindset-text">The average job search takes 3-6 months and 100-200 applications. 3 per week = 12 per month = you're doing it right. Track everything so you never lose momentum.</div></div>
     </div>
 
   </div>
@@ -763,7 +910,7 @@ async function loadStreak(){
   }catch(e){}
 }
 function setStreakAll(c){
-  ['streak-home','streak-fin','streak-mind','streak-res'].forEach(id=>{
+  ['streak-home','streak-fin','streak-mind','streak-res','streak-scripts','streak-jobs'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.textContent='🔥 Day '+c;
   });
   document.getElementById('stat-streak-prog').textContent=c;
@@ -1034,6 +1181,63 @@ async function sendChat(){
   }
   sb.disabled=false;ca.scrollTop=ca.scrollHeight;updateChatLimit();
 }
+
+// ── JOB TRACKER ───────────────────────────────
+async function loadJobs(){
+  try{
+    const r=await window.storage.get('s2s-v3-jobs');
+    if(r)renderJobs(JSON.parse(r.value));
+  }catch(e){}
+}
+
+function renderJobs(jobs){
+  if(!jobs||jobs.length===0){
+    document.getElementById('job-list').innerHTML='<div class="empty-wins">No applications yet — add your first one above. 💪</div>';
+    document.getElementById('job-total').textContent=0;
+    document.getElementById('job-interviews').textContent=0;
+    document.getElementById('job-offers').textContent=0;
+    return;
+  }
+  const statusColors={applied:'#e3f2fd',interview:'#f0faf3',waiting:'#fffde7',offer:'#f0faf3',rejected:'#fafaf8'};
+  const statusLabels={applied:'Applied',interview:'Interview',waiting:'Waiting',offer:'Offer!',rejected:'Not Selected'};
+  const statusTextColors={applied:'#1976d2',interview:'#5db87a',waiting:'#f5c842',offer:'#5db87a',rejected:'#bbb'};
+  document.getElementById('job-list').innerHTML=jobs.slice().reverse().map((j,i)=>`
+    <div style="display:flex;align-items:center;gap:.6rem;padding:.65rem .75rem;background:#fafaf8;border-radius:14px;margin-bottom:.4rem;border:1.5px solid #f0ede8;">
+      <div style="flex:1;">
+        <div style="font-size:.88rem;font-weight:800;color:#2d2d2d;">${j.company}</div>
+        <div style="font-size:.75rem;color:#999;">${j.role} · ${j.date}</div>
+      </div>
+      <div style="background:${statusColors[j.status]};color:${statusTextColors[j.status]};font-size:.7rem;font-weight:800;padding:.2rem .55rem;border-radius:10px;white-space:nowrap;">${statusLabels[j.status]}</div>
+      <div onclick="deleteJob(${jobs.length-1-i})" style="color:#ddd;font-size:.8rem;cursor:pointer;padding:.2rem;">✕</div>
+    </div>`).join('');
+  document.getElementById('job-total').textContent=jobs.length;
+  document.getElementById('job-interviews').textContent=jobs.filter(j=>j.status==='interview'||j.status==='offer').length;
+  document.getElementById('job-offers').textContent=jobs.filter(j=>j.status==='offer').length;
+}
+
+async function addJob(){
+  const company=document.getElementById('job-company').value.trim();
+  const role=document.getElementById('job-role').value.trim();
+  const status=document.getElementById('job-status').value;
+  if(!company||!role)return;
+  let jobs=[];
+  try{const r=await window.storage.get('s2s-v3-jobs');if(r)jobs=JSON.parse(r.value);}catch(e){}
+  jobs.push({company,role,status,date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})});
+  try{await window.storage.set('s2s-v3-jobs',JSON.stringify(jobs));}catch(e){}
+  renderJobs(jobs);
+  document.getElementById('job-company').value='';
+  document.getElementById('job-role').value='';
+  addXP(10);
+}
+
+async function deleteJob(idx){
+  let jobs=[];
+  try{const r=await window.storage.get('s2s-v3-jobs');if(r)jobs=JSON.parse(r.value);}catch(e){}
+  jobs.splice(idx,1);
+  try{await window.storage.set('s2s-v3-jobs',JSON.stringify(jobs));}catch(e){}
+  renderJobs(jobs);
+}
+loadJobs();
 
 // ── INIT ──────────────────────────────────────
 loadXP().then(()=>loadSteps());
