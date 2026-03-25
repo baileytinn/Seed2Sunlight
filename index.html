@@ -437,6 +437,20 @@ svg.ring { transform:rotate(-90deg); }
       <button class="quote-next" onclick="nextQuote()">Next quote →</button>
     </div>
 
+    <div class="section-card">
+      <h3>Ask Your Coach</h3>
+      <div style="font-size:.76rem;color:#bbb;font-weight:600;margin-bottom:.6rem;">What's on your mind today? Ask anything — finances, next steps, or how you're feeling.</div>
+      <div class="chat-wrap">
+        <div class="chat-msgs" id="chat-msgs-home" style="max-height:180px;">
+          <div class="cmsg ai">I'm here. Ask me anything — income ideas, what to do next, or just what's weighing on you. 🌱</div>
+        </div>
+        <div class="chat-row">
+          <input class="chat-inp" id="chat-inp-home" placeholder="Type your question..." onkeydown="if(event.key==='Enter')sendChatHome()"/>
+          <button class="chat-send" id="chat-send-home" onclick="sendChatHome()">➤</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -616,6 +630,35 @@ svg.ring { transform:rotate(-90deg); }
         <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:.22rem;">Insight</div>
         <div style="font-size:.84rem;font-weight:600;color:#2d2d2d;line-height:1.55;">Founders who log wins daily are 3× more likely to stay consistent past the 90-day mark. Every entry counts.</div>
       </div>
+    </div>
+
+    <div class="section-card">
+      <h3>🌤️ How Are You Feeling?</h3>
+      <div style="font-size:.78rem;color:#aaa;font-weight:600;margin-bottom:.75rem;">Check in daily — your mood is data. Noticing patterns is how things change.</div>
+      <div style="display:flex;justify-content:space-between;gap:.4rem;margin-bottom:.75rem;" id="mood-btns">
+        <button onclick="logMood('😞','Rough')" class="mood-btn" data-mood="😞" style="flex:1;background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.6rem .3rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.2rem;font-family:'Nunito',sans-serif;transition:all .18s;">
+          <span style="font-size:1.4rem;">😞</span>
+          <span style="font-size:.65rem;font-weight:800;color:#bbb;">Rough</span>
+        </button>
+        <button onclick="logMood('😐','Okay')" class="mood-btn" data-mood="😐" style="flex:1;background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.6rem .3rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.2rem;font-family:'Nunito',sans-serif;transition:all .18s;">
+          <span style="font-size:1.4rem;">😐</span>
+          <span style="font-size:.65rem;font-weight:800;color:#bbb;">Okay</span>
+        </button>
+        <button onclick="logMood('🙂','Good')" class="mood-btn" data-mood="🙂" style="flex:1;background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.6rem .3rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.2rem;font-family:'Nunito',sans-serif;transition:all .18s;">
+          <span style="font-size:1.4rem;">🙂</span>
+          <span style="font-size:.65rem;font-weight:800;color:#bbb;">Good</span>
+        </button>
+        <button onclick="logMood('😄','Great')" class="mood-btn" data-mood="😄" style="flex:1;background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.6rem .3rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.2rem;font-family:'Nunito',sans-serif;transition:all .18s;">
+          <span style="font-size:1.4rem;">😄</span>
+          <span style="font-size:.65rem;font-weight:800;color:#bbb;">Great</span>
+        </button>
+        <button onclick="logMood('🔥','Fired Up')" class="mood-btn" data-mood="🔥" style="flex:1;background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.6rem .3rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.2rem;font-family:'Nunito',sans-serif;transition:all .18s;">
+          <span style="font-size:1.4rem;">🔥</span>
+          <span style="font-size:.65rem;font-weight:800;color:#bbb;">Fired Up</span>
+        </button>
+      </div>
+      <div id="mood-feedback" style="display:none;background:#f0faf3;border-radius:14px;padding:.7rem 1rem;border:1.5px solid #b8e0c4;font-size:.83rem;font-weight:700;color:#5db87a;text-align:center;"></div>
+      <div id="mood-history" style="margin-top:.65rem;"></div>
     </div>
 
     <div class="section-card">
@@ -884,7 +927,7 @@ svg.ring { transform:rotate(-90deg); }
 <script>
 // ── STATE ─────────────────────────────────────
 let xp=0, chatCount=0, currentTier='free';
-const CHAT_LIMIT=5;
+const CHAT_LIMIT=10;
 
 // ── GREETING ──────────────────────────────────
 const hr=new Date().getHours();
@@ -922,9 +965,25 @@ function goScreen(id,el){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('screen-'+id).classList.add('active');
-  el.classList.add('active');
+  if(el)el.classList.add('active');
   window.scrollTo(0,0);
+  try{localStorage.setItem('s2s-last-screen',id);}catch(e){}
 }
+
+// Restore last screen on load
+(function(){
+  try{
+    const last=localStorage.getItem('s2s-last-screen');
+    if(last&&document.getElementById('screen-'+last)){
+      const navMap={home:0,finance:1,mindset:2,progress:3,resources:4};
+      const navItems=document.querySelectorAll('.nav-item');
+      document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+      navItems.forEach(n=>n.classList.remove('active'));
+      document.getElementById('screen-'+last).classList.add('active');
+      if(navMap[last]!==undefined&&navItems[navMap[last]])navItems[navMap[last]].classList.add('active');
+    }
+  }catch(e){}
+})();
 
 // ── XP ────────────────────────────────────────
 async function loadXP(){
@@ -1063,11 +1122,38 @@ function filterRes(cat,el){
 }
 
 // ── TIER ──────────────────────────────────────
-function setTier(tier,btn){
-  currentTier=tier;
-  document.querySelectorAll('.tier-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
+async function loadTier(){
+  try{
+    const r=await window.storage.get('s2s-v3-tier');
+    if(r){
+      currentTier=r.value||'free';
+      updateTierUI();
+    }
+  }catch(e){}
 }
+
+function updateTierUI(){
+  document.querySelectorAll('.tier-btn').forEach(b=>b.classList.remove('active'));
+  const activeBtn=document.querySelector('.tier-btn.'+currentTier);
+  if(activeBtn)activeBtn.classList.add('active');
+  // Update chat limit display
+  const lm=document.getElementById('chat-limit');
+  if(lm){
+    if(currentTier==='free'&&chatCount>=CHAT_LIMIT){
+      lm.style.display='block';
+      lm.textContent='10 free questions used today. Upgrade to Pro for unlimited.';
+    } else {
+      lm.style.display='none';
+    }
+  }
+}
+
+async function setTier(tier,btn){
+  currentTier=tier;
+  try{await window.storage.set('s2s-v3-tier',tier);}catch(e){}
+  updateTierUI();
+}
+loadTier();
 
 // ── WAITLIST ──────────────────────────────────
 async function joinWaitlist(){
@@ -1111,11 +1197,11 @@ loadWins();
 // ── CHAT LIMIT (date-based daily reset) ───────
 async function loadChatCount(){
   try{
-    const r=await window.storage.get('s2s-v3-chat');
+    const r=await window.storage.get('s2s-v4-chat');
     if(r){
       const d=JSON.parse(r.value);
       if(d.date===todayKey()){chatCount=d.count;}
-      else{chatCount=0;await window.storage.set('s2s-v3-chat',JSON.stringify({date:todayKey(),count:0}));}
+      else{chatCount=0;await window.storage.set('s2s-v4-chat',JSON.stringify({date:todayKey(),count:0}));}
     }else{chatCount=0;}
   }catch(e){chatCount=0;}
   updateChatLimit();
@@ -1133,35 +1219,17 @@ function updateChatLimit(){
 }
 
 const WORKER_URL='https://icy-heart-0670.baileytinn.workers.dev';
-const responses=[
-  {k:['etsy','listing','shop','sale','sell'],r:"Your Etsy shop is one of your strongest assets right now. The single highest-impact action: update your top listing's title using eRank to find keywords buyers actually search. A better title can double your visibility within days. Do that one listing today — not all of them, just one."},
-  {k:['pinterest','pin','pinning','board'],r:"Pinterest is a long game but it compounds fast once the algorithm catches on. Your most important move right now is pinning consistently — at least one fresh pin per day, even if it's a simple text graphic made in Canva. Focus on your Christian gardening and faith boards. Consistency beats perfection every time."},
-  {k:['money','income','cash','broke','bills','rent','afford'],r:"When money is the immediate pressure, the Finance tab has real emergency options — 211, SNAP, and LIHEAP can bridge the gap while your business grows. On the income side, your fastest path is Etsy: one optimized listing can bring in sales within days. What's your best-selling product right now? Let's focus there first."},
-  {k:['confidence','doubt','afraid','scared','imposter','worthy'],r:"You built a website, Etsy shop, Pinterest presence, and published books after a layoff — mostly alone. That's not nothing, that's a foundation most people never build. The dismissal you've felt in person disappears entirely in writing, and writing is exactly how your business works. One action today: read your own wins journal entry before you do anything else."},
-  {k:['stuck','overwhelm','don\'t know','lost','help','where'],r:"When everything feels urgent, pick exactly one thing. Not three — one. Ask yourself: what single action this week most likely leads to income in 30 days? That's your answer. For most people at your stage it's either optimizing an Etsy listing or pinning a product on Pinterest. Pick one and do only that today."},
-  {k:['prayer','faith','god','jesus','scripture','bible','pray'],r:"Your faith is one of your real competitive advantages — there's a hungry audience of Christian women looking for exactly what you offer. Lean into it openly. The scripture in your app and Etsy listings isn't decoration, it's connection. Keep going. Galatians 6:9 is real: the harvest comes if you don't quit."},
-  {k:['garden','plant','grow','seed','horticulture','soil'],r:"Your horticultural knowledge is genuinely rare. Most people starting an online business don't have a decade of real expertise to draw from — you do. That expertise is worth packaging: blog posts, Etsy guides, Pinterest boards, even a simple Q&A on your website. One idea: write a short 'most common gardening mistake' post this week. It'll drive search traffic for months."},
-  {k:['blog','write','post','seo','google','search'],r:"Blog content is your slow-burn asset — it keeps working long after you write it. Start with one post that answers a specific question your audience asks, like 'how to start a garden on $20.' Use Answer the Public (in your Resources tab) to find real search terms. One 500-word post beats zero 2,000-word posts every time."},
-  {k:['book','amazon','kindle','publish','author'],r:"Having published books gives you real credibility — most Etsy sellers don't have that. Make sure your books link back to leaveaseed.com and your Etsy shop in the back matter. A simple 'Also by the author' page with your Etsy link can turn a book reader into a paying customer. Have you added that yet?"},
-  {k:['tired','exhausted','burnout','give up','quit','done'],r:"It's okay to be tired. Building something real from scratch after a layoff is genuinely hard, and you've been doing it largely alone. Take today slow if you need to. But before you step away, log one win in your Progress tab — even 'I showed up.' That's real. Come back when you're ready. The seeds you've planted are still growing."},
-  {k:['next','what should','todo','plan','focus','priority'],r:"Your top three priorities right now: (1) One Etsy listing optimized with real keywords from eRank, (2) One Pinterest pin per day minimum, (3) Grow your email list — even 10 subscribers who trust you are worth more than 1,000 cold followers. Start with whichever feels most doable today and do just that one thing."},
-];
 
-function getReply(msg){
-  const m=msg.toLowerCase();
-  for(const r of responses){
-    if(r.k.some(k=>m.includes(k)))return r.r;
-  }
-  return "That's a real question and it deserves a real answer. Here's what I'd say: focus on the one action today that moves the needle most — usually that's an Etsy listing, a Pinterest pin, or a blog post. You already have everything you need to start. What's the one thing you've been putting off? Do that first.";
-}
-
-async function sendChat(){
+async function sendChat(overrideMsg){
   if(currentTier==='free'&&chatCount>=CHAT_LIMIT)return;
-  const inp=document.getElementById('chat-inp');const msg=inp.value.trim();if(!msg)return;
+  const inp=document.getElementById('chat-inp');
+  const msg=overrideMsg||inp.value.trim();
+  if(!msg)return;
   const ca=document.getElementById('chat-msgs');const sb=document.getElementById('chat-send');
   ca.innerHTML+=`<div class="cmsg user">${msg}</div>`;
-  inp.value='';sb.disabled=true;chatCount++;
-  await window.storage.set('s2s-v3-chat',JSON.stringify({date:todayKey(),count:chatCount}));
+  if(!overrideMsg)inp.value='';
+  sb.disabled=true;chatCount++;
+  try{await window.storage.set('s2s-v4-chat',JSON.stringify({date:todayKey(),count:chatCount}));}catch(e){}
   const lid='l'+Date.now();
   ca.innerHTML+=`<div class="cmsg loading" id="${lid}">Thinking...</div>`;
   ca.scrollTop=ca.scrollHeight;
@@ -1181,6 +1249,100 @@ async function sendChat(){
   }
   sb.disabled=false;ca.scrollTop=ca.scrollHeight;updateChatLimit();
 }
+
+async function sendChatHome(){
+  if(currentTier==='free'&&chatCount>=CHAT_LIMIT)return;
+  const inp=document.getElementById('chat-inp-home');
+  const msg=inp.value.trim();if(!msg)return;
+  const ca=document.getElementById('chat-msgs-home');
+  const sb=document.getElementById('chat-send-home');
+  ca.innerHTML+=`<div class="cmsg user">${msg}</div>`;
+  inp.value='';sb.disabled=true;chatCount++;
+  try{await window.storage.set('s2s-v4-chat',JSON.stringify({date:todayKey(),count:chatCount}));}catch(e){}
+  const lid='lh'+Date.now();
+  ca.innerHTML+=`<div class="cmsg loading" id="${lid}">Thinking...</div>`;
+  ca.scrollTop=ca.scrollHeight;
+  try{
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});
+    const data=await res.json();
+    const reply=data.reply||"Still here with you. Try again in a moment.";
+    document.getElementById(lid).remove();
+    ca.innerHTML+=`<div class="cmsg ai">${reply}</div>`;
+  }catch(e){
+    document.getElementById(lid).remove();
+    ca.innerHTML+=`<div class="cmsg ai">Something went wrong — try again in a moment.</div>`;
+  }
+  sb.disabled=false;ca.scrollTop=ca.scrollHeight;
+}
+const moodMessages={
+  '😞':"Rough days are real. You don't have to fix everything today — just do one small thing. 💙",
+  '😐':"Okay is enough. Showing up on an okay day is still showing up. Keep going. 🌱",
+  '🙂':"Good! Ride that energy — even 20 minutes of focused work today counts. 💪",
+  '😄':"Great energy! This is a good day to tackle something you've been putting off. 🌟",
+  '🔥':"You're fired up — use it! Do the hardest thing on your list right now. 🚀"
+};
+
+async function logMood(emoji, label){
+  const today=todayKey();
+  let moods=[];
+  try{const r=await window.storage.get('s2s-v3-moods');if(r)moods=JSON.parse(r.value);}catch(e){}
+  // Only one mood per day
+  const alreadyToday=moods.find(m=>m.date===today);
+  if(alreadyToday){
+    document.getElementById('mood-feedback').style.display='block';
+    document.getElementById('mood-feedback').textContent="You've already checked in today. See you tomorrow! 🌱";
+    return;
+  }
+  moods.push({emoji,label,date:today});
+  try{await window.storage.set('s2s-v3-moods',JSON.stringify(moods));}catch(e){}
+  // Highlight selected button
+  document.querySelectorAll('.mood-btn').forEach(b=>{
+    b.style.background=b.dataset.mood===emoji?'#f0faf3':'#fafaf8';
+    b.style.borderColor=b.dataset.mood===emoji?'#5db87a':'#f0ede8';
+  });
+  const fb=document.getElementById('mood-feedback');
+  fb.style.display='block';
+  fb.textContent=moodMessages[emoji]||'Logged! Keep going. 🌱';
+  addXP(5);
+  renderMoodHistory(moods);
+  // Auto-send to AI companion
+  setTimeout(()=>sendChat(`I'm feeling ${label} today (${emoji}). Any advice?`),800);
+}
+
+function renderMoodHistory(moods){
+  const el=document.getElementById('mood-history');
+  if(!moods||moods.length===0){el.innerHTML='';return;}
+  const recent=moods.slice(-7).reverse();
+  el.innerHTML=`<div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:.4rem;">Last 7 Days</div>
+  <div style="display:flex;gap:.35rem;flex-wrap:wrap;">${recent.map(m=>`
+    <div style="background:#fafaf8;border:1.5px solid #f0ede8;border-radius:12px;padding:.35rem .55rem;display:flex;align-items:center;gap:.3rem;">
+      <span style="font-size:1rem;">${m.emoji}</span>
+      <span style="font-size:.65rem;font-weight:700;color:#bbb;">${m.date}</span>
+    </div>`).join('')}
+  </div>`;
+}
+
+async function loadMoods(){
+  try{
+    const r=await window.storage.get('s2s-v3-moods');
+    if(r){
+      const moods=JSON.parse(r.value);
+      renderMoodHistory(moods);
+      // Show today's mood as selected if already logged
+      const today=todayKey();
+      const todayMood=moods.find(m=>m.date===today);
+      if(todayMood){
+        document.querySelectorAll('.mood-btn').forEach(b=>{
+          b.style.background=b.dataset.mood===todayMood.emoji?'#f0faf3':'#fafaf8';
+          b.style.borderColor=b.dataset.mood===todayMood.emoji?'#5db87a':'#f0ede8';
+        });
+        document.getElementById('mood-feedback').style.display='block';
+        document.getElementById('mood-feedback').textContent="You've already checked in today. See you tomorrow! 🌱";
+      }
+    }
+  }catch(e){}
+}
+loadMoods();
 
 // ── JOB TRACKER ───────────────────────────────
 async function loadJobs(){
