@@ -925,6 +925,36 @@ svg.ring { transform:rotate(-90deg); }
 </nav>
 
 <script>
+// ── localStorage SHIM (replaces window.storage for GitHub Pages) ──
+window.storage = {
+  get: async function(key) {
+    try {
+      const val = localStorage.getItem(key);
+      if (val === null) throw new Error('not found');
+      return { key, value: val };
+    } catch(e) { throw e; }
+  },
+  set: async function(key, value, shared) {
+    try {
+      localStorage.setItem(key, value);
+      return { key, value };
+    } catch(e) { return null; }
+  },
+  delete: async function(key) {
+    try {
+      localStorage.removeItem(key);
+      return { key, deleted: true };
+    } catch(e) { return null; }
+  },
+  list: async function(prefix) {
+    const keys = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (!prefix || k.startsWith(prefix)) keys.push(k);
+    }
+    return { keys };
+  }
+};
 // ── STATE ─────────────────────────────────────
 let xp=0, chatCount=0, currentTier='free';
 const CHAT_LIMIT=10;
