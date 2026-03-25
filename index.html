@@ -830,10 +830,18 @@ async function saveSteps(){
 }
 
 function completeStep(el,pts){
-  if(el.classList.contains('done'))return;
-  el.classList.add('done');
-  stepsDone++;
-  addXP(pts);
+  if(el.classList.contains('done')){
+    el.classList.remove('done');
+    stepsDone--;
+    xp=Math.max(0,xp-pts);
+    ['xp-home','xp-prog'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='⭐ '+xp+' XP';});
+    document.getElementById('stat-xp-prog').textContent=xp;
+    try{window.storage.set('s2s-v3-xp',String(xp));}catch(e){}
+  }else{
+    el.classList.add('done');
+    stepsDone++;
+    addXP(pts);
+  }
   updateRing();
   saveSteps();
 }
@@ -977,6 +985,29 @@ function updateChatLimit(){
   }else{lm.style.display='none';inp.disabled=false;btn.disabled=false;}
 }
 
+const WORKER_URL='https://icy-heart-0670.baileytinn.workers.dev';
+const responses=[
+  {k:['etsy','listing','shop','sale','sell'],r:"Your Etsy shop is one of your strongest assets right now. The single highest-impact action: update your top listing's title using eRank to find keywords buyers actually search. A better title can double your visibility within days. Do that one listing today — not all of them, just one."},
+  {k:['pinterest','pin','pinning','board'],r:"Pinterest is a long game but it compounds fast once the algorithm catches on. Your most important move right now is pinning consistently — at least one fresh pin per day, even if it's a simple text graphic made in Canva. Focus on your Christian gardening and faith boards. Consistency beats perfection every time."},
+  {k:['money','income','cash','broke','bills','rent','afford'],r:"When money is the immediate pressure, the Finance tab has real emergency options — 211, SNAP, and LIHEAP can bridge the gap while your business grows. On the income side, your fastest path is Etsy: one optimized listing can bring in sales within days. What's your best-selling product right now? Let's focus there first."},
+  {k:['confidence','doubt','afraid','scared','imposter','worthy'],r:"You built a website, Etsy shop, Pinterest presence, and published books after a layoff — mostly alone. That's not nothing, that's a foundation most people never build. The dismissal you've felt in person disappears entirely in writing, and writing is exactly how your business works. One action today: read your own wins journal entry before you do anything else."},
+  {k:['stuck','overwhelm','don\'t know','lost','help','where'],r:"When everything feels urgent, pick exactly one thing. Not three — one. Ask yourself: what single action this week most likely leads to income in 30 days? That's your answer. For most people at your stage it's either optimizing an Etsy listing or pinning a product on Pinterest. Pick one and do only that today."},
+  {k:['prayer','faith','god','jesus','scripture','bible','pray'],r:"Your faith is one of your real competitive advantages — there's a hungry audience of Christian women looking for exactly what you offer. Lean into it openly. The scripture in your app and Etsy listings isn't decoration, it's connection. Keep going. Galatians 6:9 is real: the harvest comes if you don't quit."},
+  {k:['garden','plant','grow','seed','horticulture','soil'],r:"Your horticultural knowledge is genuinely rare. Most people starting an online business don't have a decade of real expertise to draw from — you do. That expertise is worth packaging: blog posts, Etsy guides, Pinterest boards, even a simple Q&A on your website. One idea: write a short 'most common gardening mistake' post this week. It'll drive search traffic for months."},
+  {k:['blog','write','post','seo','google','search'],r:"Blog content is your slow-burn asset — it keeps working long after you write it. Start with one post that answers a specific question your audience asks, like 'how to start a garden on $20.' Use Answer the Public (in your Resources tab) to find real search terms. One 500-word post beats zero 2,000-word posts every time."},
+  {k:['book','amazon','kindle','publish','author'],r:"Having published books gives you real credibility — most Etsy sellers don't have that. Make sure your books link back to leaveaseed.com and your Etsy shop in the back matter. A simple 'Also by the author' page with your Etsy link can turn a book reader into a paying customer. Have you added that yet?"},
+  {k:['tired','exhausted','burnout','give up','quit','done'],r:"It's okay to be tired. Building something real from scratch after a layoff is genuinely hard, and you've been doing it largely alone. Take today slow if you need to. But before you step away, log one win in your Progress tab — even 'I showed up.' That's real. Come back when you're ready. The seeds you've planted are still growing."},
+  {k:['next','what should','todo','plan','focus','priority'],r:"Your top three priorities right now: (1) One Etsy listing optimized with real keywords from eRank, (2) One Pinterest pin per day minimum, (3) Grow your email list — even 10 subscribers who trust you are worth more than 1,000 cold followers. Start with whichever feels most doable today and do just that one thing."},
+];
+
+function getReply(msg){
+  const m=msg.toLowerCase();
+  for(const r of responses){
+    if(r.k.some(k=>m.includes(k)))return r.r;
+  }
+  return "That's a real question and it deserves a real answer. Here's what I'd say: focus on the one action today that moves the needle most — usually that's an Etsy listing, a Pinterest pin, or a blog post. You already have everything you need to start. What's the one thing you've been putting off? Do that first.";
+}
+
 async function sendChat(){
   if(currentTier==='free'&&chatCount>=CHAT_LIMIT)return;
   const inp=document.getElementById('chat-inp');const msg=inp.value.trim();if(!msg)return;
@@ -988,21 +1019,18 @@ async function sendChat(){
   ca.innerHTML+=`<div class="cmsg loading" id="${lid}">Thinking...</div>`;
   ca.scrollTop=ca.scrollHeight;
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',max_tokens:1000,
-        system:`You are a warm, practical companion inside Seed2Sunlight Wellness — an app for people who are financially stressed and trying to build income from scratch. Your user is Allison, solo founder of Leave a Seed (leaveaseed.com), a faith-based gardening platform. She started after a layoff in early 2026. Key facts: deep horticultural expertise; learning disability affecting only spoken communication (not writing); no local network; needs ~$2,000/month; has Etsy shop with Bible Study Journal, Christian Garden Planner, Easter Devotional, sticker sets; 2 Amazon books recently published; Pinterest presence with 7 boards; Christian faith is central. She struggles with confidence from lifelong dismissal in person, financial pressure, and isolation. Be honest, specific, warm. No generic advice. 3–5 sentences max. Give one concrete next action when she's stuck. Mention the Finance tab for emergency help (211, SNAP) when relevant.`,
-        messages:[{role:'user',content:msg}]
-      })
+    const res=await fetch(WORKER_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:msg})
     });
     const data=await res.json();
-    const reply=data.content?.map(c=>c.text||'').join('')||'Still here. Try again in a moment.';
+    const reply=data.reply||"Still here with you. Try again in a moment.";
     document.getElementById(lid).remove();
     ca.innerHTML+=`<div class="cmsg ai">${reply}</div>`;
   }catch(e){
     document.getElementById(lid).remove();
-    ca.innerHTML+=`<div class="cmsg ai">Something went wrong. Try again — I'm still here.</div>`;
+    ca.innerHTML+=`<div class="cmsg ai">Something went wrong — but I'm still here with you. Try again in a moment.</div>`;
   }
   sb.disabled=false;ca.scrollTop=ca.scrollHeight;updateChatLimit();
 }
