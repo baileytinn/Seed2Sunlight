@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Seed2Sunlight Wellness</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -326,6 +326,35 @@ svg.ring { transform:rotate(-90deg); }
 .screen.active .content > *:nth-child(5){animation-delay:.2s}
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:#f0d4b8;border-radius:2px;}
+/* ── PRO TOOLS ── */
+.pro-tool-card { background:white; border-radius:22px; padding:1.3rem 1.4rem; box-shadow:0 4px 20px rgba(0,0,0,.07); margin-bottom:1rem; }
+.pro-tool-card h3 { font-size:.95rem; font-weight:900; color:#2d2d2d; margin-bottom:.5rem; }
+.pro-tool-desc { font-size:.78rem; color:#aaa; font-weight:600; margin-bottom:.85rem; line-height:1.5; }
+.pro-input { width:100%; background:#fafaf8; border:1.5px solid #f0ede8; border-radius:16px; padding:.85rem 1rem; font-family:"Nunito",sans-serif; font-size:.88rem; font-weight:600; color:#2d2d2d; outline:none; resize:none; box-sizing:border-box; margin-bottom:.65rem; }
+.pro-input::placeholder { color:#ccc; }
+.pro-result { background:#f0faf3; border:1.5px solid #b8e0c4; border-radius:16px; padding:.9rem 1rem; font-size:.84rem; font-weight:600; color:#2d2d2d; line-height:1.65; margin-top:.65rem; display:none; }
+.pro-result.visible { display:block; }
+.pro-loading { text-align:center; color:#bbb; font-style:italic; font-size:.82rem; padding:.5rem 0; display:none; }
+.pro-loading.visible { display:block; }
+.pro-tabs { display:flex; gap:.4rem; overflow-x:auto; padding-bottom:.3rem; scrollbar-width:none; margin-bottom:1rem; }
+.pro-tabs::-webkit-scrollbar { display:none; }
+.pro-tab { padding:.38rem .85rem; border-radius:20px; font-size:.75rem; font-weight:800; cursor:pointer; white-space:nowrap; border:1.5px solid #eee; color:#aaa; background:white; transition:all .18s; flex-shrink:0; }
+.pro-tab.active { background:#f07c3a; color:white; border-color:#f07c3a; }
+.pro-section { display:none; }
+.pro-section.active { display:block; }
+.upgrade-banner { background:linear-gradient(135deg,#fff8f4,#f0faf3); border:1.5px solid #f0d4b8; border-radius:18px; padding:1.2rem 1.3rem; text-align:center; }
+.upgrade-banner .ub-icon { font-size:2rem; margin-bottom:.4rem; }
+.upgrade-banner h3 { font-size:.95rem; font-weight:900; color:#2d2d2d; margin-bottom:.25rem; }
+.upgrade-banner p { font-size:.78rem; color:#aaa; font-weight:600; line-height:1.5; margin-bottom:.85rem; }
+.upgrade-banner .ub-features { text-align:left; margin-bottom:.85rem; }
+.upgrade-banner .ub-feat { font-size:.78rem; font-weight:700; color:#5db87a; padding:.15rem 0; display:flex; gap:.4rem; align-items:center; }
+.upgrade-banner .ub-price { font-size:1.4rem; font-weight:900; color:#f07c3a; }
+.upgrade-banner .ub-per { font-size:.72rem; color:#aaa; font-weight:600; }
+.crisis-step { background:white; border-radius:16px; padding:.9rem 1rem; border:1.5px solid #f0ede8; margin-bottom:.5rem; display:flex; gap:.85rem; align-items:flex-start; }
+.crisis-num { width:28px; height:28px; border-radius:50%; background:#f07c3a; color:white; font-size:.75rem; font-weight:900; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:.1rem; }
+.crisis-text strong { display:block; font-size:.88rem; font-weight:800; color:#2d2d2d; margin-bottom:.18rem; }
+.crisis-text span { font-size:.76rem; color:#aaa; font-weight:600; line-height:1.5; }
+
 </style>
 </head>
 <body>
@@ -899,6 +928,130 @@ svg.ring { transform:rotate(-90deg); }
   </div>
 </div>
 
+
+<!-- ══════════════ PRO TOOLS SCREEN ══════════════ -->
+<div class="screen" id="screen-protools">
+  <div class="top-bar">
+    <div class="app-logo">Seed2<span>Sunlight</span>™</div>
+    <div class="streak-chip" id="streak-protools">🔥 Day 1</div>
+  </div>
+  <div class="content">
+
+    <div class="greeting-card" style="background:linear-gradient(135deg,#5db87a,#7dcc96);">
+      <h2>🛠️ Pro Tools</h2>
+      <p>AI-powered tools to help you land faster and negotiate smarter.</p>
+    </div>
+
+    <!-- FREE TIER: show upgrade banner -->
+    <div id="pro-upgrade-banner" style="display:none;">
+      <div class="upgrade-banner">
+        <div class="ub-icon">🔓</div>
+        <h3>Unlock Pro Tools</h3>
+        <p>Get AI-powered resume reviews, cover letters, interview coaching and more.</p>
+        <div class="ub-features">
+          <div class="ub-feat"><span>✓</span> Resume review with AI feedback</div>
+          <div class="ub-feat"><span>✓</span> Custom cover letter generator</div>
+          <div class="ub-feat"><span>✓</span> Interview prep coaching</div>
+          <div class="ub-feat"><span>✓</span> Salary negotiation scripts</div>
+          <div class="ub-feat"><span>✓</span> Crisis mode — first 72 hours</div>
+          <div class="ub-feat"><span>✓</span> Unlimited AI companion chat</div>
+        </div>
+        <div class="ub-price">$4.99<span class="ub-per">/month</span></div>
+        <br><br>
+        <button onclick="activatePro()" style="background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border:none;border-radius:14px;padding:.85rem 2rem;font-family:Nunito,sans-serif;font-size:.9rem;font-weight:800;cursor:pointer;width:100%;margin-top:.5rem;transition:all .18s;">Upgrade to Pro — $4.99/mo</button>
+        <div style="font-size:.7rem;color:#bbb;margin-top:.5rem;font-weight:600;">Stripe coming soon — tap to preview Pro features</div>
+      </div>
+    </div>
+
+    <!-- PRO TIER: show tools -->
+    <div id="pro-tools-content" style="display:none;">
+
+      <div class="pro-tabs" id="pro-tabs">
+        <div class="pro-tab active" onclick="showProTab('crisis',this)">🚨 Crisis Mode</div>
+        <div class="pro-tab" onclick="showProTab('resume',this)">📄 Resume</div>
+        <div class="pro-tab" onclick="showProTab('coverletter',this)">✉️ Cover Letter</div>
+        <div class="pro-tab" onclick="showProTab('interview',this)">🎤 Interview</div>
+        <div class="pro-tab" onclick="showProTab('salary',this)">💰 Salary</div>
+      </div>
+
+      <!-- CRISIS MODE -->
+      <div class="pro-section active" id="pro-crisis">
+        <div class="pro-tool-card">
+          <h3>🚨 First 72 Hours After a Layoff</h3>
+          <p class="pro-tool-desc">The decisions you make in the first 72 hours matter more than most people realize. Follow these steps in order.</p>
+          <div class="crisis-step"><div class="crisis-num">1</div><div class="crisis-text"><strong>File for unemployment today</strong><span>Do this before anything else. Go to your state unemployment website and file. Benefits start from your filing date — every day you wait is money lost.</span></div></div>
+          <div class="crisis-step"><div class="crisis-num">2</div><div class="crisis-text"><strong>Request your final paycheck and severance details in writing</strong><span>Email HR asking for confirmation of your last day, final paycheck date, and any severance. Keep a record of everything.</span></div></div>
+          <div class="crisis-step"><div class="crisis-num">3</div><div class="crisis-text"><strong>Check your health insurance options immediately</strong><span>You have 60 days to elect COBRA. Also check healthcare.gov — a job loss qualifies you for a Special Enrollment Period for potentially cheaper coverage.</span></div></div>
+          <div class="crisis-step"><div class="crisis-num">4</div><div class="crisis-text"><strong>Make a 30-day cash runway list</strong><span>List every expense due in the next 30 days. Identify what can be paused, reduced, or negotiated. Know your exact number before you spend anything.</span></div></div>
+          <div class="crisis-step"><div class="crisis-num">5</div><div class="crisis-text"><strong>Tell one trusted person</strong><span>You do not have to announce it publicly. But isolation makes this harder. Tell one person you trust. Let them support you. You are not a burden.</span></div></div>
+          <div class="crisis-step"><div class="crisis-num">6</div><div class="crisis-text"><strong>Do not make any big decisions for 72 hours</strong><span>No selling the house, no cashing out retirement accounts, no radical moves. Give yourself 3 days to stabilize before deciding anything major.</span></div></div>
+        </div>
+        <div class="pro-tool-card">
+          <h3>💬 Ask Your Crisis Coach</h3>
+          <p class="pro-tool-desc">Tell me where you are right now and I will tell you exactly what to do next.</p>
+          <textarea class="pro-input" id="crisis-input" rows="3" placeholder="Example: I was just laid off an hour ago. I have $800 in savings and a mortgage payment due in 2 weeks..."></textarea>
+          <button class="big-btn btn-orange" onclick="runProTool('crisis')">Get My Action Plan ➤</button>
+          <div class="pro-loading" id="crisis-loading">Building your plan...</div>
+          <div class="pro-result" id="crisis-result"></div>
+        </div>
+      </div>
+
+      <!-- RESUME REVIEW -->
+      <div class="pro-section" id="pro-resume">
+        <div class="pro-tool-card">
+          <h3>📄 AI Resume Review</h3>
+          <p class="pro-tool-desc">Paste your resume text below and get specific, actionable feedback to make it stronger.</p>
+          <textarea class="pro-input" id="resume-input" rows="8" placeholder="Paste your resume text here..."></textarea>
+          <textarea class="pro-input" id="resume-jobtarget" rows="2" placeholder="What type of job are you targeting? (optional)"></textarea>
+          <button class="big-btn btn-orange" onclick="runProTool('resume')">Review My Resume ➤</button>
+          <div class="pro-loading" id="resume-loading">Analyzing your resume...</div>
+          <div class="pro-result" id="resume-result"></div>
+        </div>
+      </div>
+
+      <!-- COVER LETTER -->
+      <div class="pro-section" id="pro-coverletter">
+        <div class="pro-tool-card">
+          <h3>✉️ Cover Letter Generator</h3>
+          <p class="pro-tool-desc">Paste the job description and a few notes about yourself — get a personalized cover letter in seconds.</p>
+          <textarea class="pro-input" id="cover-job" rows="4" placeholder="Paste the job description here..."></textarea>
+          <textarea class="pro-input" id="cover-background" rows="3" placeholder="Brief notes about your background, skills, or why you want this role..."></textarea>
+          <button class="big-btn btn-orange" onclick="runProTool('coverletter')">Generate Cover Letter ➤</button>
+          <div class="pro-loading" id="coverletter-loading">Writing your cover letter...</div>
+          <div class="pro-result" id="coverletter-result"></div>
+        </div>
+      </div>
+
+      <!-- INTERVIEW PREP -->
+      <div class="pro-section" id="pro-interview">
+        <div class="pro-tool-card">
+          <h3>🎤 Interview Prep Coach</h3>
+          <p class="pro-tool-desc">Tell me the role and get customized answers to the questions most likely to come up.</p>
+          <textarea class="pro-input" id="interview-role" rows="2" placeholder="What role are you interviewing for?"></textarea>
+          <textarea class="pro-input" id="interview-concern" rows="2" placeholder="Any specific questions or concerns you want to prepare for? (optional)"></textarea>
+          <button class="big-btn btn-orange" onclick="runProTool('interview')">Prepare Me ➤</button>
+          <div class="pro-loading" id="interview-loading">Preparing your coaching...</div>
+          <div class="pro-result" id="interview-result"></div>
+        </div>
+      </div>
+
+      <!-- SALARY NEGOTIATION -->
+      <div class="pro-section" id="pro-salary">
+        <div class="pro-tool-card">
+          <h3>💰 Salary Negotiation</h3>
+          <p class="pro-tool-desc">Get a personalized negotiation script based on your situation.</p>
+          <textarea class="pro-input" id="salary-offer" rows="2" placeholder="What offer did you receive? (role, salary, company)"></textarea>
+          <textarea class="pro-input" id="salary-target" rows="2" placeholder="What are you hoping to get? Any competing offers or market research?"></textarea>
+          <button class="big-btn btn-orange" onclick="runProTool('salary')">Get My Script ➤</button>
+          <div class="pro-loading" id="salary-loading">Writing your negotiation script...</div>
+          <div class="pro-result" id="salary-result"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- ══════════════ BOTTOM NAV ══════════════ -->
 <nav class="bottom-nav">
   <div class="nav-item active" onclick="goScreen('home',this)">
@@ -920,6 +1073,10 @@ svg.ring { transform:rotate(-90deg); }
   <div class="nav-item" onclick="goScreen('resources',this)">
     <div class="nav-icon">🔗</div>
     <div class="nav-label">Resources</div>
+  </div>
+  <div class="nav-item" onclick="goScreen('protools',this)">
+    <div class="nav-icon">🛠️</div>
+    <div class="nav-label">Pro Tools</div>
   </div>
 </nav>
 
@@ -997,6 +1154,7 @@ function goScreen(id,el){
   if(el)el.classList.add('active');
   window.scrollTo(0,0);
   try{localStorage.setItem('s2s-last-screen',id);}catch(e){}
+  if(id==='protools')checkProAccess();
 }
 
 // Restore last screen on load
@@ -1427,8 +1585,93 @@ async function deleteJob(idx){
 }
 loadJobs();
 
+
+// ── PRO TOOLS ──────────────────────────────────
+function showProTab(tab, el) {
+  document.querySelectorAll('.pro-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.pro-section').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('pro-' + tab).classList.add('active');
+}
+
+function checkProAccess() {
+  const banner = document.getElementById('pro-upgrade-banner');
+  const tools = document.getElementById('pro-tools-content');
+  if (currentTier === 'pro') {
+    if(banner) banner.style.display = 'none';
+    if(tools) tools.style.display = 'block';
+  } else {
+    if(banner) banner.style.display = 'block';
+    if(tools) tools.style.display = 'none';
+  }
+}
+
+function activatePro() {
+  // Stripe not live yet - preview mode
+  currentTier = 'pro';
+  try { window.storage.set('s2s-v3-tier', 'pro'); } catch(e) {}
+  checkProAccess();
+  updateChatLimit();
+}
+
+const proPrompts = {
+  crisis: (input) => `You are an emergency financial coach. Someone just told you: "${input}". Give them a calm, specific, numbered action plan for the next 72 hours. Be warm but direct. Focus on the most urgent financial steps first. Keep it practical and actionable.`,
+  resume: (input, target) => `You are an expert resume coach. Review this resume and give specific, actionable feedback to make it stronger${target ? " for a " + target + " role" : ""}. Focus on: impact statements, keywords, formatting issues, and what to add or remove. Resume: ${input}`,
+  coverletter: (jobDesc, background) => `You are an expert cover letter writer. Write a compelling, personalized cover letter for this job. Job description: ${jobDesc}. Candidate background: ${background}. Make it warm, specific, and genuine — not generic. 3-4 paragraphs.`,
+  interview: (role, concern) => `You are an expert interview coach. The person is interviewing for: ${role}. ${concern ? "Their specific concern: " + concern + "." : ""} Give them: 1) The 5 most likely questions for this role, 2) A strong answer framework for each, 3) Two questions they should ask the interviewer. Be specific and practical.`,
+  salary: (offer, target) => `You are a salary negotiation expert. The person received this offer: ${offer}. Their target: ${target}. Write them a specific, word-for-word negotiation script they can use on the phone or in email. Include: the opening line, how to anchor high, how to handle pushback, and when to accept. Make it confident but not aggressive.`
+};
+
+async function runProTool(tool) {
+  const loadingEl = document.getElementById(tool + '-loading');
+  const resultEl = document.getElementById(tool + '-result');
+  
+  let prompt = '';
+  
+  if (tool === 'crisis') {
+    const input = document.getElementById('crisis-input').value.trim();
+    if (!input) { alert('Please describe your situation first.'); return; }
+    prompt = proPrompts.crisis(input);
+  } else if (tool === 'resume') {
+    const input = document.getElementById('resume-input').value.trim();
+    const target = document.getElementById('resume-jobtarget').value.trim();
+    if (!input) { alert('Please paste your resume first.'); return; }
+    prompt = proPrompts.resume(input, target);
+  } else if (tool === 'coverletter') {
+    const job = document.getElementById('cover-job').value.trim();
+    const bg = document.getElementById('cover-background').value.trim();
+    if (!job) { alert('Please paste the job description first.'); return; }
+    prompt = proPrompts.coverletter(job, bg);
+  } else if (tool === 'interview') {
+    const role = document.getElementById('interview-role').value.trim();
+    const concern = document.getElementById('interview-concern').value.trim();
+    if (!role) { alert('Please enter the role you are interviewing for.'); return; }
+    prompt = proPrompts.interview(role, concern);
+  } else if (tool === 'salary') {
+    const offer = document.getElementById('salary-offer').value.trim();
+    const target = document.getElementById('salary-target').value.trim();
+    if (!offer) { alert('Please describe the offer you received.'); return; }
+    prompt = proPrompts.salary(offer, target);
+  }
+
+  loadingEl.classList.add('visible');
+  resultEl.classList.remove('visible');
+
+  try {
+    const reply = await callClaude(prompt);
+    resultEl.innerHTML = reply;
+    resultEl.classList.add('visible');
+  } catch(e) {
+    resultEl.innerHTML = 'Something went wrong. Please try again.';
+    resultEl.classList.add('visible');
+  }
+  loadingEl.classList.remove('visible');
+}
+
+// Check pro access when pro tools screen is shown
+const origGoScreen = goScreen;
 // ── INIT ──────────────────────────────────────
-loadXP().then(()=>loadSteps());
+loadXP().then(()=>{loadSteps();checkProAccess();});
 </script>
 </body>
 </html>
