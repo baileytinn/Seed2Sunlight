@@ -708,8 +708,8 @@ svg.ring { transform:rotate(-90deg); }
       <a class="resource-item" data-cat="business" href="https://www.fiverr.com" target="_blank">
         <div class="res-icon">⭐</div><div class="res-text"><strong>Fiverr — Sell Your Skills</strong><span>Offer services starting at any price point</span></div><div class="res-arrow">↗</div>
       </a>
-      <a class="resource-item" data-cat="tools" href="https://www.mint.com" target="_blank">
-        <div class="res-icon">📊</div><div class="res-text"><strong>Mint — Free Budget Tracker</strong><span>Track spending and set financial goals</span></div><div class="res-arrow">↗</div>
+      <a class="resource-item" data-cat="tools" href="https://www.nerdwallet.com/app/budget" target="_blank">
+        <div class="res-icon">📊</div><div class="res-text"><strong>NerdWallet — Free Budget Tracker</strong><span>Track spending and set financial goals for free</span></div><div class="res-arrow">↗</div>
       </a>
       <a class="resource-item" data-cat="tools" href="https://www.creditkarma.com" target="_blank">
         <div class="res-icon">💳</div><div class="res-text"><strong>Credit Karma — Free Credit Score</strong><span>Monitor your credit with no hidden fees</span></div><div class="res-arrow">↗</div>
@@ -753,7 +753,6 @@ svg.ring { transform:rotate(-90deg); }
         </div>
       </div>
       <div id="waitlist-form" style="display:flex;flex-direction:column;gap:.6rem;">
-        <input id="waitlist-email" type="email" placeholder="Your email address" style="background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.75rem 1rem;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:600;color:#2d2d2d;outline:none;width:100%;"/>
         <button onclick="joinWaitlist()" style="background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border:none;border-radius:14px;padding:.75rem;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;width:100%;transition:all .18s;">Join the Waitlist 🌱</button>
       </div>
       <div id="waitlist-thanks" style="display:none;text-align:center;padding:.75rem;background:#f0faf3;border-radius:14px;border:1.5px solid #b8e0c4;">
@@ -1186,19 +1185,8 @@ async function setTier(tier,btn){
 loadTier();
 
 // ── WAITLIST ──────────────────────────────────
-async function joinWaitlist(){
-  const emailEl=document.getElementById('waitlist-email');
-  const email=emailEl.value.trim();
-  if(!email||!email.includes('@')){
-    emailEl.style.borderColor='#f07c3a';
-    emailEl.placeholder='Please enter a valid email';
-    return;
-  }
-  try{
-    await window.storage.set('s2s-waitlist-'+Date.now(),JSON.stringify({email,date:new Date().toISOString()}),true);
-  }catch(e){}
-  document.getElementById('waitlist-form').style.display='none';
-  document.getElementById('waitlist-thanks').style.display='block';
+function joinWaitlist(){
+  window.open('https://docs.google.com/forms/d/e/1FAIpQLSc0lfAQX09NH1tR4616rsT9ADeYtmtp4gxkxzUsP_sLKlLUyg/viewform','_blank');
 }
 
 // ── WINS ──────────────────────────────────────
@@ -1248,7 +1236,28 @@ function updateChatLimit(){
   }else{lm.style.display='none';inp.disabled=false;btn.disabled=false;}
 }
 
-const WORKER_URL='https://icy-heart-0670.baileytinn.workers.dev';
+const ANTHROPIC_KEY='YOUR_KEY_HERE';
+const SYSTEM_PROMPT='You are a warm, encouraging coach for people navigating job loss, career transitions, and rebuilding their lives. Keep responses concise, actionable, and supportive. Always give one specific doable action.';
+
+async function callClaude(message){
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':ANTHROPIC_KEY,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({
+      model:'claude-haiku-20240307',
+      max_tokens:300,
+      system:SYSTEM_PROMPT,
+      messages:[{role:'user',content:message}]
+    })
+  });
+  const data=await res.json();
+  return data.content?.[0]?.text||"Still here with you. Try again in a moment.";
+}
 
 async function sendChat(overrideMsg){
   if(currentTier==='free'&&chatCount>=CHAT_LIMIT)return;
@@ -1264,18 +1273,12 @@ async function sendChat(overrideMsg){
   ca.innerHTML+=`<div class="cmsg loading" id="${lid}">Thinking...</div>`;
   ca.scrollTop=ca.scrollHeight;
   try{
-    const res=await fetch(WORKER_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({message:msg})
-    });
-    const data=await res.json();
-    const reply=data.reply||"Still here with you. Try again in a moment.";
+    const reply=await callClaude(msg);
     document.getElementById(lid).remove();
     ca.innerHTML+=`<div class="cmsg ai">${reply}</div>`;
   }catch(e){
     document.getElementById(lid).remove();
-    ca.innerHTML+=`<div class="cmsg ai">Something went wrong — but I'm still here with you. Try again in a moment.</div>`;
+    ca.innerHTML+=`<div class="cmsg ai">Something went wrong — try again in a moment.</div>`;
   }
   sb.disabled=false;ca.scrollTop=ca.scrollHeight;updateChatLimit();
 }
@@ -1293,9 +1296,7 @@ async function sendChatHome(){
   ca.innerHTML+=`<div class="cmsg loading" id="${lid}">Thinking...</div>`;
   ca.scrollTop=ca.scrollHeight;
   try{
-    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});
-    const data=await res.json();
-    const reply=data.reply||"Still here with you. Try again in a moment.";
+    const reply=await callClaude(msg);
     document.getElementById(lid).remove();
     ca.innerHTML+=`<div class="cmsg ai">${reply}</div>`;
   }catch(e){
