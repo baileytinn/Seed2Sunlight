@@ -1236,18 +1236,11 @@ function updateChatLimit(){
   }else{lm.style.display='none';inp.disabled=false;btn.disabled=false;}
 }
 
-const SYSTEM_PROMPT='You are a warm, encouraging coach for people navigating job loss, career transitions, and rebuilding their lives. Keep responses concise, actionable, and supportive. Always give one specific doable action.';
-
 async function callClaude(message){
   const res=await fetch('https://icy-heart-0670.baileytinn.workers.dev/',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-haiku-20240307',
-      max_tokens:300,
-      system:SYSTEM_PROMPT,
-      messages:[{role:'user',content:message}]
-    })
+    body:JSON.stringify({message})
   });
   const data=await res.json();
   return data.content?.[0]?.text||"Still here with you. Try again in a moment.";
