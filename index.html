@@ -493,7 +493,7 @@ svg.ring { transform:rotate(-90deg); }
         <div class="res-text"><strong>SNAP Food Benefits</strong><span>Apply if you earn under ~$1,700/month</span></div>
         <div class="res-arrow">↗</div>
       </a>
-      <a class="resource-item" href="https://liheap.acf.hhs.gov/energy" target="_blank">
+      <a class="resource-item" href="https://liheap.acf.hhs.gov" target="_blank">
         <div class="res-icon">⚡</div>
         <div class="res-text"><strong>LIHEAP — Utility Help</strong><span>Federal heating and cooling assistance</span></div>
         <div class="res-arrow">↗</div>
@@ -1243,7 +1243,7 @@ async function callClaude(message){
     body:JSON.stringify({message})
   });
   const data=await res.json();
-  return data.content?.[0]?.text||"Still here with you. Try again in a moment.";
+  return data.reply||"Still here with you. Try again in a moment.";
 }
 
 async function sendChat(overrideMsg){
