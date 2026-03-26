@@ -956,7 +956,7 @@ window.storage = {
 };
 // ── STATE ─────────────────────────────────────
 let xp=0, chatCount=0, currentTier='free';
-const CHAT_LIMIT=10;
+const CHAT_LIMIT=15;
 
 // ── GREETING ──────────────────────────────────
 const hr=new Date().getHours();
@@ -1170,7 +1170,7 @@ function updateTierUI(){
   if(lm){
     if(currentTier==='free'&&chatCount>=CHAT_LIMIT){
       lm.style.display='block';
-      lm.textContent='10 free questions used today. Upgrade to Pro for unlimited.';
+      lm.textContent="Daily limit reached. Come back tomorrow for more!";
     } else {
       lm.style.display='none';
     }
@@ -1231,7 +1231,7 @@ function updateChatLimit(){
   const inp=document.getElementById('chat-inp');
   const btn=document.getElementById('chat-send');
   if(currentTier==='free'&&chatCount>=CHAT_LIMIT){
-    lm.style.display='block';lm.textContent='5 free questions used today. Upgrade to Pro for unlimited.';
+    lm.style.display='block';lm.textContent="Daily limit reached. Come back tomorrow for more!";
     inp.disabled=true;btn.disabled=true;
   }else{lm.style.display='none';inp.disabled=false;btn.disabled=false;}
 }
