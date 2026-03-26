@@ -1236,6 +1236,14 @@ function updateChatLimit(){
   }else{lm.style.display='none';inp.disabled=false;btn.disabled=false;}
 }
 
+function mdToHtml(t){
+  return t
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^[\*\-] (.+)/gm,'<li>$1</li>')
+    .replace(/\n/g,'<br>');
+}
+
 async function callClaude(message){
   const res=await fetch('https://icy-heart-0670.baileytinn.workers.dev/',{
     method:'POST',
@@ -1243,7 +1251,7 @@ async function callClaude(message){
     body:JSON.stringify({message})
   });
   const data=await res.json();
-  return data.reply||"Still here with you. Try again in a moment.";
+  return mdToHtml(data.reply||"Still here with you. Try again in a moment.");
 }
 
 async function sendChat(overrideMsg){
