@@ -366,7 +366,7 @@ svg.ring { transform:rotate(-90deg); }
 <!-- ══════════════ BUILDING MODE BANNER ══════════════ -->
 <div class="building-banner">
   <div class="bb-dot"></div>
-  <span>✨ Building Mode — We're actively adding features. Your feedback shapes what comes next.</span>
+  <span>🌱 New features dropping soon — your feedback shapes what's next.</span>
 </div>
 
 <!-- ══════════════ HOME SCREEN ══════════════ -->
@@ -775,14 +775,13 @@ svg.ring { transform:rotate(-90deg); }
     <div class="section-card">
       <h3>🌱 What's Coming Next</h3>
       <div style="background:linear-gradient(135deg,#fff8f4,#f0faf3);border-radius:18px;padding:1.2rem 1.3rem;margin-bottom:.75rem;border:1.5px solid #f0d4b8;">
-        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#f07c3a;margin-bottom:.4rem;">✨ Building Mode — Coming Soon</div>
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#f07c3a;margin-bottom:.4rem;">✨ Coming Soon</div>
         <div style="font-size:.85rem;font-weight:600;color:#2d2d2d;line-height:1.65;margin-bottom:.75rem;">We're actively adding features and your feedback shapes what comes next. Join the waitlist to be first in the door — and lock in a founder discount when Pro launches.</div>
         <div style="display:flex;flex-direction:column;gap:.4rem;">
           <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Unlimited AI companion</div>
           <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Weekly coaching check-in</div>
           <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> 90-day goal tracker</div>
           <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Private community</div>
-          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> 1:1 launch strategy session</div>
         </div>
       </div>
       <div id="waitlist-form" style="display:flex;flex-direction:column;gap:.6rem;">
@@ -1063,6 +1062,13 @@ svg.ring { transform:rotate(-90deg); }
 
     </div>
   </div>
+</div>
+
+<!-- ══════════════ PRIVACY FOOTER ══════════════ -->
+<div style="text-align:center;padding:.5rem 1rem .6rem;font-size:.68rem;color:#ccc;font-weight:600;background:white;border-top:1px solid #f0ede8;">
+  <a href="privacy.html" target="_blank" style="color:#bbb;text-decoration:none;">Privacy Policy</a>
+  <span style="margin:0 .4rem;">·</span>
+  <span>© 2026 Seed2Sunlight</span>
 </div>
 
 <!-- ══════════════ BOTTOM NAV ══════════════ -->
@@ -1368,7 +1374,18 @@ async function loadWins(){
 function showEmpty(){document.getElementById('wins-list').innerHTML='<div class="empty-wins">No wins yet — start small. Even "I showed up today" counts. 🌱</div>';}
 function renderWins(wins){
   if(!wins||wins.length===0){showEmpty();return;}
-  document.getElementById('wins-list').innerHTML=wins.slice().reverse().map(w=>`<div class="win-chip"><div class="win-dot"></div><div class="win-body"><p>${w.text}</p><span>${w.date}</span></div></div>`).join('');
+  document.getElementById('wins-list').innerHTML=wins.slice().reverse().map((w,i)=>{
+    const realIdx=wins.length-1-i;
+    return `<div class="win-chip"><div class="win-dot"></div><div class="win-body"><p>${w.text}</p><span>${w.date}</span></div><div onclick="deleteWin(${realIdx})" style="color:#ddd;font-size:.78rem;cursor:pointer;padding:.2rem .3rem;flex-shrink:0;line-height:1;" title="Delete">✕</div></div>`;
+  }).join('');
+  document.getElementById('stat-wins').textContent=wins.length;
+}
+async function deleteWin(idx){
+  let wins=[];
+  try{const r=await window.storage.get('s2s-v3-wins');if(r)wins=JSON.parse(r.value);}catch(e){}
+  wins.splice(idx,1);
+  try{await window.storage.set('s2s-v3-wins',JSON.stringify(wins));}catch(e){}
+  renderWins(wins);
   document.getElementById('stat-wins').textContent=wins.length;
 }
 async function addWin(){
@@ -1483,12 +1500,20 @@ async function logMood(emoji, label){
   const today=todayKey();
   let moods=[];
   try{const r=await window.storage.get('s2s-v3-moods');if(r)moods=JSON.parse(r.value);}catch(e){}
-  // Only one mood per day
-  const alreadyToday=moods.find(m=>m.date===today);
-  if(alreadyToday){
-    document.getElementById('mood-feedback').style.display='block';
-    document.getElementById('mood-feedback').textContent="You've already checked in today. See you tomorrow! 🌱";
-    return;
+  // Allow changing mood same day — remove today's entry if it exists
+  const existingIdx=moods.findIndex(m=>m.date===today);
+  const isChange=existingIdx!==-1;
+  if(isChange){
+    // If clicking the same mood again, just deselect it
+    if(moods[existingIdx].emoji===emoji){
+      moods.splice(existingIdx,1);
+      try{await window.storage.set('s2s-v3-moods',JSON.stringify(moods));}catch(e){}
+      document.querySelectorAll('.mood-btn').forEach(b=>{b.style.background='#fafaf8';b.style.borderColor='#f0ede8';});
+      const fb=document.getElementById('mood-feedback');fb.style.display='none';
+      renderMoodHistory(moods);
+      return;
+    }
+    moods.splice(existingIdx,1);
   }
   moods.push({emoji,label,date:today});
   try{await window.storage.set('s2s-v3-moods',JSON.stringify(moods));}catch(e){}
@@ -1499,11 +1524,11 @@ async function logMood(emoji, label){
   });
   const fb=document.getElementById('mood-feedback');
   fb.style.display='block';
-  fb.textContent=moodMessages[emoji]||'Logged! Keep going. 🌱';
-  addXP(5);
+  fb.textContent=(isChange?'Updated! ':'')+( moodMessages[emoji]||'Logged! Keep going. 🌱');
+  if(!isChange)addXP(5);
   renderMoodHistory(moods);
-  // Auto-send to AI companion
-  setTimeout(()=>sendChat(`I'm feeling ${label} today (${emoji}). Any advice?`),800);
+  // Auto-send to AI companion only on first log, not on change
+  if(!isChange)setTimeout(()=>sendChat(`I'm feeling ${label} today (${emoji}). Any advice?`),800);
 }
 
 function renderMoodHistory(moods){
@@ -1534,7 +1559,7 @@ async function loadMoods(){
           b.style.borderColor=b.dataset.mood===todayMood.emoji?'#5db87a':'#f0ede8';
         });
         document.getElementById('mood-feedback').style.display='block';
-        document.getElementById('mood-feedback').textContent="You've already checked in today. See you tomorrow! 🌱";
+        document.getElementById('mood-feedback').textContent=moodMessages[todayMood.emoji]||'Logged! Tap a different mood to change it. 🌱';
       }
     }
   }catch(e){}
