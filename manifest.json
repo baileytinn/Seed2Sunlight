@@ -1,0 +1,21 @@
+{
+  "name": "Seed2Sunlight Wellness",
+  "short_name": "Seed2Sunlight",
+  "description": "AI-powered wellness and job recovery app for people navigating layoffs. Track habits, get AI coaching, and land faster.",
+  "start_url": "/Seed2Sunlight/",
+  "scope": "/Seed2Sunlight/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff9f0",
+  "theme_color": "#f07c3a",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "lifestyle", "productivity"],
+  "lang": "en-US"
+}
