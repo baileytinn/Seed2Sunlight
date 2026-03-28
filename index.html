@@ -1631,6 +1631,7 @@ async function verifyProAccess() {
 }
 
 
+function showProTab(tab, el) {
   document.querySelectorAll('.pro-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.pro-section').forEach(s => s.classList.remove('active'));
   el.classList.add('active');
