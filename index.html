@@ -366,7 +366,7 @@ svg.ring { transform:rotate(-90deg); }
 <!-- ══════════════ BUILDING MODE BANNER ══════════════ -->
 <div class="building-banner">
   <div class="bb-dot"></div>
-  <span>🌱 New features dropping soon — your feedback shapes what's next.</span>
+  <span>✨ Building Mode — We're actively adding features. Your feedback shapes what comes next.</span>
 </div>
 
 <!-- ══════════════ HOME SCREEN ══════════════ -->
@@ -775,13 +775,14 @@ svg.ring { transform:rotate(-90deg); }
     <div class="section-card">
       <h3>🌱 What's Coming Next</h3>
       <div style="background:linear-gradient(135deg,#fff8f4,#f0faf3);border-radius:18px;padding:1.2rem 1.3rem;margin-bottom:.75rem;border:1.5px solid #f0d4b8;">
-        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#f07c3a;margin-bottom:.4rem;">✨ Coming Soon</div>
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#f07c3a;margin-bottom:.4rem;">✨ Building Mode — Coming Soon</div>
         <div style="font-size:.85rem;font-weight:600;color:#2d2d2d;line-height:1.65;margin-bottom:.75rem;">We're actively adding features and your feedback shapes what comes next. Join the waitlist to be first in the door — and lock in a founder discount when Pro launches.</div>
         <div style="display:flex;flex-direction:column;gap:.4rem;">
           <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Unlimited AI companion</div>
           <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Weekly coaching check-in</div>
           <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> 90-day goal tracker</div>
           <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Private community</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> 1:1 launch strategy session</div>
         </div>
       </div>
       <div id="waitlist-form" style="display:flex;flex-direction:column;gap:.6rem;">
@@ -945,38 +946,31 @@ svg.ring { transform:rotate(-90deg); }
       <p>AI-powered tools to help you land faster and negotiate smarter.</p>
     </div>
 
-    <!-- FREE TIER: show upgrade banner -->
-    <div id="pro-upgrade-banner" style="display:none;">
-      <div class="upgrade-banner">
-        <div class="ub-icon">🔓</div>
-        <h3>Unlock Pro Tools</h3>
-        <p>Get AI-powered resume reviews, cover letters, interview coaching and more.</p>
-        <div class="ub-features">
-          <div class="ub-feat"><span>✓</span> Resume review with AI feedback</div>
-          <div class="ub-feat"><span>✓</span> Custom cover letter generator</div>
-          <div class="ub-feat"><span>✓</span> Interview prep coaching</div>
-          <div class="ub-feat"><span>✓</span> Salary negotiation scripts</div>
-          <div class="ub-feat"><span>✓</span> Crisis mode — first 72 hours</div>
-          <div class="ub-feat"><span>✓</span> Unlimited AI companion chat</div>
-        </div>
-        <div class="ub-price">$4.99<span class="ub-per">/month</span></div>
-        <br>
-        <div style="margin-top:.75rem;">
-          <input type="email" id="pro-email-input" placeholder="Enter your email to get started" style="width:100%;background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.85rem 1rem;font-family:Nunito,sans-serif;font-size:.88rem;font-weight:600;color:#2d2d2d;outline:none;box-sizing:border-box;margin-bottom:.65rem;"/>
-          <a id="pro-stripe-btn" href="https://buy.stripe.com/14AaEWfmj3SU7a922FdQQ00" target="_blank" onclick="saveProEmail()" style="display:block;background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border:none;border-radius:14px;padding:.85rem 2rem;font-family:Nunito,sans-serif;font-size:.9rem;font-weight:800;cursor:pointer;width:100%;margin-top:.25rem;transition:all .18s;text-align:center;text-decoration:none;">Upgrade to Pro — $4.99/mo</a>
-          <div style="font-size:.7rem;color:#bbb;margin-top:.5rem;font-weight:600;text-align:center;">Secure payment powered by Stripe</div>
-          <div style="margin-top:.75rem;border-top:1px solid #f0ede8;padding-top:.75rem;">
-            <div style="font-size:.78rem;font-weight:700;color:#2d2d2d;margin-bottom:.4rem;">Already paid? Activate your Pro access:</div>
-            <input type="email" id="pro-verify-email" placeholder="Enter the email you paid with" style="width:100%;background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.75rem 1rem;font-family:Nunito,sans-serif;font-size:.84rem;font-weight:600;color:#2d2d2d;outline:none;box-sizing:border-box;margin-bottom:.5rem;"/>
-            <button onclick="verifyProAccess()" style="width:100%;background:white;color:#5db87a;border:1.5px solid #5db87a;border-radius:14px;padding:.65rem;font-family:Nunito,sans-serif;font-size:.82rem;font-weight:800;cursor:pointer;">Verify & Activate Pro</button>
-            <div id="verify-msg" style="font-size:.75rem;color:#aaa;margin-top:.4rem;text-align:center;font-weight:600;"></div>
+    <!-- FREE TIER: compact upgrade prompt (shown above tabs) -->
+    <div id="pro-upgrade-banner">
+      <div style="background:linear-gradient(135deg,#fff8f4,#f0faf3);border:1.5px solid #f0d4b8;border-radius:18px;padding:1rem 1.2rem;">
+        <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.65rem;">
+          <span style="font-size:1.5rem;">🔓</span>
+          <div style="flex:1;">
+            <div style="font-size:.9rem;font-weight:900;color:#2d2d2d;">Unlock Pro — $4.99/mo</div>
+            <div style="font-size:.73rem;color:#aaa;font-weight:600;margin-top:.1rem;">Try any tool below, then upgrade to run it.</div>
           </div>
+          <a id="pro-stripe-btn" href="https://buy.stripe.com/14AaEWfmj3SU7a922FdQQ00" target="_blank" onclick="saveProEmail()" style="background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border:none;border-radius:12px;padding:.5rem .85rem;font-family:Nunito,sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;white-space:nowrap;text-decoration:none;flex-shrink:0;">Upgrade ➤</a>
         </div>
+        <input type="email" id="pro-email-input" placeholder="Your email (saves with payment)" style="width:100%;background:white;border:1.5px solid #f0ede8;border-radius:12px;padding:.65rem .9rem;font-family:Nunito,sans-serif;font-size:.82rem;font-weight:600;color:#2d2d2d;outline:none;box-sizing:border-box;margin-bottom:.45rem;"/>
+        <details style="margin-top:.1rem;">
+          <summary style="font-size:.73rem;color:#aaa;font-weight:700;cursor:pointer;list-style:none;padding:.2rem 0;">Already paid? Activate here ▾</summary>
+          <div style="margin-top:.5rem;display:flex;flex-direction:column;gap:.4rem;">
+            <input type="email" id="pro-verify-email" placeholder="Email you paid with" style="width:100%;background:white;border:1.5px solid #f0ede8;border-radius:12px;padding:.65rem .9rem;font-family:Nunito,sans-serif;font-size:.82rem;font-weight:600;color:#2d2d2d;outline:none;box-sizing:border-box;"/>
+            <button onclick="verifyProAccess()" style="width:100%;background:white;color:#5db87a;border:1.5px solid #5db87a;border-radius:12px;padding:.6rem;font-family:Nunito,sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;">Verify & Activate Pro</button>
+            <div id="verify-msg" style="font-size:.73rem;color:#aaa;text-align:center;font-weight:600;"></div>
+          </div>
+        </details>
       </div>
     </div>
 
-    <!-- PRO TIER: show tools -->
-    <div id="pro-tools-content" style="display:none;">
+    <!-- TOOLS — always visible; teaser fires on run for free users -->
+    <div id="pro-tools-content">
 
       <div class="pro-tabs" id="pro-tabs">
         <div class="pro-tab active" onclick="showProTab('crisis',this)">🚨 Crisis Mode</div>
@@ -1062,13 +1056,6 @@ svg.ring { transform:rotate(-90deg); }
 
     </div>
   </div>
-</div>
-
-<!-- ══════════════ PRIVACY FOOTER ══════════════ -->
-<div style="text-align:center;padding:.5rem 1rem .6rem;font-size:.68rem;color:#ccc;font-weight:600;background:white;border-top:1px solid #f0ede8;">
-  <a href="privacy.html" target="_blank" style="color:#bbb;text-decoration:none;">Privacy Policy</a>
-  <span style="margin:0 .4rem;">·</span>
-  <span>© 2026 Seed2Sunlight</span>
 </div>
 
 <!-- ══════════════ BOTTOM NAV ══════════════ -->
@@ -1374,18 +1361,7 @@ async function loadWins(){
 function showEmpty(){document.getElementById('wins-list').innerHTML='<div class="empty-wins">No wins yet — start small. Even "I showed up today" counts. 🌱</div>';}
 function renderWins(wins){
   if(!wins||wins.length===0){showEmpty();return;}
-  document.getElementById('wins-list').innerHTML=wins.slice().reverse().map((w,i)=>{
-    const realIdx=wins.length-1-i;
-    return `<div class="win-chip"><div class="win-dot"></div><div class="win-body"><p>${w.text}</p><span>${w.date}</span></div><div onclick="deleteWin(${realIdx})" style="color:#ddd;font-size:.78rem;cursor:pointer;padding:.2rem .3rem;flex-shrink:0;line-height:1;" title="Delete">✕</div></div>`;
-  }).join('');
-  document.getElementById('stat-wins').textContent=wins.length;
-}
-async function deleteWin(idx){
-  let wins=[];
-  try{const r=await window.storage.get('s2s-v3-wins');if(r)wins=JSON.parse(r.value);}catch(e){}
-  wins.splice(idx,1);
-  try{await window.storage.set('s2s-v3-wins',JSON.stringify(wins));}catch(e){}
-  renderWins(wins);
+  document.getElementById('wins-list').innerHTML=wins.slice().reverse().map(w=>`<div class="win-chip"><div class="win-dot"></div><div class="win-body"><p>${w.text}</p><span>${w.date}</span></div></div>`).join('');
   document.getElementById('stat-wins').textContent=wins.length;
 }
 async function addWin(){
@@ -1500,20 +1476,12 @@ async function logMood(emoji, label){
   const today=todayKey();
   let moods=[];
   try{const r=await window.storage.get('s2s-v3-moods');if(r)moods=JSON.parse(r.value);}catch(e){}
-  // Allow changing mood same day — remove today's entry if it exists
-  const existingIdx=moods.findIndex(m=>m.date===today);
-  const isChange=existingIdx!==-1;
-  if(isChange){
-    // If clicking the same mood again, just deselect it
-    if(moods[existingIdx].emoji===emoji){
-      moods.splice(existingIdx,1);
-      try{await window.storage.set('s2s-v3-moods',JSON.stringify(moods));}catch(e){}
-      document.querySelectorAll('.mood-btn').forEach(b=>{b.style.background='#fafaf8';b.style.borderColor='#f0ede8';});
-      const fb=document.getElementById('mood-feedback');fb.style.display='none';
-      renderMoodHistory(moods);
-      return;
-    }
-    moods.splice(existingIdx,1);
+  // Only one mood per day
+  const alreadyToday=moods.find(m=>m.date===today);
+  if(alreadyToday){
+    document.getElementById('mood-feedback').style.display='block';
+    document.getElementById('mood-feedback').textContent="You've already checked in today. See you tomorrow! 🌱";
+    return;
   }
   moods.push({emoji,label,date:today});
   try{await window.storage.set('s2s-v3-moods',JSON.stringify(moods));}catch(e){}
@@ -1524,11 +1492,11 @@ async function logMood(emoji, label){
   });
   const fb=document.getElementById('mood-feedback');
   fb.style.display='block';
-  fb.textContent=(isChange?'Updated! ':'')+( moodMessages[emoji]||'Logged! Keep going. 🌱');
-  if(!isChange)addXP(5);
+  fb.textContent=moodMessages[emoji]||'Logged! Keep going. 🌱';
+  addXP(5);
   renderMoodHistory(moods);
-  // Auto-send to AI companion only on first log, not on change
-  if(!isChange)setTimeout(()=>sendChat(`I'm feeling ${label} today (${emoji}). Any advice?`),800);
+  // Auto-send to AI companion
+  setTimeout(()=>sendChat(`I'm feeling ${label} today (${emoji}). Any advice?`),800);
 }
 
 function renderMoodHistory(moods){
@@ -1559,7 +1527,7 @@ async function loadMoods(){
           b.style.borderColor=b.dataset.mood===todayMood.emoji?'#5db87a':'#f0ede8';
         });
         document.getElementById('mood-feedback').style.display='block';
-        document.getElementById('mood-feedback').textContent=moodMessages[todayMood.emoji]||'Logged! Tap a different mood to change it. 🌱';
+        document.getElementById('mood-feedback').textContent="You've already checked in today. See you tomorrow! 🌱";
       }
     }
   }catch(e){}
@@ -1669,23 +1637,72 @@ function showProTab(tab, el) {
 
 function checkProAccess() {
   const banner = document.getElementById('pro-upgrade-banner');
-  const tools = document.getElementById('pro-tools-content');
+  // Banner is always shown for free users, hidden for pro users
   if (currentTier === 'pro') {
     if(banner) banner.style.display = 'none';
-    if(tools) tools.style.display = 'block';
   } else {
     if(banner) banner.style.display = 'block';
-    if(tools) tools.style.display = 'none';
   }
 }
 
-function activatePro() {
-  // Stripe not live yet - preview mode
-  currentTier = 'pro';
-  try { window.storage.set('s2s-v3-tier', 'pro'); } catch(e) {}
-  checkProAccess();
-  updateChatLimit();
-}
+// Sample teaser results shown to free users
+const proTeasers = {
+  crisis: `<strong>Your 72-Hour Action Plan</strong><br><br>
+<strong>Hour 1 — Do this right now:</strong><br>
+1. File for unemployment at your state's website. Benefits start from your filing date — every day you wait is money lost.<br>
+2. Text or email HR: ask for your final paycheck date and any severance details in writing.<br><br>
+<strong>Day 1 — Stabilize your cash:</strong><br>
+3. List every bill due in the next 30 days. Identify which ones can be paused, reduced, or negotiated.<br>
+4. Check healthcare.gov — job loss qualifies you for a Special Enrollment Period...<br><br>
+<div style="margin-top:.75rem;padding:.75rem;background:rgba(240,124,58,.08);border-radius:12px;border:1.5px solid #f0d4b8;text-align:center;">
+  <div style="font-size:.82rem;font-weight:800;color:#f07c3a;margin-bottom:.3rem;">🔓 Steps 5–10 are waiting for you</div>
+  <div style="font-size:.75rem;color:#aaa;font-weight:600;margin-bottom:.6rem;">Upgrade to Pro to get your complete personalized plan.</div>
+  <a href="https://buy.stripe.com/14AaEWfmj3SU7a922FdQQ00" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border-radius:10px;padding:.5rem 1.2rem;font-family:Nunito,sans-serif;font-size:.82rem;font-weight:800;text-decoration:none;">Unlock for $4.99/mo ➤</a>
+</div>`,
+
+  resume: `<strong>Resume Feedback Preview</strong><br><br>
+✓ <strong>Strong opening</strong> — your summary clearly states your role and years of experience.<br>
+⚠ <strong>Impact statements are weak</strong> — most bullets describe duties, not results. Example: "Managed social media" → "Grew Instagram following 40% in 6 months."<br>
+⚠ <strong>Missing keywords</strong> — job postings for this role typically include terms like [industry keywords] that aren't in your resume...<br><br>
+<div style="margin-top:.75rem;padding:.75rem;background:rgba(240,124,58,.08);border-radius:12px;border:1.5px solid #f0d4b8;text-align:center;">
+  <div style="font-size:.82rem;font-weight:800;color:#f07c3a;margin-bottom:.3rem;">🔓 Full review with 8 more specific suggestions</div>
+  <div style="font-size:.75rem;color:#aaa;font-weight:600;margin-bottom:.6rem;">Upgrade to Pro for your complete resume analysis.</div>
+  <a href="https://buy.stripe.com/14AaEWfmj3SU7a922FdQQ00" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border-radius:10px;padding:.5rem 1.2rem;font-family:Nunito,sans-serif;font-size:.82rem;font-weight:800;text-decoration:none;">Unlock for $4.99/mo ➤</a>
+</div>`,
+
+  coverletter: `<strong>Your Cover Letter — Preview</strong><br><br>
+Dear Hiring Manager,<br><br>
+I'm writing to express my genuine interest in this role. After [X] years working in [field], I've developed a track record of [key skill] that I believe directly aligns with what your team needs right now.<br><br>
+What draws me to your company specifically is [company detail]. I don't apply to roles indiscriminately — I apply when I see a real fit...<br><br>
+<div style="margin-top:.75rem;padding:.75rem;background:rgba(240,124,58,.08);border-radius:12px;border:1.5px solid #f0d4b8;text-align:center;">
+  <div style="font-size:.82rem;font-weight:800;color:#f07c3a;margin-bottom:.3rem;">🔓 Get your complete personalized cover letter</div>
+  <div style="font-size:.75rem;color:#aaa;font-weight:600;margin-bottom:.6rem;">Pro generates a full 3-4 paragraph letter tailored to the exact job.</div>
+  <a href="https://buy.stripe.com/14AaEWfmj3SU7a922FdQQ00" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border-radius:10px;padding:.5rem 1.2rem;font-family:Nunito,sans-serif;font-size:.82rem;font-weight:800;text-decoration:none;">Unlock for $4.99/mo ➤</a>
+</div>`,
+
+  interview: `<strong>Interview Prep — Top 3 Questions</strong><br><br>
+<strong>1. "Tell me about yourself."</strong><br>
+Framework: Present → Past → Future. Keep it to 90 seconds. End with why you want this specific role.<br><br>
+<strong>2. "Why are you leaving your current/last job?"</strong><br>
+Framework: Be honest but forward-looking. Never speak negatively about a prior employer. Focus on what you're moving toward, not away from.<br><br>
+<strong>3. "What's your greatest weakness?"</strong><br>
+Framework: Pick a real weakness you've actively worked on. Show growth...<br><br>
+<div style="margin-top:.75rem;padding:.75rem;background:rgba(240,124,58,.08);border-radius:12px;border:1.5px solid #f0d4b8;text-align:center;">
+  <div style="font-size:.82rem;font-weight:800;color:#f07c3a;margin-bottom:.3rem;">🔓 Get all 5 questions + answer frameworks + questions to ask them</div>
+  <div style="font-size:.75rem;color:#aaa;font-weight:600;margin-bottom:.6rem;">Pro tailors the prep to your specific role and concerns.</div>
+  <a href="https://buy.stripe.com/14AaEWfmj3SU7a922FdQQ00" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border-radius:10px;padding:.5rem 1.2rem;font-family:Nunito,sans-serif;font-size:.82rem;font-weight:800;text-decoration:none;">Unlock for $4.99/mo ➤</a>
+</div>`,
+
+  salary: `<strong>Negotiation Script — Opening Move</strong><br><br>
+When they give you the offer, don't respond immediately. Pause, then say:<br><br>
+<em>"Thank you so much — I'm genuinely excited about this role. I'd like to take a day to review the full offer. Can I get back to you by [tomorrow/Friday]?"</em><br><br>
+This does two things: it shows you take decisions seriously, and it gives you time to research and prepare your counter...<br><br>
+<div style="margin-top:.75rem;padding:.75rem;background:rgba(240,124,58,.08);border-radius:12px;border:1.5px solid #f0d4b8;text-align:center;">
+  <div style="font-size:.82rem;font-weight:800;color:#f07c3a;margin-bottom:.3rem;">🔓 Get your complete word-for-word negotiation script</div>
+  <div style="font-size:.75rem;color:#aaa;font-weight:600;margin-bottom:.6rem;">Including how to anchor high, handle pushback, and when to accept.</div>
+  <a href="https://buy.stripe.com/14AaEWfmj3SU7a922FdQQ00" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border-radius:10px;padding:.5rem 1.2rem;font-family:Nunito,sans-serif;font-size:.82rem;font-weight:800;text-decoration:none;">Unlock for $4.99/mo ➤</a>
+</div>`
+};
 
 const proPrompts = {
   crisis: (input) => `You are an emergency financial coach. Someone just told you: "${input}". Give them a calm, specific, numbered action plan for the next 72 hours. Be warm but direct. Focus on the most urgent financial steps first. Keep it practical and actionable.`,
@@ -1725,6 +1742,17 @@ async function runProTool(tool) {
     const target = document.getElementById('salary-target').value.trim();
     if (!offer) { alert('Please describe the offer you received.'); return; }
     prompt = proPrompts.salary(offer, target);
+  }
+
+  // Free users get a teaser result with upgrade prompt
+  if (currentTier !== 'pro') {
+    loadingEl.classList.add('visible');
+    resultEl.classList.remove('visible');
+    await new Promise(r => setTimeout(r, 900)); // brief "thinking" pause for authenticity
+    loadingEl.classList.remove('visible');
+    resultEl.innerHTML = proTeasers[tool] || 'Upgrade to Pro to use this tool.';
+    resultEl.classList.add('visible');
+    return;
   }
 
   loadingEl.classList.add('visible');
