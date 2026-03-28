@@ -778,7 +778,7 @@ svg.ring { transform:rotate(-90deg); }
         <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#f07c3a;margin-bottom:.4rem;">✨ Building Mode — Coming Soon</div>
         <div style="font-size:.85rem;font-weight:600;color:#2d2d2d;line-height:1.65;margin-bottom:.75rem;">We're actively adding features and your feedback shapes what comes next. Join the waitlist to be first in the door — and lock in a founder discount when Pro launches.</div>
         <div style="display:flex;flex-direction:column;gap:.4rem;">
-          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Unlimited AI companion</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> 100 AI messages/day (vs 15 free)</div>
           <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Weekly coaching check-in</div>
           <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> 90-day goal tracker</div>
           <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Private community</div>
@@ -1120,6 +1120,7 @@ window.storage = {
 // ── STATE ─────────────────────────────────────
 let xp=0, chatCount=0, currentTier='free';
 const CHAT_LIMIT=15;
+const PRO_CHAT_LIMIT=100;
 
 // ── GREETING ──────────────────────────────────
 const hr=new Date().getHours();
@@ -1334,7 +1335,7 @@ function updateTierUI(){
   if(lm){
     if(currentTier==='free'&&chatCount>=CHAT_LIMIT){
       lm.style.display='block';
-      lm.textContent="Daily limit reached. Come back tomorrow for more!";
+      lm.textContent=currentTier==='pro'?"You've reached your 100 message daily limit. Resets at midnight.":"Daily limit reached (15/15). Upgrade to Pro for 100 messages/day.";
     } else {
       lm.style.display='none';
     }
@@ -1394,10 +1395,17 @@ function updateChatLimit(){
   const lm=document.getElementById('chat-limit');
   const inp=document.getElementById('chat-inp');
   const btn=document.getElementById('chat-send');
-  if(currentTier==='free'&&chatCount>=CHAT_LIMIT){
-    lm.style.display='block';lm.textContent="Daily limit reached. Come back tomorrow for more!";
+  const limit=currentTier==='pro'?PRO_CHAT_LIMIT:CHAT_LIMIT;
+  const remaining=limit-chatCount;
+  if(remaining<=0){
+    lm.style.display='block';
+    lm.textContent=currentTier==='pro'?"You've reached your 100 message daily limit. Resets at midnight. 🌱":"Daily limit reached (15/15). Upgrade to Pro for 100 messages/day.";
     inp.disabled=true;btn.disabled=true;
-  }else{lm.style.display='none';inp.disabled=false;btn.disabled=false;}
+  }else{
+    lm.style.display='block';
+    lm.textContent=currentTier==='pro'?`${chatCount} of 100 messages used today`:`${chatCount} of 15 free messages used today · Pro gets 100/day`;
+    inp.disabled=false;btn.disabled=false;
+  }
 }
 
 function mdToHtml(t){
@@ -1419,7 +1427,8 @@ async function callClaude(message){
 }
 
 async function sendChat(overrideMsg){
-  if(currentTier==='free'&&chatCount>=CHAT_LIMIT)return;
+  const activeLimit=currentTier==='pro'?PRO_CHAT_LIMIT:CHAT_LIMIT;
+  if(chatCount>=activeLimit)return;
   const inp=document.getElementById('chat-inp');
   const msg=overrideMsg||inp.value.trim();
   if(!msg)return;
@@ -1443,7 +1452,8 @@ async function sendChat(overrideMsg){
 }
 
 async function sendChatHome(){
-  if(currentTier==='free'&&chatCount>=CHAT_LIMIT)return;
+  const activeLimitH=currentTier==='pro'?PRO_CHAT_LIMIT:CHAT_LIMIT;
+  if(chatCount>=activeLimitH)return;
   const inp=document.getElementById('chat-inp-home');
   const msg=inp.value.trim();if(!msg)return;
   const ca=document.getElementById('chat-msgs-home');
