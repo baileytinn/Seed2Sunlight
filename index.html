@@ -957,9 +957,18 @@ svg.ring { transform:rotate(-90deg); }
           <div class="ub-feat"><span>✓</span> Unlimited AI companion chat</div>
         </div>
         <div class="ub-price">$4.99<span class="ub-per">/month</span></div>
-        <br><br>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeeGH6dP7O-kotugXATHLsKjIXDQVn1RGMWfW2JyayBVYWEFg/viewform?usp=publish-editor" target="_blank" style="display:block;background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border:none;border-radius:14px;padding:.85rem 2rem;font-family:Nunito,sans-serif;font-size:.9rem;font-weight:800;cursor:pointer;width:100%;margin-top:.5rem;transition:all .18s;text-align:center;text-decoration:none;">Join the Pro Waitlist — Free</a>
-        <div style="font-size:.7rem;color:#bbb;margin-top:.5rem;font-weight:600;text-align:center;">Pro launching soon at $4.99/month — be first in line.</div>
+        <br>
+        <div style="margin-top:.75rem;">
+          <input type="email" id="pro-email-input" placeholder="Enter your email to get started" style="width:100%;background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.85rem 1rem;font-family:Nunito,sans-serif;font-size:.88rem;font-weight:600;color:#2d2d2d;outline:none;box-sizing:border-box;margin-bottom:.65rem;"/>
+          <a id="pro-stripe-btn" href="https://buy.stripe.com/14AaEWfmj3SU7a922FdQQ00" target="_blank" onclick="saveProEmail()" style="display:block;background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border:none;border-radius:14px;padding:.85rem 2rem;font-family:Nunito,sans-serif;font-size:.9rem;font-weight:800;cursor:pointer;width:100%;margin-top:.25rem;transition:all .18s;text-align:center;text-decoration:none;">Upgrade to Pro — $4.99/mo</a>
+          <div style="font-size:.7rem;color:#bbb;margin-top:.5rem;font-weight:600;text-align:center;">Secure payment powered by Stripe</div>
+          <div style="margin-top:.75rem;border-top:1px solid #f0ede8;padding-top:.75rem;">
+            <div style="font-size:.78rem;font-weight:700;color:#2d2d2d;margin-bottom:.4rem;">Already paid? Activate your Pro access:</div>
+            <input type="email" id="pro-verify-email" placeholder="Enter the email you paid with" style="width:100%;background:#fafaf8;border:1.5px solid #f0ede8;border-radius:14px;padding:.75rem 1rem;font-family:Nunito,sans-serif;font-size:.84rem;font-weight:600;color:#2d2d2d;outline:none;box-sizing:border-box;margin-bottom:.5rem;"/>
+            <button onclick="verifyProAccess()" style="width:100%;background:white;color:#5db87a;border:1.5px solid #5db87a;border-radius:14px;padding:.65rem;font-family:Nunito,sans-serif;font-size:.82rem;font-weight:800;cursor:pointer;">Verify & Activate Pro</button>
+            <div id="verify-msg" style="font-size:.75rem;color:#aaa;margin-top:.4rem;text-align:center;font-weight:600;"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1587,7 +1596,41 @@ loadJobs();
 
 
 // ── PRO TOOLS ──────────────────────────────────
-function showProTab(tab, el) {
+function saveProEmail() {
+  const email = document.getElementById('pro-email-input').value.trim();
+  if (email) {
+    try { localStorage.setItem('s2s-pro-email', email); } catch(e) {}
+  }
+}
+
+async function verifyProAccess() {
+  const email = document.getElementById('pro-verify-email').value.trim();
+  const msg = document.getElementById('verify-msg');
+  if (!email) { msg.textContent = 'Please enter your email.'; msg.style.color = '#f07c3a'; return; }
+  msg.textContent = 'Checking...'; msg.style.color = '#aaa';
+  try {
+    const res = await fetch('https://icy-heart-0670.baileytinn.workers.dev/check-pro', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (data.pro) {
+      currentTier = 'pro';
+      try { localStorage.setItem('s2s-v3-tier', 'pro'); localStorage.setItem('s2s-pro-email', email); } catch(e) {}
+      checkProAccess();
+      updateChatLimit();
+      msg.textContent = '✓ Pro activated! Welcome.'; msg.style.color = '#5db87a';
+    } else {
+      msg.textContent = 'No Pro subscription found for that email. Please check your email or complete payment above.';
+      msg.style.color = '#f07c3a';
+    }
+  } catch(e) {
+    msg.textContent = 'Something went wrong. Please try again.'; msg.style.color = '#f07c3a';
+  }
+}
+
+
   document.querySelectorAll('.pro-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.pro-section').forEach(s => s.classList.remove('active'));
   el.classList.add('active');
