@@ -2,15 +2,15 @@
   "name": "Seed2Sunlight Wellness",
   "short_name": "Seed2Sunlight",
   "description": "AI-powered financial wellness and job recovery app. Track habits, get coaching, and navigate hardship with daily guidance.",
-  "start_url": "/Seed2Sunlight/",
-  "scope": "/Seed2Sunlight/",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#fff9f0",
   "theme_color": "#f07c3a",
   "orientation": "portrait",
   "lang": "en",
   "dir": "ltr",
-  "id": "com.seed2sunlight.app",
+  "id": "/",
   "icons": [
     {
       "src": "icon-192.png",
