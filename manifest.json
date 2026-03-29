@@ -5,12 +5,16 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "background_color": "#fff9f0",
   "theme_color": "#f07c3a",
   "orientation": "portrait",
   "lang": "en",
   "dir": "ltr",
   "id": "/",
+  "categories": ["health", "finance", "lifestyle"],
+  "iarc_rating_id": "",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icon-192.png",
@@ -25,6 +29,29 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [],
-  "categories": ["health", "finance", "lifestyle"]
+  "screenshots": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Seed2Sunlight Home Screen"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Track Progress",
+      "short_name": "Progress",
+      "description": "Log your daily wins and mood",
+      "url": "/?screen=progress",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Pro Tools",
+      "short_name": "Pro Tools",
+      "description": "AI-powered job recovery tools",
+      "url": "/?screen=protools",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
 }
