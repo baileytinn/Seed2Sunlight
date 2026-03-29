@@ -269,15 +269,7 @@ svg.ring { transform:rotate(-90deg); }
 .mode-content { display:none; }
 .mode-content.active { display:block; }
 
-/* ── TIER BADGE ── */
-.tier-row { display:flex; gap:.5rem; justify-content:center; margin-bottom:.5rem; }
-.tier-btn { padding:.38rem .9rem; border-radius:20px; font-size:.75rem; font-weight:800; cursor:pointer; border:2px solid transparent; transition:all .18s; font-family:'Nunito',sans-serif; }
-.tier-btn.free { border-color:#ddd; color:#aaa; background:white; }
-.tier-btn.pro { border-color:#5db87a; color:#5db87a; background:white; }
-.tier-btn.premium { border-color:#f5c842; color:#c49800; background:white; }
-.tier-btn.active.free { background:#ddd; color:white; }
-.tier-btn.active.pro { background:#5db87a; color:white; }
-.tier-btn.active.premium { background:#f5c842; color:#5a4500; }
+
 
 /* ── LOCK ── */
 .locked-section { position:relative; border-radius:22px; overflow:hidden; }
@@ -1333,9 +1325,6 @@ async function loadTier(){
 }
 
 function updateTierUI(){
-  document.querySelectorAll('.tier-btn').forEach(b=>b.classList.remove('active'));
-  const activeBtn=document.querySelector('.tier-btn.'+currentTier);
-  if(activeBtn)activeBtn.classList.add('active');
   // Update chat limit display
   const lm=document.getElementById('chat-limit');
   if(lm){
@@ -1348,11 +1337,6 @@ function updateTierUI(){
   }
 }
 
-async function setTier(tier,btn){
-  currentTier=tier;
-  try{await window.storage.set('s2s-v3-tier',tier);}catch(e){}
-  updateTierUI();
-}
 loadTier();
 
 // ── WAITLIST ──────────────────────────────────
