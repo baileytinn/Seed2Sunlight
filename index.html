@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seed2Sunlight Wellness</title>
+<title>Seed2Sunlight</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#f07c3a">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1191,7 +1191,7 @@ function goScreen(id,el){
   try{
     const last=localStorage.getItem('s2s-last-screen');
     if(last&&document.getElementById('screen-'+last)){
-      const navMap={home:0,finance:1,mindset:2,progress:3,resources:4};
+      const navMap={home:0,finance:1,mindset:2,progress:3,resources:4,scripts:1,jobs:1,protools:4};
       const navItems=document.querySelectorAll('.nav-item');
       document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
       navItems.forEach(n=>n.classList.remove('active'));
@@ -1497,7 +1497,7 @@ async function sendChatHome(){
     document.getElementById(lid).remove();
     ca.innerHTML+=`<div class="cmsg ai">Something went wrong — try again in a moment.</div>`;
   }
-  sb.disabled=false;ca.scrollTop=ca.scrollHeight;
+  sb.disabled=false;ca.scrollTop=ca.scrollHeight;updateChatLimit();
 }
 const moodMessages={
   '😞':"Rough days are real. You don't have to fix everything today — just do one small thing. 💙",
@@ -1808,15 +1808,13 @@ async function runProTool(tool) {
   loadingEl.classList.remove('visible');
 }
 
-// Check pro access when pro tools screen is shown
-const origGoScreen = goScreen;
 // ── INIT ──────────────────────────────────────
 loadXP().then(()=>{loadSteps();checkProAccess();});
 </script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/Seed2Sunlight/sw.js')
+    navigator.serviceWorker.register('/sw.js')
       .then(reg => console.log('SW registered'))
       .catch(err => console.log('SW error:', err));
   });
