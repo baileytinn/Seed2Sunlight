@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.seed2sunlight.twa",
+        "sha256_cert_fingerprints": ["41:BC:80:BD:ED:9B:2E:5B:06:06:B3:15:1C:A6:0D:D4:F4:3C:47:8D:74:7E:F0:C0:F8:E5:9C:8E:6F:DA:CD:E8"]
+      }
+    }]
