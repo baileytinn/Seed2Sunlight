@@ -11,7 +11,17 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seed2Sunlight</title>
+<title>Seed2Sunlight — Free AI Job Search Tools After a Layoff</title>
+<meta name="description" content="Lost your job? Seed2Sunlight gives you free AI-powered tools for resume review, cover letters, interview prep, salary negotiation, and crisis mode. Free, no download, works in your browser.">
+<meta property="og:title" content="Seed2Sunlight — Free AI Job Search Tools After a Layoff">
+<meta property="og:description" content="Lost your job? Get AI-powered resume review, cover letters, interview prep, salary negotiation, and crisis mode. Free to start, no download needed.">
+<meta property="og:url" content="https://seed2sunlight.com">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://seed2sunlight.com/icon-512.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Seed2Sunlight — Free AI Job Search Tools After a Layoff">
+<meta name="twitter:description" content="Lost your job? Get AI-powered resume review, cover letters, interview prep, salary negotiation, and crisis mode. Free to start.">
+<meta name="twitter:image" content="https://seed2sunlight.com/icon-512.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#f07c3a">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -236,6 +246,13 @@ svg.ring { transform:rotate(-90deg); }
 .win-body p { font-size:.84rem; font-weight:700; color:#2d2d2d; line-height:1.4; }
 .win-body span { font-size:.68rem; color:#bbb; }
 .empty-wins { text-align:center; color:#ccc; font-size:.82rem; font-weight:600; padding:.5rem 0; }
+
+/* ── QUIZ ── */
+.quiz-opt { width:100%; background:#fafaf8; border:1.5px solid #f0ede8; border-radius:14px; padding:.65rem 1rem; font-family:'Nunito',sans-serif; font-size:.83rem; font-weight:700; color:#2d2d2d; cursor:pointer; text-align:left; transition:all .18s; }
+.quiz-opt:hover { border-color:#f07c3a; background:#fff8f4; }
+.quiz-dot { width:8px; height:8px; border-radius:50%; background:#eee; transition:all .18s; }
+.quiz-dot.active { background:#f07c3a; }
+.star.selected { color:#f5c842; }
 
 /* ── BUDGET ── */
 .budget-row { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-bottom:.65rem; }
@@ -470,17 +487,95 @@ svg.ring { transform:rotate(-90deg); }
       <button class="quote-next" onclick="nextQuote()">Next quote →</button>
     </div>
 
+    <!-- JOB SEARCH READINESS QUIZ -->
+    <div class="section-card" id="quiz-card">
+      <h3>🎯 Job Search Readiness Quiz</h3>
+      <div style="font-size:.78rem;color:#aaa;font-weight:600;margin-bottom:.85rem;">5 quick questions. Find out which tool will help you most right now.</div>
+      <div id="quiz-body">
+        <div id="quiz-q1">
+          <div style="font-size:.88rem;font-weight:800;color:#2d2d2d;margin-bottom:.65rem;">1. How long ago did you lose your job?</div>
+          <div style="display:flex;flex-direction:column;gap:.4rem;">
+            <button class="quiz-opt" onclick="quizAnswer(1,'crisis')">Within the last 48 hours</button>
+            <button class="quiz-opt" onclick="quizAnswer(1,'crisis')">Within the last week</button>
+            <button class="quiz-opt" onclick="quizAnswer(1,'resume')">1–4 weeks ago</button>
+            <button class="quiz-opt" onclick="quizAnswer(1,'salary')">Over a month ago</button>
+          </div>
+        </div>
+        <div id="quiz-q2" style="display:none;">
+          <div style="font-size:.88rem;font-weight:800;color:#2d2d2d;margin-bottom:.65rem;">2. What feels most overwhelming right now?</div>
+          <div style="display:flex;flex-direction:column;gap:.4rem;">
+            <button class="quiz-opt" onclick="quizAnswer(2,'crisis')">I don't know where to start</button>
+            <button class="quiz-opt" onclick="quizAnswer(2,'resume')">My resume feels outdated</button>
+            <button class="quiz-opt" onclick="quizAnswer(2,'coverletter')">Writing cover letters for every job</button>
+            <button class="quiz-opt" onclick="quizAnswer(2,'interview')">Nerves about interviews</button>
+            <button class="quiz-opt" onclick="quizAnswer(2,'salary')">I have an offer but don't know what to say</button>
+          </div>
+        </div>
+        <div id="quiz-q3" style="display:none;">
+          <div style="font-size:.88rem;font-weight:800;color:#2d2d2d;margin-bottom:.65rem;">3. How many jobs have you applied to so far?</div>
+          <div style="display:flex;flex-direction:column;gap:.4rem;">
+            <button class="quiz-opt" onclick="quizAnswer(3,'crisis')">None yet</button>
+            <button class="quiz-opt" onclick="quizAnswer(3,'resume')">1–5</button>
+            <button class="quiz-opt" onclick="quizAnswer(3,'interview')">6–20</button>
+            <button class="quiz-opt" onclick="quizAnswer(3,'salary')">20+ and I have an interview</button>
+          </div>
+        </div>
+        <div id="quiz-q4" style="display:none;">
+          <div style="font-size:.88rem;font-weight:800;color:#2d2d2d;margin-bottom:.65rem;">4. How confident do you feel about your resume?</div>
+          <div style="display:flex;flex-direction:column;gap:.4rem;">
+            <button class="quiz-opt" onclick="quizAnswer(4,'resume')">Not confident at all</button>
+            <button class="quiz-opt" onclick="quizAnswer(4,'resume')">I think it needs work</button>
+            <button class="quiz-opt" onclick="quizAnswer(4,'coverletter')">Resume is fine, cover letters are the problem</button>
+            <button class="quiz-opt" onclick="quizAnswer(4,'interview')">Resume is strong, interviews are my weakness</button>
+          </div>
+        </div>
+        <div id="quiz-q5" style="display:none;">
+          <div style="font-size:.88rem;font-weight:800;color:#2d2d2d;margin-bottom:.65rem;">5. What's your biggest goal right now?</div>
+          <div style="display:flex;flex-direction:column;gap:.4rem;">
+            <button class="quiz-opt" onclick="quizAnswer(5,'crisis')">Stabilize — I'm in survival mode</button>
+            <button class="quiz-opt" onclick="quizAnswer(5,'resume')">Get more interviews</button>
+            <button class="quiz-opt" onclick="quizAnswer(5,'interview')">Ace my next interview</button>
+            <button class="quiz-opt" onclick="quizAnswer(5,'salary')">Negotiate the best offer possible</button>
+          </div>
+        </div>
+      </div>
+      <div id="quiz-result" style="display:none;background:linear-gradient(135deg,#fff8f4,#f0faf3);border-radius:16px;padding:1rem 1.2rem;border:1.5px solid #f0d4b8;text-align:center;">
+        <div style="font-size:1.5rem;margin-bottom:.4rem;" id="quiz-result-icon">📄</div>
+        <div style="font-size:.9rem;font-weight:900;color:#2d2d2d;margin-bottom:.3rem;" id="quiz-result-title">Start with Resume Review</div>
+        <div style="font-size:.78rem;font-weight:600;color:#aaa;line-height:1.55;margin-bottom:.85rem;" id="quiz-result-desc">Based on your answers, getting your resume in shape is your highest-impact move right now.</div>
+        <button onclick="goToProTool()" style="background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border:none;border-radius:14px;padding:.65rem 1.4rem;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:800;cursor:pointer;">Open This Tool ➤</button>
+        <div style="margin-top:.65rem;"><button onclick="resetQuiz()" style="background:none;border:none;font-family:'Nunito',sans-serif;font-size:.75rem;font-weight:700;color:#bbb;cursor:pointer;">Retake quiz</button></div>
+      </div>
+      <div id="quiz-progress" style="display:flex;gap:.3rem;margin-top:.75rem;">
+        <div class="quiz-dot active" id="qdot-1"></div>
+        <div class="quiz-dot" id="qdot-2"></div>
+        <div class="quiz-dot" id="qdot-3"></div>
+        <div class="quiz-dot" id="qdot-4"></div>
+        <div class="quiz-dot" id="qdot-5"></div>
+      </div>
+    </div>
+
+    <!-- FEEDBACK SECTION -->
     <div class="section-card">
-      <h3>Ask Your Coach</h3>
-      <div style="font-size:.76rem;color:#bbb;font-weight:600;margin-bottom:.6rem;">What's on your mind today? Ask anything — finances, next steps, or how you're feeling.</div>
-      <div class="chat-wrap">
-        <div class="chat-msgs" id="chat-msgs-home" style="max-height:180px;">
-          <div class="cmsg ai">I'm here. Ask me anything — income ideas, what to do next, or just what's weighing on you. 🌱</div>
+      <h3>💬 Honest Feedback</h3>
+      <div style="font-size:.78rem;color:#aaa;font-weight:600;margin-bottom:.85rem;">No email required. What's the one thing missing from this app?</div>
+      <div id="feedback-form">
+        <textarea id="feedback-text" rows="3" placeholder="Tell us what would make this more useful for you..." style="width:100%;background:#fafaf8;border:1.5px solid #f0ede8;border-radius:16px;padding:.85rem 1rem;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:600;color:#2d2d2d;outline:none;resize:none;box-sizing:border-box;margin-bottom:.65rem;"></textarea>
+        <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.65rem;">
+          <div style="font-size:.78rem;font-weight:700;color:#aaa;">Overall rating:</div>
+          <div style="display:flex;gap:.3rem;" id="star-rating">
+            <span class="star" onclick="rateStar(1)" style="font-size:1.3rem;cursor:pointer;color:#ddd;">★</span>
+            <span class="star" onclick="rateStar(2)" style="font-size:1.3rem;cursor:pointer;color:#ddd;">★</span>
+            <span class="star" onclick="rateStar(3)" style="font-size:1.3rem;cursor:pointer;color:#ddd;">★</span>
+            <span class="star" onclick="rateStar(4)" style="font-size:1.3rem;cursor:pointer;color:#ddd;">★</span>
+            <span class="star" onclick="rateStar(5)" style="font-size:1.3rem;cursor:pointer;color:#ddd;">★</span>
+          </div>
         </div>
-        <div class="chat-row">
-          <input class="chat-inp" id="chat-inp-home" placeholder="Type your question..." onkeydown="if(event.key==='Enter')sendChatHome()"/>
-          <button class="chat-send" id="chat-send-home" onclick="sendChatHome()">➤</button>
-        </div>
+        <button onclick="submitFeedback()" style="background:linear-gradient(135deg,#5db87a,#7dcc96);color:white;border:none;border-radius:14px;padding:.65rem;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:800;cursor:pointer;width:100%;">Send Feedback 🌱</button>
+      </div>
+      <div id="feedback-thanks" style="display:none;text-align:center;padding:.75rem;background:#f0faf3;border-radius:14px;border:1.5px solid #b8e0c4;">
+        <div style="font-size:1.3rem;margin-bottom:.25rem;">🙏</div>
+        <div style="font-size:.88rem;font-weight:800;color:#5db87a;">Thank you — your feedback shapes what comes next.</div>
       </div>
     </div>
 
@@ -728,7 +823,7 @@ svg.ring { transform:rotate(-90deg); }
           <input class="chat-inp" id="chat-inp" placeholder="Type your question..." onkeydown="if(event.key==='Enter')sendChat()"/>
           <button class="chat-send" id="chat-send" onclick="sendChat()">➤</button>
         </div>
-        <div class="chat-limit" id="chat-limit" style="display:none;"></div>
+        <div class="chat-limit" id="chat-limit" style="display:block;"></div>
       </div>
     </div>
 
@@ -795,27 +890,22 @@ svg.ring { transform:rotate(-90deg); }
 
     </div>
 
-    <!-- WAITLIST -->
+    <!-- PRO UPGRADE CTA -->
     <div class="section-card">
-      <h3>🌱 What's Coming Next</h3>
+      <h3>🌱 Upgrade to Pro</h3>
       <div style="background:linear-gradient(135deg,#fff8f4,#f0faf3);border-radius:18px;padding:1.2rem 1.3rem;margin-bottom:.75rem;border:1.5px solid #f0d4b8;">
-        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#f07c3a;margin-bottom:.4rem;">✨ Coming Soon</div>
-        <div style="font-size:.85rem;font-weight:600;color:#2d2d2d;line-height:1.65;margin-bottom:.75rem;">We're actively adding features and your feedback shapes what comes next. Join the waitlist to be first in the door — and lock in a founder discount when Pro launches.</div>
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#f07c3a;margin-bottom:.4rem;">✨ Pro is Live</div>
+        <div style="font-size:.85rem;font-weight:600;color:#2d2d2d;line-height:1.65;margin-bottom:.75rem;">Get full access to all five AI-powered job search tools. Built for people who need results fast — not someday.</div>
         <div style="display:flex;flex-direction:column;gap:.4rem;">
           <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> 100 AI messages/day (vs 15 free)</div>
-          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Crisis Mode — 72-hour action plan</div>
-          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Resume review, cover letter &amp; interview prep</div>
-          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Salary negotiation script</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> AI Resume Review — get specific feedback fast</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Cover Letter Writer — tailored to every job</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Interview Prep — practice before the real thing</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Salary Negotiation — one script could earn you thousands more</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;color:#5db87a;"><span>✓</span> Crisis Mode — 72-hour action plan when you don't know where to start</div>
         </div>
       </div>
-      <div id="waitlist-form" style="display:flex;flex-direction:column;gap:.6rem;">
-        <button onclick="joinWaitlist()" style="background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border:none;border-radius:14px;padding:.75rem;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;width:100%;transition:all .18s;">Join the Waitlist 🌱</button>
-      </div>
-      <div id="waitlist-thanks" style="display:none;text-align:center;padding:.75rem;background:#f0faf3;border-radius:14px;border:1.5px solid #b8e0c4;">
-        <div style="font-size:1.3rem;margin-bottom:.25rem;">🙌</div>
-        <div style="font-size:.88rem;font-weight:800;color:#5db87a;">You're on the list!</div>
-        <div style="font-size:.78rem;color:#aaa;font-weight:600;margin-top:.2rem;">We'll email you with founder pricing when Pro launches.</div>
-      </div>
+      <a href="https://buy.stripe.com/14AaEWfmj3SU7a922FdQQ00" target="_blank" style="display:block;background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;text-decoration:none;border-radius:14px;padding:.75rem;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;width:100%;text-align:center;box-sizing:border-box;">Upgrade to Pro — $4.99/mo 🌱</a>
     </div>
 
   </div>
@@ -976,7 +1066,7 @@ svg.ring { transform:rotate(-90deg); }
           <span style="font-size:1.5rem;">🔓</span>
           <div style="flex:1;">
             <div style="font-size:.9rem;font-weight:900;color:#2d2d2d;">Unlock Pro — $4.99/mo</div>
-            <div style="font-size:.73rem;color:#aaa;font-weight:600;margin-top:.1rem;">Try any tool below, then upgrade to run it.</div>
+            <div style="font-size:.73rem;color:#aaa;font-weight:600;margin-top:.1rem;">One salary negotiation tip could earn you thousands more. Pro costs less than a coffee.</div>
           </div>
           <a id="pro-stripe-btn" href="https://buy.stripe.com/14AaEWfmj3SU7a922FdQQ00" target="_blank" onclick="saveProEmail()" style="background:linear-gradient(135deg,#f07c3a,#f5a55a);color:white;border:none;border-radius:12px;padding:.5rem .85rem;font-family:Nunito,sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;white-space:nowrap;text-decoration:none;flex-shrink:0;">Upgrade ➤</a>
         </div>
@@ -996,15 +1086,15 @@ svg.ring { transform:rotate(-90deg); }
     <div id="pro-tools-content">
 
       <div class="pro-tabs" id="pro-tabs">
-        <div class="pro-tab active" onclick="showProTab('crisis',this)">🚨 Crisis Mode</div>
-        <div class="pro-tab" onclick="showProTab('resume',this)">📄 Resume</div>
+        <div class="pro-tab active" onclick="showProTab('resume',this)">📄 Resume</div>
         <div class="pro-tab" onclick="showProTab('coverletter',this)">✉️ Cover Letter</div>
-        <div class="pro-tab" onclick="showProTab('interview',this)">🎤 Interview</div>
         <div class="pro-tab" onclick="showProTab('salary',this)">💰 Salary</div>
+        <div class="pro-tab" onclick="showProTab('interview',this)">🎤 Interview</div>
+        <div class="pro-tab" onclick="showProTab('crisis',this)">🚨 Crisis Mode</div>
       </div>
 
       <!-- CRISIS MODE -->
-      <div class="pro-section active" id="pro-crisis">
+      <div class="pro-section" id="pro-crisis">
         <div class="pro-tool-card">
           <h3>🚨 First 72 Hours After a Layoff</h3>
           <p class="pro-tool-desc">The decisions you make in the first 72 hours matter more than most people realize. Follow these steps in order.</p>
@@ -1026,7 +1116,7 @@ svg.ring { transform:rotate(-90deg); }
       </div>
 
       <!-- RESUME REVIEW -->
-      <div class="pro-section" id="pro-resume">
+      <div class="pro-section active" id="pro-resume">
         <div class="pro-tool-card">
           <h3>📄 AI Resume Review</h3>
           <p class="pro-tool-desc">Paste your resume text below and get specific, actionable feedback to make it stronger.</p>
@@ -1370,11 +1460,6 @@ function updateTierUI(){
 }
 
 loadTier();
-
-// ── WAITLIST ──────────────────────────────────
-function joinWaitlist(){
-  window.open('https://docs.google.com/forms/d/e/1FAIpQLSc0lfAQX09NH1tR4616rsT9ADeYtmtp4gxkxzUsP_sLKlLUyg/viewform','_blank');
-}
 
 // ── WINS ──────────────────────────────────────
 async function loadWins(){
@@ -1818,6 +1903,93 @@ async function runProTool(tool) {
 
 // ── INIT ──────────────────────────────────────
 loadXP().then(()=>{loadSteps();checkProAccess();});
+
+// ── QUIZ ──────────────────────────────────────
+let quizAnswers = [];
+let quizCurrentQ = 1;
+const quizResultMap = {
+  crisis: { icon:'🚨', title:'Start with Crisis Mode', desc:'Based on your answers, Crisis Mode is your most important first step. Get your 72-hour action plan and start from a stable foundation.', tab:'crisis' },
+  resume: { icon:'📄', title:'Start with Resume Review', desc:'Based on your answers, getting your resume in shape is your highest-impact move right now. More interviews start here.', tab:'resume' },
+  coverletter: { icon:'✉️', title:'Start with Cover Letter Writer', desc:'Based on your answers, your cover letters are holding you back. A stronger cover letter gets you noticed faster.', tab:'coverletter' },
+  interview: { icon:'🎤', title:'Start with Interview Prep', desc:'Based on your answers, interview preparation is your best next step. Walk in confident and ready.', tab:'interview' },
+  salary: { icon:'💰', title:'Start with Salary Negotiation', desc:'Based on your answers, you\'re close to an offer. One negotiation script could earn you thousands more.', tab:'salary' }
+};
+
+function quizAnswer(q, tool) {
+  quizAnswers.push(tool);
+  document.getElementById('quiz-q' + q).style.display = 'none';
+  document.getElementById('qdot-' + q).classList.remove('active');
+  if (q < 5) {
+    const next = q + 1;
+    quizCurrentQ = next;
+    document.getElementById('quiz-q' + next).style.display = 'block';
+    document.getElementById('qdot-' + next).classList.add('active');
+  } else {
+    showQuizResult();
+  }
+}
+
+function showQuizResult() {
+  const counts = {};
+  quizAnswers.forEach(a => counts[a] = (counts[a]||0) + 1);
+  const top = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+  const res = quizResultMap[top];
+  document.getElementById('quiz-result-icon').textContent = res.icon;
+  document.getElementById('quiz-result-title').textContent = res.title;
+  document.getElementById('quiz-result-desc').textContent = res.desc;
+  document.getElementById('quiz-result').dataset.tab = res.tab;
+  document.getElementById('quiz-body').style.display = 'none';
+  document.getElementById('quiz-progress').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+}
+
+function goToProTool() {
+  const tab = document.getElementById('quiz-result').dataset.tab;
+  goScreen('protools', document.querySelectorAll('.nav-item')[5]);
+  setTimeout(() => {
+    const tabEl = document.querySelector('.pro-tab[onclick*="' + tab + '"]');
+    if (tabEl) showProTab(tab, tabEl);
+  }, 100);
+}
+
+function resetQuiz() {
+  quizAnswers = [];
+  quizCurrentQ = 1;
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-body').style.display = 'block';
+  document.getElementById('quiz-progress').style.display = 'flex';
+  for (let i = 1; i <= 5; i++) {
+    const q = document.getElementById('quiz-q' + i);
+    if (q) q.style.display = i === 1 ? 'block' : 'none';
+    const dot = document.getElementById('qdot-' + i);
+    if (dot) { dot.classList.remove('active'); if (i===1) dot.classList.add('active'); }
+  }
+}
+
+// ── FEEDBACK ──────────────────────────────────
+let feedbackRating = 0;
+
+function rateStar(n) {
+  feedbackRating = n;
+  document.querySelectorAll('.star').forEach((s, i) => {
+    s.classList.toggle('selected', i < n);
+    s.style.color = i < n ? '#f5c842' : '#ddd';
+  });
+}
+
+async function submitFeedback() {
+  const text = document.getElementById('feedback-text').value.trim();
+  if (!text && feedbackRating === 0) { alert('Please share your thoughts or a rating before submitting.'); return; }
+  try {
+    await fetch('https://formspree.io/f/xykvgbre', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ message: text, rating: feedbackRating + ' stars', _subject: 'Seed2Sunlight App Feedback' })
+    });
+  } catch(e) {}
+  document.getElementById('feedback-form').style.display = 'none';
+  document.getElementById('feedback-thanks').style.display = 'block';
+}
 </script>
 <script>
 if ('serviceWorker' in navigator) {
