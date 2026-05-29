@@ -1533,7 +1533,7 @@ async function loadStreak(){
   }catch(e){}
 }
 function setStreakAll(c){
-  ['streak-home','streak-fin','streak-mind','streak-res','streak-scripts','streak-jobs'].forEach(id=>{
+  ['streak-home','streak-fin','streak-mind','streak-res','streak-scripts','streak-jobs','streak-protools'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.textContent='🔥 Day '+c;
   });
   document.getElementById('stat-streak-prog').textContent=c;
@@ -1556,7 +1556,7 @@ function goScreen(id,el){
   try{
     const last=localStorage.getItem('s2s-last-screen');
     if(last&&document.getElementById('screen-'+last)){
-      const navMap={home:0,finance:1,mindset:2,progress:3,resources:4,scripts:1,jobs:1,protools:4};
+      const navMap={home:0,finance:1,mindset:2,progress:3,resources:4,scripts:1,jobs:1,protools:5};
       const navItems=document.querySelectorAll('.nav-item');
       document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
       navItems.forEach(n=>n.classList.remove('active'));
@@ -2122,7 +2122,6 @@ function updateToolUseBars(uses) {
       if (btnEl) btnEl.style.display = 'none';
     } else {
       // Show dots: filled = used, empty = available
-      const totalDots = FREE_USES_PER_TOOL + 1; // +1 visual for "what they'd lose"
       let dots = '';
       for (let i = 0; i < FREE_USES_PER_TOOL; i++) {
         dots += `<div class="tub-dot ${i < used ? 'used' : 'avail'}"></div>`;
