@@ -477,6 +477,9 @@ svg.ring { transform:rotate(-90deg); }
 .crisis-text strong { display:block; font-size:.88rem; font-weight:800; color:#2d2d2d; margin-bottom:.18rem; }
 .crisis-text span { font-size:.76rem; color:#aaa; font-weight:600; line-height:1.5; }
 
+/* ── MILESTONE TOAST ── */
+.milestone-toast{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);max-width:340px;width:calc(100% - 2.4rem);background:#2d2d2d;color:white;border-radius:16px;padding:.85rem 1.1rem;font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:700;line-height:1.5;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:999;opacity:0;transition:opacity .3s ease,transform .3s ease;pointer-events:none;}
+.milestone-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -1198,11 +1201,9 @@ svg.ring { transform:rotate(-90deg); }
 
         <!-- VALUE CALCULATOR -->
         <div class="uw-value-calc">
-          <div class="vc-row"><span class="vc-label">Average salary gain from negotiation</span><span class="vc-val green">+$8,200</span></div>
           <div class="vc-row"><span class="vc-label">Time to get a result with Pro</span><span class="vc-val">Under 60 sec</span></div>
-          <hr class="vc-divider">
           <div class="vc-row"><span class="vc-label">Pro costs per month</span><span class="vc-val orange">$4.99</span></div>
-          <div class="vc-row"><span class="vc-label">ROI on first negotiation alone</span><span class="vc-val green">1,642×</span></div>
+          <div class="vc-row"><span class="vc-label">One skipped coffee run covers it</span><span class="vc-val green">☕ ✓</span></div>
         </div>
 
         <!-- FEATURE CHIPS -->
@@ -1254,12 +1255,6 @@ svg.ring { transform:rotate(-90deg); }
             <div class="comp-feat yes us">Crisis mode</div>
             <div class="comp-feat yes us">Salary scripts</div>
           </div>
-        </div>
-
-        <!-- TESTIMONIAL -->
-        <div class="uw-testimonial">
-          <div class="uw-test-text">"I used the salary negotiation script and got $6,000 more than the original offer. The tool paid for itself 100 times over on day one."</div>
-          <div class="uw-test-author">— Pro member, landed a software role in Ohio</div>
         </div>
 
         <a id="pro-stripe-btn" href="https://buy.stripe.com/14AaEWfmj3SU7a922FdQQ00" target="_blank" onclick="saveProEmail()" class="uw-cta-btn">Unlock Pro — $4.99/month 🌱</a>
@@ -1514,6 +1509,35 @@ const hr=new Date().getHours();
 const greet=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
 document.getElementById('greeting-text').textContent=greet+' 🌱';
 
+// ── MILESTONES (gentle, one-time, meaningful only) ──
+let milestoneEl=null;
+function showMilestone(text){
+  if(!milestoneEl){
+    milestoneEl=document.createElement('div');
+    milestoneEl.className='milestone-toast';
+    document.body.appendChild(milestoneEl);
+  }
+  milestoneEl.textContent=text;
+  requestAnimationFrame(()=>milestoneEl.classList.add('show'));
+  clearTimeout(milestoneEl._t);
+  milestoneEl._t=setTimeout(()=>milestoneEl.classList.remove('show'),4200);
+}
+async function hasSeenMilestone(id){
+  try{const r=await window.storage.get('s2s-v3-milestones');const seen=r?JSON.parse(r.value):[];return seen.includes(id);}catch(e){return false;}
+}
+async function markMilestoneSeen(id){
+  try{
+    const r=await window.storage.get('s2s-v3-milestones');
+    const seen=r?JSON.parse(r.value):[];
+    if(!seen.includes(id)){seen.push(id);await window.storage.set('s2s-v3-milestones',JSON.stringify(seen));}
+  }catch(e){}
+}
+async function celebrateOnce(id,text){
+  if(await hasSeenMilestone(id))return;
+  await markMilestoneSeen(id);
+  showMilestone(text);
+}
+
 // ── DATE/STREAK ───────────────────────────────
 const now=new Date();
 function todayKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
@@ -1526,10 +1550,20 @@ async function loadStreak(){
       const last=new Date(d.lastDate),today=new Date();
       const diff=Math.floor((today.setHours(0,0,0,0)-last.setHours(0,0,0,0))/86400000);
       let c=d.count;
-      if(diff===1){c++;await window.storage.set('s2s-v3-streak',JSON.stringify({count:c,lastDate:new Date().toISOString()}));}
-      else if(diff>1){c=1;await window.storage.set('s2s-v3-streak',JSON.stringify({count:1,lastDate:new Date().toISOString()}));}
+      if(diff===1){
+        // normal next-day check-in
+        c++;
+        await window.storage.set('s2s-v3-streak',JSON.stringify({count:c,lastDate:new Date().toISOString(),graceUsed:false}));
+      } else if(diff===2 && !d.graceUsed){
+        // one missed day is forgiven, once per streak — job searching is hard, life happens
+        await window.storage.set('s2s-v3-streak',JSON.stringify({count:c,lastDate:new Date().toISOString(),graceUsed:true}));
+        showMilestone("Welcome back 🌱 Your streak is still here, we don't punish you for a hard day.");
+      } else if(diff>1){
+        c=1;
+        await window.storage.set('s2s-v3-streak',JSON.stringify({count:1,lastDate:new Date().toISOString(),graceUsed:false}));
+      }
       setStreakAll(c);
-    }else{await window.storage.set('s2s-v3-streak',JSON.stringify({count:1,lastDate:new Date().toISOString()}));}
+    }else{await window.storage.set('s2s-v3-streak',JSON.stringify({count:1,lastDate:new Date().toISOString(),graceUsed:false}));}
   }catch(e){}
 }
 function setStreakAll(c){
@@ -1537,6 +1571,7 @@ function setStreakAll(c){
     const el=document.getElementById(id);if(el)el.textContent='🔥 Day '+c;
   });
   document.getElementById('stat-streak-prog').textContent=c;
+  if(c===7)celebrateOnce('streak-7',"One week of showing up. That counts, even on the hard days.");
 }
 loadStreak();
 
@@ -1758,6 +1793,8 @@ async function addWin(){
   try{await window.storage.set('s2s-v3-wins',JSON.stringify(wins));}catch(e){}
   renderWins(wins);inp.value='';
   addXP(5);
+  if(wins.length===1)celebrateOnce('first-win',"🌱 First win logged. Noticing your own progress is half the battle.");
+  else if(wins.length===10)celebrateOnce('ten-wins',"You've logged 10 wins now. That's 10 real days you kept going.");
 }
 loadWins();
 
@@ -1979,6 +2016,8 @@ async function addJob(){
   document.getElementById('job-company').value='';
   document.getElementById('job-role').value='';
   addXP(10);
+  if(jobs.length===1)celebrateOnce('first-app',"🎉 First application logged. You're officially in motion.");
+  if(status==='offer')celebrateOnce('first-offer',"🎉 An offer on the board. However this goes, that's real proof of your work.");
 }
 
 async function deleteJob(idx){
@@ -2207,6 +2246,7 @@ async function runProTool(tool) {
     }
 
     resultEl.classList.add('visible');
+    celebrateOnce('first-tool',"✅ First AI tool run. One more thing off your plate.");
   } catch(e) {
     resultEl.innerHTML = 'Something went wrong. Please try again.';
     resultEl.classList.add('visible');
